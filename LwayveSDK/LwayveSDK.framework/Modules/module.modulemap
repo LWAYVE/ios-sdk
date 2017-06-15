@@ -1,0 +1,10 @@
+framework module LwayveSDK {
+  umbrella header "LwayveSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module LwayveSDK.Swift {
+    header "LwayveSDK-Swift.h"
+}
