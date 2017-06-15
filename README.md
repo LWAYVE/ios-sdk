@@ -1,30 +1,30 @@
 # LWAYVE SDK for iOS
 The following document provides background information on the LWAYVE platform as well as provides setup and usage instructions for the LWAYVE SDK for iOS. The content in this document is divided into the following sections:
 
-- [Section 1: Introducing LWAVYE and Contextual Audio Experiences Audio](#section-1-introducing-lwavye-and-contextual-audio-experiences)
-* [Background](#background)
-* [Who are the Players?](#who-are-the-players-)
-* [What are the Components of the LWAYVE Platform?](#what-are-the-components-of-the-lwayve-platform-)
-* [How Does LWAYVE Work?](#how-does-lwayve-work-)
-- [Section 2: Implementing the LWAYVE and ProxSee SDKs in an iOS Project](#section-2-implementing-the-lwayve-and-Proxsee-SDKs-in-an-ios-project)
-* [Prerequisites](#prerequisites)
-* [Add the LWAYVE and ProxSee SDKs as Dependencies](#add-the-lwayve-and-proxsee-sdks-as-dependencies)
-* [Configure Application Background Modes](#configure-application-background-modes)
-* [Initialize the LWAYVE and ProxSee SDKs](#initialize-the-lwayve-and-proxsee-sdks)
-* [Set Up an Event Logger](#set-up-an-event-logger)
-- [Section 3: Testing LWAYVE](#section-3-testing-lwayve)
-* [Using API](#using-api)
-* [Setting Location](#setting-location)
-* [Setting User Preferences](#setting-user-preferences)
-* [Setting Time](#setting-time)
-- [Section 4: Using LWAYVE Event Handling Methods](#section-4-using-lwayve-event-handling-methods)
-* [Generic SDK Events](#generic-sdk-events)
-* [Playback Events](#playback-events)
-* [Playlist Events](#playlist-events)
-- [Section 5: Using LWAYVE Control Methods](#section-5-using-lwayve-control-methods)
-* [Context Controls](#context-controls)
-* [Playback Controls](#playback-controls)
-* [Playlist Controls](#playlist-controls)
+  - [Section 1: Introducing LWAVYE and Contextual Audio Experiences Audio](#section-1-introducing-lwavye-and-contextual-audio-experiences)
+    * [Background](#background)
+    * [Who are the Players?](#who-are-the-players-)
+    * [What are the Components of the LWAYVE Platform?](#what-are-the-components-of-the-lwayve-platform-)
+    * [How Does LWAYVE Work?](#how-does-lwayve-work-)
+  - [Section 2: Implementing the LWAYVE and ProxSee SDKs in an iOS Project](#section-2-implementing-the-lwayve-and-Proxsee-SDKs-in-an-ios-project)
+    * [Prerequisites](#prerequisites)
+    * [Add the LWAYVE and ProxSee SDKs as Dependencies](#add-the-lwayve-and-proxsee-sdks-as-dependencies)
+    * [Configure Application Background Modes](#configure-application-background-modes)
+    * [Initialize the LWAYVE and ProxSee SDKs](#initialize-the-lwayve-and-proxsee-sdks)
+    * [Set Up an Event Logger](#set-up-an-event-logger)
+  - [Section 3: Testing LWAYVE](#section-3-testing-lwayve)
+    * [Using API](#using-api)
+    * [Setting Location](#setting-location)
+    * [Setting User Likes](#setting-user-likes)
+    * [Setting Time](#setting-time)
+  - [Section 4: Using LWAYVE Event Handling Methods](#section-4-using-lwayve-event-handling-methods)
+    * [Generic SDK Events](#generic-sdk-events)
+    * [Playback Events](#playback-events)
+    * [Playlist Events](#playlist-events)
+  - [Section 5: Using LWAYVE Control Methods](#section-5-using-lwayve-control-methods)
+    * [Context Controls](#context-controls)
+    * [Playback Controls](#playback-controls)
+    * [Playlist Controls](#playlist-controls)
 
 ## Section 1: Introducing LWAVYE and Contextual Audio Experiences
 
@@ -72,11 +72,11 @@ As part of their role, Developers integrate the following two SDKS into the mobi
 #### Experience Service and Contextual Audio Experience 
 - **Experience Service**: This is the backend platform on which the Experience Designer creates a Contextual Audio Experience. 
 - **Contextual Audio Experience**: This is the content created on the Experience Service.
-- **Curated Audio**: This is the audio that has been gathered by the Experience Designer during the initial planning and design stages. This audio is planned around a Listener's time, location, and user likes. For example, for a music festival, the Experience Designer might create curated audio based on the performance schedule.   
-- **Situational Audio**: This is audio that is gathered by the Experience Conductor "on the ground" at the event. For example, at a music festival, sudden unpredicted weather changes may prompt the Experience Conductor to create situational audio for safety precautions due to inclement weather (e.g., advising Listeners to take shelter).  
-- **Time**: The Contextual Audio Experience will provide the Listener with different content depending on the time. For example, at a music festival, at 4:00pm when the gates open, the audio may be related to entrance lineups and at 8:00pm the audio may be related to the concert schedule.
-- **Location**: The Contextual Audio Experience will differ depending on the location of the Listener. For example, if the Listener is standing next to the food tent, the audio may be related to menu items and meal specials.
-- **User Likes**: These are settings set by the Listener in the Customer mobile application. 
+  - **Curated Audio**: This is the audio that has been gathered by the Experience Designer during the initial planning and design stages. This audio is planned around a Listener's time, location, and user likes. For example, for a music festival, the Experience Designer might create curated audio based on the performance schedule.   
+  - **Situational Audio**: This is audio that is gathered by the Experience Conductor "on the ground" at the event. For example, at a music festival, sudden unpredicted weather changes may prompt the Experience Conductor to create situational audio for safety precautions due to inclement weather (e.g., advising Listeners to take shelter).  
+  - **Time**: The Contextual Audio Experience will provide the Listener with different content depending on the time. For example, at a music festival, at 4:00pm when the gates open, the audio may be related to entrance lineups and at 8:00pm the audio may be related to the concert schedule.
+  - **Location**: The Contextual Audio Experience will differ depending on the location of the Listener. For example, if the Listener is standing next to the food tent, the audio may be related to menu items and meal specials.
+  - **User Likes**: These are settings set by the Listener in the Customer mobile application. 
 
 ### How Does LWAYVE Work?
 The following image depicts the high-level LWAYVE Contextual Audio Experience workflow:
@@ -144,14 +144,14 @@ To configure the above application modes in your application, add the following 
 
 ```
 <key>NSLocationAlwaysUsageDescription</key>
-<string>Location information is used to determine ProxSee tags.</string>
-<key>UIBackgroundModes</key>
-<array>
-<string>location</string>
-<string>fetch</string>
-<string>audio</string>
-<string>remote-notification</string>
-</array>
+	<string>Location information is used to determine ProxSee tags.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>fetch</string>
+		<string>audio</string>
+		<string>remote-notification</string>
+	</array>
 
 ```
 
@@ -211,31 +211,31 @@ You can test LWAYVE by using the API documented on Swagger. You can access Swagg
 The following API is available:
 
 - account-resource (Account Resource)
-- Get account
-- Change password
-- Finish password reset
-- Request password reset
-- Authorize
+  - Get account
+  - Change password
+  - Finish password reset
+  - Request password reset
+  - Authorize
 - application-resource (Application Resource)
-- Get applications
-- Create application
-- Get application by name
+  - Get applications
+  - Create application
+  - Get application by name
 - customer-resource (Customer Resource)
-- Get all customers
-- Create customer
-- Update customer
+  - Get all customers
+  - Create customer
+  - Update customer
 - gateway-resource (Gateway Resource)
-- Active routes
+  - Active routes
 - main-controller (Main Controller)
-- Redirect to Swagger with Stash
+  - Redirect to Swagger with Stash
 - profile-info-resource (Profile Info Resource)
-- Get active profiles
-- user-resource (User Resource)
-- Get all users
-- Create user
-- Delete user
-- Get user
-- Update user
+  - Get active profiles
+  - user-resource (User Resource)
+  - Get all users
+  - Create user
+  - Delete user
+  - Get user
+  - Update user
 
 ### Setting Location
 You can set location tags in LWAYVE using the following code:
@@ -262,7 +262,7 @@ The following section outlines the code to add to your application in order to h
 - Generic SDK Events
 - Playlist Events
 - Playback Events
-
+ 
 ### Generic SDK Events
 
 The following methods are available for handling generic LWAYVE SDK events:
@@ -353,7 +353,7 @@ Tell the delegate that the playlist has been updated.
 func playlistDidUpdate(_ playlist: Playlist)
 
 ```
-
+ 
 ### Playback Events
 
 The following methods are available for handling playback events:
@@ -391,7 +391,7 @@ Tell the delegate that the audio track has started playing.
 ```
 @objc optional
 func lwayweSDK(didStartPlayingTrack track: AudioTrack)
-
+ 
 ```
 
 #### Pause
@@ -490,7 +490,7 @@ Remove locations from a Contextual Audio Experience.
 **Parameters**
 
 - locations: The list of strings representing the locations to be removed from the Contextual Audio Experience.
-
+    
 **Code**
 
 ```
@@ -530,7 +530,7 @@ Remove user likes from a Contextual Audio Experience.
 **Parameters**
 
 - userLikes: The list of strings representing the user likes to remove from the Contextual Audio Experience.
-
+    
 **Code**
 
 ```
@@ -561,7 +561,7 @@ There are no input parameters.
 **Code**
 
 ```
-var currentUserContext: UserContext? { get }
+    var currentUserContext: UserContext? { get }
 }
 ```
 
@@ -612,7 +612,7 @@ var isPlaying: Bool { get }
 #### Play 
 
 Start playing queued audio tracks.
-
+    
 **Parameters**
 
 There are no input parameters.
@@ -626,7 +626,7 @@ func play()
 
 #### Pause
 Pause the playback of the current audio track.
-
+    
 **Parameters**
 
 There are no input parameters.
@@ -674,7 +674,7 @@ There are no input parameters.
 **Code**
 
 ```
-func rewind()
+    func rewind()
 
 ````
 
@@ -742,7 +742,7 @@ func clearPlayedItems()
 
 #### Get Playlist
 Get the list of items in the playlist. 
-
+    
 **Parameters**
 
 There are no input parameters.
@@ -797,6 +797,7 @@ There are no input parameters.
 var playedTracksIds: Set<String> { get }
 
 ```
+
 
 
 
