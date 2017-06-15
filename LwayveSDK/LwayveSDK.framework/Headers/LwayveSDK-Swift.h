@@ -177,19 +177,19 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK20AudioControlDelegate_")
 /// Tells the delegate that an AudioTrack has started playing.
 /// \param track The audio track that started playing.
 ///
-- (void)lwayweSDKWithDidStartPlayingTrack:(id <AudioTrack> _Nonnull)track;
+- (void)lwayveSDKWithDidStartPlayingTrack:(id <AudioTrack> _Nonnull)track;
 /// Tells the delegate that an AudioTrack was paused.
 /// \param track The audio track that was paused.
 ///
-- (void)lwayweSDKWithDidPauseTrack:(id <AudioTrack> _Nonnull)track;
+- (void)lwayveSDKWithDidPauseTrack:(id <AudioTrack> _Nonnull)track;
 /// Tells the delegate that an AudioTrack ended.
 /// \param track The audio track that ended.
 ///
-- (void)lwayweSDKWithDidEndPlayingTrack:(id <AudioTrack> _Nonnull)track;
+- (void)lwayveSDKWithDidEndPlayingTrack:(id <AudioTrack> _Nonnull)track;
 /// Tells the delegate that the SDK reached an error.
 /// \param error Error object
 ///
-- (void)lwayweSDKWithDidThrowError:(NSError * _Nonnull)error;
+- (void)lwayveSDKWithDidThrowError:(NSError * _Nonnull)error;
 @end
 
 @class NSCoder;
@@ -333,10 +333,10 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 
 
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <AudioControlDelegate>
-- (void)lwayweSDKWithDidStartPlayingTrack:(id <AudioTrack> _Nonnull)track;
-- (void)lwayweSDKWithDidPauseTrack:(id <AudioTrack> _Nonnull)track;
-- (void)lwayweSDKWithDidEndPlayingTrack:(id <AudioTrack> _Nonnull)track;
-- (void)lwayweSDKWithDidThrowError:(NSError * _Nonnull)error;
+- (void)lwayveSDKWithDidStartPlayingTrack:(id <AudioTrack> _Nonnull)track;
+- (void)lwayveSDKWithDidPauseTrack:(id <AudioTrack> _Nonnull)track;
+- (void)lwayveSDKWithDidEndPlayingTrack:(id <AudioTrack> _Nonnull)track;
+- (void)lwayveSDKWithDidThrowError:(NSError * _Nonnull)error;
 @end
 
 

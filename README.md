@@ -1,7 +1,7 @@
 # LWAYVE SDK for iOS
 The following document provides background information on the LWAYVE platform as well as provides setup and usage instructions for the LWAYVE SDK for iOS. The content in this document is divided into the following sections:
 
-  - [Section 1: Introducing LWAVYE and Contextual Audio Experiences Audio](#section-1-introducing-lwavye-and-contextual-audio-experiences)
+  - [Section 1: Introducing LWAYVE and Contextual Audio Experiences Audio](#section-1-introducing-lwayve-and-contextual-audio-experiences)
     * [Background](#background)
     * [Who are the Players?](#who-are-the-players-)
     * [What are the Components of the LWAYVE Platform?](#what-are-the-components-of-the-lwayve-platform-)
@@ -26,7 +26,7 @@ The following document provides background information on the LWAYVE platform as
     * [Playback Controls](#playback-controls)
     * [Playlist Controls](#playlist-controls)
 
-## Section 1: Introducing LWAVYE and Contextual Audio Experiences
+## Section 1: Introducing LWAYVE and Contextual Audio Experiences
 
 ### Background
 LWAYVE is an audio platform that provides event attendees with Contextual Audio Experiences and can be embedded to augment any mobile application. A Contextual Audio Experience serves as a personalized audio guide making any event as engaging, easy, and enjoyable as possible. 
@@ -120,7 +120,7 @@ In your iOS project, create a file named ```Podfile```.
 In your ```Podfile```, add the LWAYVE and ProxSee SDKs as dependencies.
 
 ```
-pod 'LwavyeSDK'
+pod 'LwayveSDK'
 pod 'ProxSeeSDK'
 ```
 Run the install command.
@@ -281,7 +281,7 @@ LwayveSDK.shared.delegate = self
 The following methods must be entered in the following segment:
 
 ```
-protocol.LwavyveSDKDelegate.class{
+protocol.LwayveSDKDelegate.class{
 }
 
 ```
@@ -390,7 +390,7 @@ Tell the delegate that the audio track has started playing.
 
 ```
 @objc optional
-func lwayweSDK(didStartPlayingTrack track: AudioTrack)
+func lwayveSDK(didStartPlayingTrack track: AudioTrack)
  
 ```
 
@@ -407,7 +407,7 @@ Tell the delegate that the audio track has been paused.
 
 ```
 @objc optional
-func lwayweSDK(didPauseTrack track: AudioTrack)
+func lwayveSDK(didPauseTrack track: AudioTrack)
 
 ```
 
@@ -423,7 +423,7 @@ Tell the delegate that the audio track has ended.
 
 ```
 @objc optional
-func lwayweSDK(didEndPlayingTrack track: AudioTrack)
+func lwayveSDK(didEndPlayingTrack track: AudioTrack)
 
 ```
 
@@ -439,7 +439,7 @@ Tell the delegate that the LWAYVE SDK has thrown an error.
 
 ```
 @objc optional
-func lwayweSDK(didThrowError error: NSError)
+func lwayveSDK(didThrowError error: NSError)
 
 ```
 
