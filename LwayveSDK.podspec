@@ -2,8 +2,8 @@ Pod::Spec.new do |s|
   s.name         = "LwayveSDK"
   s.version      = "1.0.0"
   s.summary      = "iOS library"
-  s.homepage     = "http://localhost"
-  s.author       = { "Lixar, Inc" => "contact@lixar.com" }
+  s.homepage     = "https://github.com/LWAYVE/ios-sdk"
+  s.author       = { "Lixar, Inc" => "infra@lwayve.com" }
   s.platform     = :ios
   s.source       = { :git => "https://github.com/LWAYVE/ios-sdk.git", :tag => "1.0.0" }
   s.vendored_frameworks = 'LwayveSDK/LwayveSDK.framework'
