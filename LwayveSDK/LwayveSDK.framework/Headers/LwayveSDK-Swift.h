@@ -187,9 +187,23 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK20AudioControlDelegate_")
 ///
 - (void)lwayveSDKWithDidEndPlayingTrack:(id <AudioTrack> _Nonnull)track;
 /// Tells the delegate that the SDK reached an error.
-/// \param error Error object
+/// \param track Track failed to be played.
 ///
-- (void)lwayveSDKWithDidThrowError:(NSError * _Nonnull)error;
+/// \param error Error object.
+///
+- (void)lwayveSDKWithDidFailPlayingTrack:(id <AudioTrack> _Nonnull)track withError:(NSError * _Nonnull)error;
+/// The method is called to notify about changes in the player status
+/// \param isReadyToPlay <code>true</code> when player has tracks to play. A host application should disable play controls when <code>isReadyToPlay == false</code>
+///
+- (void)lwayveSDKWithPlayerIsReadyToPlaySatusDidChange:(BOOL)isReadyToPlay;
+/// The method is called to notify about changes in the player status
+/// \param canSkip <code>true</code> when there is at least one unfinished track. A host application should disable Skip button when <code>canSkip == false</code>
+///
+- (void)lwayveSDKWithPlayerCanSkipSatusDidChange:(BOOL)canSkip;
+/// The method is called to notify about changes in the player status
+/// \param canRewind <code>true</code> when rewind action can be performed. A host application should disable Rewind button when <code>canRewind == false</code>
+///
+- (void)lwayveSDKWithPlayerCanRewindSatusDidChange:(BOOL)canRewind;
 @end
 
 @class NSCoder;
@@ -229,6 +243,13 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK10AudioTrack_")
 
 
 @interface NSDateFormatter (SWIFT_EXTENSION(LwayveSDK))
+@end
+
+
+SWIFT_PROTOCOL("_TtP9LwayveSDK27ExperienceSupplementaryInfo_")
+@protocol ExperienceSupplementaryInfo
+@property (nonatomic, readonly, copy) NSArray<NSString *> * _Nonnull allExperienceTags;
+@property (nonatomic, readonly, copy) NSArray<NSString *> * _Nonnull allExperienceLocations;
 @end
 
 
@@ -332,11 +353,9 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 @end
 
 
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <AudioControlDelegate>
-- (void)lwayveSDKWithDidStartPlayingTrack:(id <AudioTrack> _Nonnull)track;
-- (void)lwayveSDKWithDidPauseTrack:(id <AudioTrack> _Nonnull)track;
-- (void)lwayveSDKWithDidEndPlayingTrack:(id <AudioTrack> _Nonnull)track;
-- (void)lwayveSDKWithDidThrowError:(NSError * _Nonnull)error;
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <ExperienceSupplementaryInfo>
+@property (nonatomic, readonly, copy) NSArray<NSString *> * _Nonnull allExperienceTags;
+@property (nonatomic, readonly, copy) NSArray<NSString *> * _Nonnull allExperienceLocations;
 @end
 
 
@@ -344,17 +363,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 @property (nonatomic) BOOL notificationsActive;
 - (void)handleApplication:(UIApplication * _Nonnull)application didFinishLaunchingWithOptions:(NSDictionary<UIApplicationLaunchOptionsKey, id> * _Nullable)launchOptions;
 - (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo;
-@end
-
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
-@property (nonatomic, readonly) BOOL isReadyToPlay;
-@property (nonatomic, readonly) BOOL isPlaying;
-- (void)play;
-- (void)pause;
-- (void)stop;
-- (void)skip;
-- (void)rewind;
 @end
 
 @class LwayveSDKUserContext;
@@ -367,6 +375,19 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 - (void)addWithLocations:(NSArray<NSString *> * _Nonnull)locations;
 - (void)removeWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
 - (void)removeWithLocations:(NSArray<NSString *> * _Nonnull)locations;
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
+@property (nonatomic, readonly) BOOL isReadyToPlay;
+@property (nonatomic, readonly) BOOL canSkip;
+@property (nonatomic, readonly) BOOL canRewind;
+@property (nonatomic, readonly) BOOL isPlaying;
+- (void)play;
+- (void)pause;
+- (void)stop;
+- (void)skip;
+- (void)rewind;
 @end
 
 
@@ -389,15 +410,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK23PlaylistControlProtocol_")
 @property (nonatomic, readonly, copy) NSSet<NSString *> * _Nonnull playedTracksIds;
 /// Clears history of played tracks
 - (void)clearPlayedItems;
-/// Allows to provide user time offset relatively to current time.
-/// Example:
-/// \code
-/// `LwayveSDK.shared.setTimeOffset(TimeInterval(-1 * 60 * 60 * 24)) // Get playlist for yesterday.`
-///
-/// \endcode\param timeOffset If timeOffset is 0, then the device time will be used as a user time to generate playlist.
-/// Use negative timeOffset to get a playlist “from the past” and positive for a playlist “from the future”
-///
-- (void)setTimeOffset:(NSTimeInterval)timeOffset;
 @end
 
 
@@ -410,7 +422,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK23PlaylistControlProtocol_")
 @property (nonatomic, readonly, copy) NSArray<id <AudioTrack>> * _Nonnull playedTracksHistory;
 @property (nonatomic, readonly, copy) NSSet<NSString *> * _Nonnull playedTracksIds;
 - (void)clearPlayedItems;
-- (void)setTimeOffset:(NSTimeInterval)timeOffset;
 @end
 
 enum LwayveSDKConfigurationType : NSInteger;
@@ -453,6 +464,14 @@ typedef SWIFT_ENUM(NSInteger, LwayveSDKInitializationError) {
   LwayveSDKInitializationErrorAlreadyInitialized = 1,
 };
 static NSString * _Nonnull const LwayveSDKInitializationErrorDomain = @"LwayveSDK.LwayveSDKInitializationError";
+
+
+SWIFT_PROTOCOL("_TtP9LwayveSDK28NotificationsHandlerProtocol_")
+@protocol NotificationsHandlerProtocol
+@property (nonatomic) BOOL notificationsActive;
+- (void)handleApplication:(UIApplication * _Nonnull)application didFinishLaunchingWithOptions:(NSDictionary<UIApplicationLaunchOptionsKey, id> * _Nullable)launchOptions;
+- (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo;
+@end
 
 
 @protocol PlaylistItem;

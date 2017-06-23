@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (4.4.0)
+  - Alamofire (4.5.0)
   - CocoaLumberjack (3.2.0):
     - CocoaLumberjack/Default (= 3.2.0)
     - CocoaLumberjack/Extensions (= 3.2.0)
@@ -14,7 +14,7 @@ PODS:
   - GoogleToolboxForMac/NSData+zlib (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - KeychainSwift (8.0.2)
-  - LwayveSDK (1.0.0):
+  - LwayveSDK (1.0.3):
     - Alamofire (~> 4.4)
     - CocoaLumberjack/Swift (~> 3.2)
     - GoogleToolboxForMac/Logger
@@ -94,15 +94,15 @@ EXTERNAL SOURCES:
     :path: "../Cocoapods"
 
 SPEC CHECKSUMS:
-  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
   CocoaLumberjack: 9b4aed7073d242f29cc2f62068d995faf67f703a
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   KeychainSwift: 213db04dfe7244988e61f77c72a2afb2f775954a
-  LwayveSDK: c3072e5825155e815317d61a2ae770d0f48b7fc4
+  LwayveSDK: ab7d3f1205d73a6d028e7830bee5800417fab78d
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   YapDatabase: 0cef6c79948169c924ae325d430ffcfa8a5231c2
 
-PODFILE CHECKSUM: 83267155bd9c7f1c01bd1051226f71cbe604112f
+PODFILE CHECKSUM: 648f8849aa73c7800d04c0a199d80b456e01eb5d
 
 COCOAPODS: 1.2.1
