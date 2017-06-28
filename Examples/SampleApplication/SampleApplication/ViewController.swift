@@ -46,7 +46,7 @@ class ViewController: UIViewController {
     }
 
     // Sample actions for control context
-    
+
     @IBAction func addTagsButtonTouched(_ sender: UIButton) {
         LwayveSDK.sharedSDK.add(userLikes: ["#Drinks", "#Danica", "#Johnson-Jimmie", "#Car43", "#Car45", "#Car50"])
     }
@@ -55,4 +55,3 @@ class ViewController: UIViewController {
         LwayveSDK.sharedSDK.add(locations: ["#bar1", "#bar2"])
     }
 }
-

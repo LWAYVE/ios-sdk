@@ -11,20 +11,21 @@ The following document provides background information on the LWAYVE platform as
     * [Add the LWAYVE and ProxSee SDKs as Dependencies](#add-the-lwayve-and-proxsee-sdks-as-dependencies)
     * [Configure Application Background Modes](#configure-application-background-modes)
     * [Initialize the LWAYVE and ProxSee SDKs](#initialize-the-lwayve-and-proxsee-sdks)
-    * [Set Up an Event Logger](#set-up-an-event-logger)
+    * [Set Up Branded Playback Control](#set-up-branded-playback-control)
   - [Section 3: Testing LWAYVE](#section-3-testing-lwayve)
     * [Using API](#using-api)
     * [Setting Location](#setting-location)
     * [Setting User Likes](#setting-user-likes)
-    * [Setting Time](#setting-time)
-  - [Section 4: Using LWAYVE Event Handling Methods](#section-4-using-lwayve-event-handling-methods)
+  - [Section 4: LWAYVE Event Handling Methods](#section-4-lwayve-event-handling)
     * [Generic SDK Events](#generic-sdk-events)
     * [Playback Events](#playback-events)
     * [Playlist Events](#playlist-events)
-  - [Section 5: Using LWAYVE Control Methods](#section-5-using-lwayve-control-methods)
-    * [Context Controls](#context-controls)
-    * [Playback Controls](#playback-controls)
-    * [Playlist Controls](#playlist-controls)
+  - [Section 5: LWAYVE Control Methods](#section-5-lwayve-control-methods)
+    * [Context Control](#context-control)
+    * [Playback Control](#playback-control)
+    * [Playlist Control](#playlist-control)
+    * [Remote Notifications Control](#remote-notifications-control)
+    * [SDK Settings Control](#sdk-settings-control)
 
 ## Section 1: Introducing LWAYVE and Contextual Audio Experiences
 
@@ -169,7 +170,7 @@ let configuration = LwayveSDKConfiguration(baseURL: URL(string: settings.value(f
 authenticationToken: settings.value(forSetting: .AuthenticationKey))
 
 // Attempt to initialize the LWAYVE SDK using the configuration values.
-// This may fail if the SDK is already initialized, the persistant storage cannot be created, or if an empty authenticationToken is provided.
+// This may fail if the SDK is already initialized, the persistent storage cannot be created, or if an empty authenticationToken is provided.
 do {
 try LwayveSDK.sharedSDK.initialize(configuration: configuration)
 } catch {
@@ -177,7 +178,7 @@ NSLog("LwayveSDK initialization error: \(error)")
 }
 
 // Pass the launch options to the LWAYVE SDK.
-// The launch options are used by the SDK to retrieve any relevant notificaton information.
+// The launch options are used by the SDK to retrieve any relevant notification information.
 LwayveSDK.sharedSDK.handleApplication(application, didFinishLaunchingWithOptions: launchOptions)
 
 return true
@@ -197,15 +198,34 @@ return true
 }
 ```
 
-### Set Up an Event Logger
-The architecture of the LWAYVE iOS SDK includes different components, such as core, audio player, and networking. The following code shows how to set up a logger for the network and core components.
+### Set Up Branded Playback Control
 
-```
-LwayveSDK.sharedSDK.setLogLevel(LwayveSDKLogLevel.debug, components: [.network, .core])
-```
+LwayvePlaybackControlView can be used to provide all of the required UI for the LWAYVE SDK.  It provides Play, Skip, and Rewind actions as well as an indication of playback status.
+
+LwayvePlaybackControlView is a subclass of UIView. It can be used with or without Storyboard or Xib.
+
+#### With Storyboard or Xib
+
+To add ```LwayvePlaybackControlView``` using Storyboard or Xib:
+
+1. Add a view 
+2. Set the view class to **LwayvePlaybackControlView**.
+3. Set the module to **LwaveSDK**.
+4. Create an IBOutlet to the view.
+5. Assign an SDK instance to the **LwayvePlaybackControlView.lwayveSDK** property (e.g., self.playbackControl.lwayveSDK = LwayveSDK.sharedSDK).
+
+#### From Code
+
+To add  ```LwayvePlaybackControlView``` from code:
+
+1. Create an instance of  **LwayvePlaybackControlView**(e.g., let playbackControl = LwayvePlaybackControlView(frame: frame)).
+2. Assign an SDK instance to the **LwayvePlaybackControlView.lwayveSDK** property (e.g., playbackControl.lwayveSDK = LwayveSDK.sharedSDK).
+3. Add the view to your super view.
 
 ## Step 3: Testing LWAYVE
+
 ### Using API
+
 You can test LWAYVE by using the API documented on Swagger. You can access Swagger through the following URL: [https://gateway.lwayve.com/swagger-ui/index.html](https://gateway.lwayve.com/swagger-ui/index.html)
 
 The following API is available:
@@ -251,17 +271,24 @@ You can set user likes in LWAYVE using the following code:
 LwayveSDK.sharedSDK.add(userLikes: ["#Drinks", "#Danica", "#Johnson-Jimmie", "#Car43", "#Car45", "#Car50"])
 
 ```
-
-### Setting Time
-
-There are currently no controls to change the time settings. The LWAYVE SDK uses the current device time.
-
-## Section 4: Using LWAYVE Event Handling Methods
+## Section 4: LWAYVE Event Handling
 
 The following section outlines the code to add to your application in order to handle the following events:
+
 - Generic SDK Events
+- Initialize
+- De-Initialize
 - Playlist Events
+- Update
 - Playback Events
+- Playing
+- Paused
+- Ended
+- Error
+- Ready
+- Can Play
+- Can Skip
+- Can Rewind
  
 ### Generic SDK Events
 
@@ -270,50 +297,38 @@ The following methods are available for handling generic LWAYVE SDK events:
 - Initialize
 - De-Initialize
 
-
 Add the following line of code to subscribe:
 
 ```
-LwayveSDK.shared.delegate = self
+LwayveSDK.sharedSDK.delegate = self
 
 ```
 
-The following methods must be entered in the following segment:
-
-```
-protocol.LwayveSDKDelegate.class{
-}
-
-```
+To handle generic SDK events, the ```LwayveSDKDelegate``` protocol should be adopted. 
 
 #### Initialize
 
-Tell the delegate that the LWAYVE SDK has successfully initialized.
+This method is called when  the LWAYVE SDK has successfully initialized.
 
 **Parameters**
 
 - sdk: The LWAYVE SDK object.
 
-**Code**
-
 ```
-@objc optional
+
 func lwayveSDK(didInit sdk: LwayveSDK)
 
 ```
 
 #### De-Initialize
 
-Tell the delegate that the LWAYVE SDK was de-initialized.
+This method is called when the LWAYVE SDK was de-initialized.
 
 **Parameters**
 
 - sdk: The LWAYVE SDK object.
 
-**Code**
-
 ```
-@objc optional
 func lwayveSDK(didDeinit sdk: LwayveSDK)
 
 ```
@@ -327,157 +342,244 @@ The following method is available for handling playlist events:
 Add the following line of code to subscribe:
 
 ```
-LwayveSDK.shared.playlistEventsListener = self
+LwayveSDK.sharedSDK.playlistEventsListener = self
 
 ```
-The following method must be entered in the following segment:
-
-```
-protocol PlayListEventsListener: class {
-}
-
-```
+To handle playlist events, the ```PlayListEventsListener``` protocol should be adopted.
 
 #### Update
 
-Tell the delegate that the playlist has been updated.
+This method is called each time the playlist has been updated. 
 
 **Parameters**
 
 - playlist: The object that contains the additional information about the updated playlist.
 
-**Code**
-
 ```
-@objc optional
 func playlistDidUpdate(_ playlist: Playlist)
 
 ```
- 
+
 ### Playback Events
 
 The following methods are available for handling playback events:
 
-- Play
-- Pause
-- End
+- Playing
+- Paused
+- Ended
 - Error
+- Can Play
+- Can Skip
+- Can Rewind
+
 
 Add the following line of code to subscribe:
 
 ```
-LwayveSDK.shared.audioControlDelegate = self
+LwayveSDK.sharedSDK.add(audioControlDelegate: self)
 
 ```
 
-The following methods must be entered in the following segment:
+To handle/receive playback events, the ```AudioControlDelegate``` protocol should be adopted. 
 
-```
-protocol AudioControlDelegate: class {
-}
+#### Playing
 
-```
-
-#### Play
-
-Tell the delegate that the audio track has started playing.
+This method is called when the the audio track has started playing. 
 
 **Parameters**
 
 - track: The audio track that has started playing.
 
-**Code**
-
 ```
-@objc optional
+
 func lwayveSDK(didStartPlayingTrack track: AudioTrack)
  
 ```
 
-#### Pause
+#### Paused
 
-Tell the delegate that the audio track has been paused.
+This method is called when the audio track has been paused. 
 
 **Parameters**
 
 - track: The audio track that has been paused.
 
 
-**Code**
-
 ```
-@objc optional
 func lwayveSDK(didPauseTrack track: AudioTrack)
 
 ```
 
-#### End
+#### Ended
 
-Tell the delegate that the audio track has ended.
+This method is called when the audio track has ended. 
 
 **Parameters**
 
 - track: The audio track that has ended.
 
-**Code**
-
 ```
-@objc optional
 func lwayveSDK(didEndPlayingTrack track: AudioTrack)
 
 ```
 
 #### Error
 
-Tell the delegate that the LWAYVE SDK has thrown an error.
+This method is called when an audio track has failed to play and error has been thrown. 
+**Parameters**
+
+- Track: The audio track that failed to play.
+- Error: The error object.
+
+```
+func lwayveSDK(didFailPlayingTracktrack: AudioTrack, withError error: NSError)
+
+```
+#### Can Play
+
+This method is called when the audio player status has changed.
 
 **Parameters**
 
-- error: The error object.
-
-**Code**
-
-```
-@objc optional
-func lwayveSDK(didThrowError error: NSError)
+- isReadyToPlay:  When ```true```, the audio player has audio tracks to play. When ```false```, the delegate should disable play controls.
 
 ```
 
+func lwayveSDK(playerIsReadyToPlayStatusDidChange isReadyToPlay: Bool)
 
-## Section 5: Using LWAYVE Control Methods
+```
+
+#### Can Skip
+
+This method is called when the audio player status has changed.
+
+**Parameters**
+
+- canSkip: When ```true```, there is at least one audio track that has not finished playing. When ```false```, the delegate should disable the Skip button.
+
+```
+
+ func lwayveSDK(playerCanSkipStatusDidChange canSkip: Bool)
+
+```
+
+#### Can Rewind
+
+This method is called when the audio player status has changed.
+
+**Parameters**
+
+- canRewind: When ```true```, the rewind action can be performed. When ```false```, the delegate should disable the Rewind button.
+
+```
+func lwayveSDK(playerCanRewindStatusDidChange canRewind: Bool)
+
+```
+## Section 5: LWAYVE Control Methods
 Several methods have been made available to allow you to interact with LWAYVE. The methods available are divided into the following categories:
 
 - Context Control
+- Update User Likes
+- Add User Likes
+- Remove User Likes
+- Update Locations
+- Add Locations
+- Remove Locations
+- Set Preferred Language
 - Playback Control
+- Ready
+- Play
+- Is Playing
+- Pause
+- Stop
+- Skip
+- Rewind
+- Can Skip
+- Can Rewind
+- Add Listener
+- Remove Listener
 - Playlist Control
+- Refresh
+- Reload
+- Get Playlist
+- Get Audio Tracks in Queue
+- Get Played Audio Tracks
+- Get Played Audio Track IDs
+- Clear Played Audio Tracks
+- Remote Notifications Control
+- Initialize Remote Notifications
+- Handle Remote Notifications
+- State of Remote Notification Listening
+- SDK Settings Control
+- Configure
+- Set Log Level
 
 
 ### Context Control
 The following methods are available for updating the context of a Contextual Audio Experience. 
 
+- Update User Likes
+- Add User Likes
+- Remove User Likes
+- Update Locations
 - Add Locations
 - Remove Locations
-- Replace Locations
-- Add List of User Likes
-- Remove List of User Likes
-- Replace List of User Likes
-- Get User Context
+- Set Preferred Language
 
-The context control methods are added in the following code: 
+To handle context, the ```ContextControlProtocol``` protocol should be adopted.
+
+#### Update User Likes
+Update user likes in a Contextual Audio Experience.
+
+**Parameters**
+
+- userLikes: The list of strings representing the updated user likes in the Contextual Audio Experience.
 
 ```
-protocol ContextControlProtocol {
-}
+func set(userLikes: [String])
+
 ```
 
+#### Add User Likes
+Add user likes to a Contextual Audio Experience. 
+
+**Parameters**
+
+- userLikes: The list of strings representing the user likes to add to the Contextual Audio Experience.
+
+```
+func add(userLikes: [String])
+```
+
+#### Remove User Likes
+Remove user likes from a Contextual Audio Experience.
+
+**Parameters**
+
+- userLikes: The list of strings representing the user likes to remove from the Contextual Audio Experience.
+    
+```
+func remove(userLikes: [String])
+
+```
+
+#### Update Locations 
+Update locations in a Contextual Audio Experience. 
+
+**Parameters**
+
+- locations: The list of strings representing the updated locations in the Contextual Audio Experience.
+
+```
+func set(locations: [String])
+
+```
 #### Add Locations
 Add locations to a Contextual Audio Experience.
 
 **Parameters**
 
 - locations: The list of strings representing the locations to be added to the Contextual Audio Experience.
-
-**Code**
 
 ```
 func add(locations: [String])
@@ -491,121 +593,41 @@ Remove locations from a Contextual Audio Experience.
 
 - locations: The list of strings representing the locations to be removed from the Contextual Audio Experience.
     
-**Code**
-
 ```
 func remove(locations: [String])
 
 ```
+#### Set Preferred Language
 
-#### Replace Locations 
-Update locations in a Contextual Audio Experience. 
-
-**Parameters**
-
-- locations: The list of strings representing the updated locations in the Contextual Audio Experience.
-
-**Code**
+Get or update the SDK preferred language. Note that update action is an asynchronous operation. The default preferred language is the current device language (if supported by the LWAYVE SDK).
 
 ```
-func set(locations: [String])
-
-```
-
-#### Add List of User Likes
-Add user likes to a Contextual Audio Experience. 
-
-**Parameters**
-
-- userLikes: The list of strings representing the user likes to add to the Contextual Audio Experience.
-
-**Code**
-```
-func add(userLikes: [String])
-```
-
-#### Remove List of User Likes
-Remove user likes from a Contextual Audio Experience.
-
-**Parameters**
-
-- userLikes: The list of strings representing the user likes to remove from the Contextual Audio Experience.
-    
-**Code**
-
-```
-func remove(userLikes: [String])
-
-```
-
-#### Replace List of User Likes
-Update user likes in a Contextual Audio Experience.
-
-**Parameters**
-
-- userLikes: The list of strings representing the updated user likes in the Contextual Audio Experience.
-
-**Code**
-
-```
-func set(userLikes: [String])
-
-```
-#### Get User Context
-Get the data object that contains the user context that is being used for generating the playlist.
-
-**Parameters**
-
-There are no input parameters.
-
-**Code**
-
-```
-    var currentUserContext: UserContext? { get }
-}
+Public varlanguage: LwayveLanguage
 ```
 
 ### Playback Control
 The following methods are available for controlling the playback. 
+
 - Ready
-- Play State
 - Play
+- Is Playing
 - Pause
 - Stop
 - Skip
 - Rewind
+- Can Skip
+- Can Rewind
+- Add Listener
+- Remove Listener
 
-Playback control methods must be entered in the following code:
+To handle playback, the ```AudioPlaybackControlProtocol``` should be adopted.
 
-```
-protocol AudioPlaybackControlProtocol {
-}
-```
 #### Ready
+
 Determine if the audio player is ready to play an audio track. If ```true``` is returned, the audio player is ready.
-
-**Parameters**
-
-There are no input parameters.
-
-**Code**
 
 ```
 var isReadyToPlay: Bool { get }
-
-```
-
-#### Playing
-Determine if the audio player is currently playing an audio track. If ```true``` is returned, the audio player is playing an audio track.
-
-**Parameters**
-
-There are no input parameters.
-
-**Code**
-
-```
-var isPlaying: Bool { get }
 
 ```
 
@@ -613,38 +635,30 @@ var isPlaying: Bool { get }
 
 Start playing queued audio tracks.
     
-**Parameters**
-
-There are no input parameters.
-
-**Code**
-
 ```
 func play()
+
+```
+
+#### Is Playing
+
+Indicates if the audio player is currently playing.
+
+```
+var isPlaying: Bool { get }
 
 ```
 
 #### Pause
 Pause the playback of the current audio track.
     
-**Parameters**
-
-There are no input parameters.
-
-**Code**
-
 ```
 func pause()
 
 ```
+
 #### Stop
 End the playback of the current audio track and remove all audio tracks from the queue.
-
-**Parameters**
-
-There are no input parameters.
-
-** Code**
 
 ```
 func stop()
@@ -653,59 +667,76 @@ func stop()
 #### Skip
 End the playback of the current audio track and start the playback of the next audio track in the queue (if there is one).
 
-**Parameters**
-
-There are no input parameters.
-
-**Code**
-
 ```
 func skip()
 
 ```
-
 #### Rewind
 Restart the current audio track from the beginning if it has played for greater than or equal to AudioPlaybackControlRestartThreshold seconds; otherwise, start playing the previous audio track (if any). If there is no previous audio track, start the current audio track from the beginning.
 
-**Parameters**
-
-There are no input parameters.
-
-**Code**
-
 ```
-    func rewind()
+func rewind()
 
 ````
 
-### Playlist Controls
+##### Can Skip
+
+Determine if the skip action can be performed in the audio player. 
+
+``` 
+var canSkip: Bool { get }
+
+```
+
+##### Can Rewind
+
+Determine it the rewind action can be performed in the audio player.
+
+```
+var canRewind: Bool { get }
+
+```
+#### Add Listener
+
+Add a listener for audio playback events.
+
+**Parameters**
+
+- Delegate: An object conforming to the ```AudioControlDelegate``` protocol.
+
+```
+public func add(audioControlDelegate delegate: AudioControlDelegate)
+
+```
+#### Remove Listener
+
+Remove a listener for audio playback events.
+
+**Parameters**
+
+- Delegate: An object conforming to the ```AudioControlDelegate``` protocol.
+
+```
+public func remove(audioControlDelegate delegate: AudioControlDelegate)
+
+```
+
+### Playlist Control
 The following methods are available for controlling the Contextual Audio Experience playlist. 
 
 - Refresh
 - Reload
-- Clear
+- Clear Played Audio Tracks
 - Get Playlist
 - Get Audio Tracks in Queue
-- Get Played Tracks
+- Get Played Audio Tracks
 - Get Unplayed Audio Tracks
 - Get Played Track IDs
 
-Playlist control methods must be entered in the following code:
-
-```
-@objc
-public protocol PlaylistControlProtocol {
-}
-```
+To handle the playlist, the ```PlaylistControlProtocol``` should be adopted.
 
 #### Refresh
 Refresh the playlist based on the current context of playlist builder.
-
-**Parameters**
-
-There are no input parameters.
-
-**Code**
 
 ```
 func refreshPlaylist()
@@ -715,25 +746,14 @@ func refreshPlaylist()
 #### Reload
 Re-request the Contextual Audio Experience from the server.
 
-**Parameters**
-
-There are no input parameters.
-
-**Code**
-
 ```
 func forceReloadExperience()
 
 ```
 
-#### Clear
+#### Clear Played Tracks
+
 Clear the history of played audio tracks.
-
-**Parameters**
-
-There are no input parameters.
-
-**Code**
 
 ```
 func clearPlayedItems()
@@ -741,27 +761,17 @@ func clearPlayedItems()
 ```
 
 #### Get Playlist
+
 Get the list of items in the playlist. 
-    
-**Parameters**
-
-There are no input parameters.
-
-**Code**
 
 ```
-var generatedPlaylist: Playlist? { get }
 
+var generatedPlaylist: Playlist? { get }
 ```
 
 #### Get Audio Tracks in Queue
+
 Get the list of audio tracks in the queue, including the currently playing audio track (if any).
-
-**Parameters**
-
-There are no input parameters.
-
-**Code**
 
 ```
 var audioQueue: [AudioTrack] { get }
@@ -769,13 +779,8 @@ var audioQueue: [AudioTrack] { get }
 ```
 
 #### Get Played Audio Tracks
+
 Get the list of played audio tracks. The last audio track in the list is the most recently played one.
-
-**Parameters**
-
-There are no input parameters.
-
-**Code**
 
 ```
 var playedTracksHistory: [AudioTrack] { get }
@@ -783,20 +788,115 @@ var playedTracksHistory: [AudioTrack] { get }
 ```
 #### Get Unplayed Audio Tracks
 
+Get the list of unplayed audio tracks. 
+
+```
+var unplayedTracksQueue: [AudioTrack] property
+
+```
 
 #### Get Played Audio Track IDs
 Get the list of identifiers for the played audio tracks. 
-
-**Parameters**
-
-There are no input parameters.
-
-**Code**
 
 ```
 var playedTracksIds: Set<String> { get }
 
 ```
+
+### Remote Notifications Control
+
+The following methods are available for handling application remote notifications.
+
+- Initialize SDK for Handling Remote Notifications.
+- Handle Remote Notifications
+- State of Remote Notifications Listening
+
+To support remote notifications, the ```ApplicationRemoteNotificationHandler``` protocol should be adopted.
+
+#### Initialize SDK for Handling Remote Notifications
+
+This method should be called in  ```-application:didFinishLaunchingWithOptions:``` of the delegate after the SDK has been initialized.
+
+**Parameters**
+
+- Application: The singleton application object passed through ```-application:didFinishLaunchingWithOptions```.
+- launchOptions: A dictionary indicating the reason the app was launched (if any)_ passed through ```-application:didFinishLaunchingWithOptions```.
+
+```
+func handleApplication(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?)
+
+```
+#### Handle Remote Notifications
+
+This method should be called in ```-application:didReceiveRemoteNotification:``` of ```-application:didReceiveRemoteNotification:fetchCompletionHandler``` to handle remote notifications. 
+
+**Parameters**
+
+- Application: The singleton app object.
+- userInfo: A dictionary that contains information related to the remote notification.
+
+```
+func handleApplication(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any])
+
+```
+#### State of Remote Notifications Listening
+
+Indicates the state of remote notifications listening. Set to ```false``` to stop receiving remote notifications.
+
+```
+var notificationsActive: Bool { get set }
+
+```
+
+### SDK Settings Control
+
+The following methods are available for controlling SDK settings.
+
+- Configure
+- Set Log Level
+
+#### Configure
+
+Call this method before using the LWAYVE SDK.
+
+**Parameters**
+
+- configuration: The configuration object.
+
+```
+public func initialize(configuration: LwayveSDKConfiguration) throws
+
+public func deinitialize()
+
+static public let sharedSDK: LwayveSDK.LwayveSDK
+
+public func add(audioControlDelegate delegate: AudioControlDelegate
+
+public func remove(audioControlDelegate delegate: AudioControlDelegate
+
+public weak var playlistEventsListener: PlayListEventsListener?
+
+public weak var delegate: LwayveSDKDelegate?
+
+```
+
+#### Set Log Level
+
+Set the logger for a specific level and component.
+
+**Parameters**
+
+- Level: The log level
+- Components: the log components
+
+```
+public func setLogLevel(_ level: LwayveSDKLogLevel, components: [LwayveSDKLogComponent]) 
+
+
+```
+
+
+
 
 
 

@@ -135,6 +135,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import UIKit;
 @import Foundation;
 @import ObjectiveC;
+@import CoreGraphics;
 #endif
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
@@ -174,36 +175,36 @@ SWIFT_PROTOCOL_NAMED("ApplicationRemoteNotificationsHandler")
 SWIFT_PROTOCOL("_TtP9LwayveSDK20AudioControlDelegate_")
 @protocol AudioControlDelegate
 @optional
-/// Tells the delegate that an AudioTrack has started playing.
+/// This method is called when the AudioTrack has started playing.
 /// \param track The audio track that started playing.
 ///
 - (void)lwayveSDKWithDidStartPlayingTrack:(id <AudioTrack> _Nonnull)track;
-/// Tells the delegate that an AudioTrack was paused.
+/// This method is called when the AudioTrack was paused.
 /// \param track The audio track that was paused.
 ///
 - (void)lwayveSDKWithDidPauseTrack:(id <AudioTrack> _Nonnull)track;
-/// Tells the delegate that an AudioTrack ended.
+/// This method is called when the AudioTrack ended.
 /// \param track The audio track that ended.
 ///
 - (void)lwayveSDKWithDidEndPlayingTrack:(id <AudioTrack> _Nonnull)track;
-/// Tells the delegate that the SDK reached an error.
+/// This method is called when the SDK reached an error.
 /// \param track Track failed to be played.
 ///
 /// \param error Error object.
 ///
 - (void)lwayveSDKWithDidFailPlayingTrack:(id <AudioTrack> _Nonnull)track withError:(NSError * _Nonnull)error;
-/// The method is called to notify about changes in the player status
+/// This method is called when the audio player status has changed
 /// \param isReadyToPlay <code>true</code> when player has tracks to play. A host application should disable play controls when <code>isReadyToPlay == false</code>
 ///
-- (void)lwayveSDKWithPlayerIsReadyToPlaySatusDidChange:(BOOL)isReadyToPlay;
-/// The method is called to notify about changes in the player status
+- (void)lwayveSDKWithPlayerIsReadyToPlayStatusDidChange:(BOOL)isReadyToPlay;
+/// This method is called when the audio player status has changed
 /// \param canSkip <code>true</code> when there is at least one unfinished track. A host application should disable Skip button when <code>canSkip == false</code>
 ///
-- (void)lwayveSDKWithPlayerCanSkipSatusDidChange:(BOOL)canSkip;
-/// The method is called to notify about changes in the player status
+- (void)lwayveSDKWithPlayerCanSkipStatusDidChange:(BOOL)canSkip;
+/// This method is called when the audio player status has changed
 /// \param canRewind <code>true</code> when rewind action can be performed. A host application should disable Rewind button when <code>canRewind == false</code>
 ///
-- (void)lwayveSDKWithPlayerCanRewindSatusDidChange:(BOOL)canRewind;
+- (void)lwayveSDKWithPlayerCanRewindStatusDidChange:(BOOL)canRewind;
 @end
 
 @class NSCoder;
@@ -306,6 +307,38 @@ typedef SWIFT_ENUM(NSInteger, LwayveLanguage) {
   LwayveLanguageFrench = 1,
 };
 
+@class LwayveSDK;
+
+/// LwayvePlaybackControlView provides a branded control for interaction
+/// with embeddable contextual audio experience service.
+SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
+@interface LwayvePlaybackControlView : UIView
+/// Set current using instance of LwayveSDK for controlling playback and handling it’s actual state.
+@property (nonatomic, strong) LwayveSDK * _Nullable lwayveSDK;
+/// Initializes and returns a newly allocated LwayvePlaybackControlView object
+/// with the specified LwayveSDK branded interface.
+/// \param frame The frame rectangle for the LwayvePlaybackControlView.
+///
+- (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK))
+@property (nonatomic, readonly) CGSize intrinsicContentSize;
+@end
+
+
+@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <AudioControlDelegate>
+- (void)lwayveSDKWithDidStartPlayingTrack:(id <AudioTrack> _Nonnull)track;
+- (void)lwayveSDKWithDidPauseTrack:(id <AudioTrack> _Nonnull)track;
+- (void)lwayveSDKWithDidEndPlayingTrack:(id <AudioTrack> _Nonnull)track;
+- (void)lwayveSDKWithDidFailPlayingTrack:(id <AudioTrack> _Nonnull)track withError:(NSError * _Nonnull)error;
+- (void)lwayveSDKWithPlayerIsReadyToPlayStatusDidChange:(BOOL)isReadyToPlay;
+- (void)lwayveSDKWithPlayerCanSkipStatusDidChange:(BOOL)canSkip;
+- (void)lwayveSDKWithPlayerCanRewindStatusDidChange:(BOOL)canRewind;
+@end
+
 @class LwayveSDKConfiguration;
 @protocol PlayListEventsListener;
 @protocol LwayveSDKDelegate;
@@ -320,13 +353,20 @@ SWIFT_CLASS("_TtC9LwayveSDK9LwayveSDK")
 - (void)deinitialize;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * _Nonnull sharedSDK;)
 + (LwayveSDK * _Nonnull)sharedSDK SWIFT_WARN_UNUSED_RESULT;
-@property (nonatomic, weak) id <AudioControlDelegate> _Nullable audioControlDelegate;
 @property (nonatomic, weak) id <PlayListEventsListener> _Nullable playlistEventsListener;
 @property (nonatomic, weak) id <LwayveSDKDelegate> _Nullable delegate;
 /// Using this property you can get or update sdk preferred language.
 /// Update is asynchronous operation. Default value is current device language if Lwayve sdk it supports.
-/// Opposite default is LwayveLanguage.en
+/// Opposite default is LwayveLanguage.english
 @property (nonatomic) enum LwayveLanguage language;
+/// Adds a listener for audio playback events
+/// \param delegate An object conforming <code>AudioControlDelegate</code> protocol
+///
+- (void)addWithAudioControlDelegate:(id <AudioControlDelegate> _Nonnull)delegate;
+/// Removes a listener for audio playback events
+/// \param delegate An object conforming <code>AudioControlDelegate</code> protocol
+///
+- (void)removeWithAudioControlDelegate:(id <AudioControlDelegate> _Nonnull)delegate;
 @end
 
 
@@ -340,7 +380,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 @protocol PlayListEventsListener
 @optional
-/// Tells the delegate that playlist based on existing experience was updated.
+/// This method is called each time the playlist has been updated.
 /// \param playlist Object that contains additional information about updated playlist.
 ///
 - (void)playlistDidUpdate:(Playlist * _Nonnull)playlist;
