@@ -6,6 +6,6 @@ inhibit_all_warnings!
 target 'PlaybackControlSampleApp' do
 use_frameworks!
 
-pod 'LwayveSDK'
+pod 'LwayveSDK', :path => '../Cocoapods'
 
 end
