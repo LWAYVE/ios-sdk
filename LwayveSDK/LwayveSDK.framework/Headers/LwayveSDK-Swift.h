@@ -119,6 +119,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 @import Foundation;
 @import ObjectiveC;
 @import CoreGraphics;
+@import MediaPlayer;
 #endif
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
@@ -344,6 +345,18 @@ typedef SWIFT_ENUM(NSInteger, LwayveLanguage) {
   LwayveLanguageFrench = 1,
 };
 
+@class UIImage;
+
+SWIFT_PROTOCOL("_TtP9LwayveSDK28LwayveNowPlayingInfoProtocol_")
+@protocol LwayveNowPlayingInfoProtocol
+/**
+  The image will be displayed in the iOS Control Center and on the iOS lock screen
+  if no track specific image provided
+  The image should be squre.
+*/
+@property (nonatomic, strong) UIImage * _Nullable defaultAlbumArtworkImage;
+@end
+
 @class LwayveSDK;
 
 /**
@@ -449,6 +462,11 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <PlayListEventsListener>
 - (void)playlistDidUpdate:(Playlist * _Nonnull)playlist;
 @property (nonatomic, readonly, strong) Playlist * _Nullable playlist;
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveNowPlayingInfoProtocol>
+@property (nonatomic, strong) UIImage * _Nullable defaultAlbumArtworkImage;
 @end
 
 
@@ -593,6 +611,10 @@ typedef SWIFT_ENUM(NSInteger, LwayveSDKInitializationError) {
   LwayveSDKInitializationErrorAlreadyInitialized = 1,
 };
 static NSString * _Nonnull const LwayveSDKInitializationErrorDomain = @"LwayveSDK.LwayveSDKInitializationError";
+
+
+@interface MPMediaItemArtwork (SWIFT_EXTENSION(LwayveSDK))
+@end
 
 
 SWIFT_PROTOCOL("_TtP9LwayveSDK28NotificationsHandlerProtocol_")

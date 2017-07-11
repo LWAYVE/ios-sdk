@@ -16,6 +16,7 @@ class MainViewController: UIViewController {
     // Bind it with outlet.
     @IBOutlet fileprivate var playbackControl: LwayvePlaybackControlView!
 
+    @IBOutlet fileprivate var scrollView: UIScrollView!
     @IBOutlet fileprivate var debugInfoLabel: UILabel!
 
     @IBOutlet fileprivate var userLikesTextField: UITextField!
@@ -38,6 +39,16 @@ class MainViewController: UIViewController {
 
         // Configure the data source for the LWAYVE SDK debug information.
         self.configureDebugInfoDatasource()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        var edgeInsets = UIEdgeInsets.zero
+        edgeInsets.top = self.playbackControl.frame.size.height
+
+        self.scrollView.contentInset = edgeInsets
+        self.scrollView.scrollIndicatorInsets = edgeInsets
     }
 
 // MARK: - Private section

@@ -19,3 +19,4 @@ FOUNDATION_EXPORT const unsigned char LwayveSDKVersionString[];
 #import <LwayveSDK/LwayveWeakLinkingWrapperFirebaseOptions.h>
 #import <LwayveSDK/LwayveWeakLinkingWrapperFirebaseApp.h>
 #import <LwayveSDK/LwayveWeakLinkingWrapperMessaging.h>
+#import <LwayveSDK/LwayveLumberjackLogger.h>

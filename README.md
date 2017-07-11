@@ -276,19 +276,19 @@ LwayveSDK.sharedSDK.add(userLikes: ["#Drinks", "#Danica", "#Johnson-Jimmie", "#C
 The following section outlines the code to add to your application in order to handle the following events:
 
 - Generic SDK Events
-- Initialize
-- De-Initialize
+    - Initialize
+    - De-Initialize
 - Playlist Events
-- Update
+    - Update
 - Playback Events
-- Playing
-- Paused
-- Ended
-- Error
-- Ready
-- Can Play
-- Can Skip
-- Can Rewind
+    - Playing
+    - Paused
+    - Ended
+    - Error
+    - Ready
+    - Can Play
+    - Can Skip
+    - Can Rewind
  
 ### Generic SDK Events
 
@@ -479,40 +479,41 @@ func lwayveSDK(playerCanRewindStatusDidChange canRewind: Bool)
 Several methods have been made available to allow you to interact with LWAYVE. The methods available are divided into the following categories:
 
 - Context Control
-- Update User Likes
-- Add User Likes
-- Remove User Likes
-- Update Locations
-- Add Locations
-- Remove Locations
-- Set Preferred Language
+    - Update User Likes
+    - Add User Likes
+    - Remove User Likes
+    - Update Locations
+    - Add Locations
+    - Remove Locations
+    - Set Preferred Language
 - Playback Control
-- Ready
-- Play
-- Is Playing
-- Pause
-- Stop
-- Skip
-- Rewind
-- Can Skip
-- Can Rewind
-- Add Listener
-- Remove Listener
+    - Ready
+    - Play
+    - Is Playing
+    - Pause
+    - Stop
+    - Skip
+    - Rewind
+    - Can Skip
+    - Can Rewind
+    - Add Listener
+    - Remove Listener
 - Playlist Control
-- Refresh
-- Reload
-- Get Playlist
-- Get Audio Tracks in Queue
-- Get Played Audio Tracks
-- Get Played Audio Track IDs
-- Clear Played Audio Tracks
+    - Refresh
+    - Reload
+    - Get Playlist
+    - Get Audio Tracks in Queue
+    - Get Played Audio Tracks
+    - Get Played Audio Track IDs
+    - Clear Played Audio Tracks
 - Remote Notifications Control
-- Initialize Remote Notifications
-- Handle Remote Notifications
-- State of Remote Notification Listening
+    - Initialize Remote Notifications
+    - Handle Remote Notifications
+    - State of Remote Notification Listening
 - SDK Settings Control
-- Configure
-- Set Log Level
+    - Configure
+    - Set Log Level
+    - Get/Set Default Album Artwork Image
 
 
 ### Context Control
@@ -854,6 +855,7 @@ The following methods are available for controlling SDK settings.
 
 - Configure
 - Set Log Level
+- Get/Set Default Album Artwork Image
 
 #### Configure
 
@@ -895,6 +897,15 @@ public func setLogLevel(_ level: LwayveSDKLogLevel, components: [LwayveSDKLogCom
 
 ```
 
+
+#### Get/Set Default Album Artwork Image
+
+Get/set the default album artwork image that is displayed in the iOS Control Center and on the iOS Lock screen if a track-specific image is not provided.  Note that the default image should be square. 
+
+```
+Var defaultAlbumArtworkImage: UIImage? { get set }
+
+```
 
 
 
