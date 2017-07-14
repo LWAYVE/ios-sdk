@@ -599,7 +599,7 @@ func remove(locations: [String])
 Get or update the SDK preferred language. Note that update action is an asynchronous operation. The default preferred language is the current device language (if supported by the LWAYVE SDK).
 
 ```
-Public varlanguage: LwayveLanguage
+public var language: LwayveLanguage { get set }
 ```
 
 ### Playback Control
