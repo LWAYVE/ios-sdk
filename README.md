@@ -30,7 +30,7 @@ The following document provides background information on the LWAYVE platform as
 ## Section 1: Introducing LWAYVE and Contextual Audio Experiences
 
 ### Background
-LWAYVE is an audio platform that provides event attendees with Contextual Audio Experiences and can be embedded to augment any mobile application. A Contextual Audio Experience serves as a personalized audio guide making any event as engaging, easy, and enjoyable as possible. 
+LWAYVE is an audio platform that provides event attendees with Contextual Audio Experiences and can be embedded to augment any mobile application. A Contextual Audio Experience serves as a personalized audio guide making any event as engaging, easy, and enjoyable as possible.
 
 Contextual Audio Experiences deliver optimal audio to a Listener based on their current context:
 
@@ -52,32 +52,32 @@ Contextual Audio Experiences are:
 
 There are six main players with roles in the LWAYVE platform.  
 
-- **Developers**: A Developer integrates the LWAYVE platform into the mobile application. By integrating LWAYVE, the mobile application will contain a Play button which Listeners can tap to get a Contextual Audio Experience based on time, location, and user likes. 
+- **Developers**: A Developer integrates the LWAYVE platform into the mobile application. By integrating LWAYVE, the mobile application will contain a Play button which Listeners can tap to get a Contextual Audio Experience based on time, location, and user likes.
 - **Experience Designer**: An Experience Designer choreographs the Contextual Audio Experience and sources the content. An Experience Designer essentially builds a Conextual Audio Experience based on an event (e.g., music festival). The Contextual Audio Experience contains audio that will be passed to the Listener based on their time, location, and user likes. For example, an Experience Designer for a music festival may choose to have Listeners hear traffic information on their way to the event and stage schedules while at the event.  
 - **Listener**: The end-user that enjoys a high-value, personalized Contextual Audio Experience based on their time, location, and user likes. The Listener hears the Contextual Audio Experience by tapping a Play button on the mobile application.
-- **Experience Conductor**: An Experience Conductor is the eyes and ears on the ground at an event. Experience Conductors control the situational audio in a Contextual Audio Experience and make adjustments based on real-time information. For example, at a music festival, if the concert that was originally scheduled for 9:00pm has been moved to 10:00pm, the Experience Conductor can adjust the Contextual Audio Experience accordingly. 
+- **Experience Conductor**: An Experience Conductor is the eyes and ears on the ground at an event. Experience Conductors control the situational audio in a Contextual Audio Experience and make adjustments based on real-time information. For example, at a music festival, if the concert that was originally scheduled for 9:00pm has been moved to 10:00pm, the Experience Conductor can adjust the Contextual Audio Experience accordingly.
 - **Customer**: The company or individual that has purchased LWAYVE to implement Contextual Audio Experiences. LWAYVE is integrated into the Customer's mobile application in order to provide Listeners with Contextual Audio Experiences.
-- **Administrator**: The overall LWAYVE platform is managed by Lixar; however, Customers manage their own Contextual Audio Experiences and user roles. 
+- **Administrator**: The overall LWAYVE platform is managed by Lixar; however, Customers manage their own Contextual Audio Experiences and user roles.
 
 ### What are the Components of the LWAYVE Platform?
 The components to LWAYVE can be divided into the following main categories: Mobile SDKs, Customer Mobile Application, LWAYVE Service, and optionally, ProxSee Service.
 
 #### Mobile SDKs
 As part of their role, Developers integrate the following two SDKS into the mobile application:
-- **LWAYVE SDK**: The LWAYVE SDK handles location (with the help of the ProxSee SDK), time, and contextual audio parameters. 
+- **LWAYVE SDK**: The LWAYVE SDK handles location (with the help of the ProxSee SDK), time, and contextual audio parameters.
 - **ProxSee SDK**: The ProxSee SDK passes location tags to the LWAYVE SDK. For full information on the ProxSee SDK, refer to [https://github.com/proxsee](https://github.com/proxsee).
 
 #### Customer Mobile Application
 - **Customer Mobile Application**: This is the mobile application in which the LWAYVE and ProxSee SDKs will be integrated. By integrating the SDKs, a simple LWAYVE Play button will appear in the mobile application. All Listeners need to do is tap the Play button to start their Contextual Audio Experience.  
 
-#### Experience Service and Contextual Audio Experience 
-- **Experience Service**: This is the backend platform on which the Experience Designer creates a Contextual Audio Experience. 
+#### Experience Service and Contextual Audio Experience
+- **Experience Service**: This is the backend platform on which the Experience Designer creates a Contextual Audio Experience.
 - **Contextual Audio Experience**: This is the content created on the Experience Service.
   - **Curated Audio**: This is the audio that has been gathered by the Experience Designer during the initial planning and design stages. This audio is planned around a Listener's time, location, and user likes. For example, for a music festival, the Experience Designer might create curated audio based on the performance schedule.   
   - **Situational Audio**: This is audio that is gathered by the Experience Conductor "on the ground" at the event. For example, at a music festival, sudden unpredicted weather changes may prompt the Experience Conductor to create situational audio for safety precautions due to inclement weather (e.g., advising Listeners to take shelter).  
   - **Time**: The Contextual Audio Experience will provide the Listener with different content depending on the time. For example, at a music festival, at 4:00pm when the gates open, the audio may be related to entrance lineups and at 8:00pm the audio may be related to the concert schedule.
   - **Location**: The Contextual Audio Experience will differ depending on the location of the Listener. For example, if the Listener is standing next to the food tent, the audio may be related to menu items and meal specials.
-  - **User Likes**: These are settings set by the Listener in the Customer mobile application. 
+  - **User Likes**: These are settings set by the Listener in the Customer mobile application.
 
 ### How Does LWAYVE Work?
 The following image depicts the high-level LWAYVE Contextual Audio Experience workflow:
@@ -132,9 +132,7 @@ $ pod install
 
 The following application background modes for the LWAYVE SDK must be configured:
 
-- fetch: Allows your application to download content from the network.
 - audio: Allows your application to play audio or stream audio/video using AirPlay.
-- remote-notification: Allows your applications to download content in response to push notifications.
 
 The following application background modes for the ProxSee SDK must be configured:
 
@@ -149,15 +147,13 @@ To configure the above application modes in your application, add the following 
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
-		<string>fetch</string>
 		<string>audio</string>
-		<string>remote-notification</string>
 	</array>
 
 ```
 
 ### Initialize the LWAYVE and ProxSee SDKs
-The next step is to initialize (launch) both the LWAYVE SDK and the ProxSee SDK. 
+The next step is to initialize (launch) both the LWAYVE SDK and the ProxSee SDK.
 
 #### Initialize the LWAYVE SDK
 When initializing the LWAYVE SDK, you need to pass the Authentication token provided to you by Lixar.  
@@ -208,7 +204,7 @@ LwayvePlaybackControlView is a subclass of UIView. It can be used with or withou
 
 To add ```LwayvePlaybackControlView``` using Storyboard or Xib:
 
-1. Add a view 
+1. Add a view
 2. Set the view class to **LwayvePlaybackControlView**.
 3. Set the module to **LwaveSDK**.
 4. Create an IBOutlet to the view.
@@ -289,7 +285,7 @@ The following section outlines the code to add to your application in order to h
     - Can Play
     - Can Skip
     - Can Rewind
- 
+
 ### Generic SDK Events
 
 The following methods are available for handling generic LWAYVE SDK events:
@@ -304,7 +300,7 @@ LwayveSDK.sharedSDK.delegate = self
 
 ```
 
-To handle generic SDK events, the ```LwayveSDKDelegate``` protocol should be adopted. 
+To handle generic SDK events, the ```LwayveSDKDelegate``` protocol should be adopted.
 
 #### Initialize
 
@@ -349,7 +345,7 @@ To handle playlist events, the ```PlayListEventsListener``` protocol should be a
 
 #### Update
 
-This method is called each time the playlist has been updated. 
+This method is called each time the playlist has been updated.
 
 **Parameters**
 
@@ -380,11 +376,11 @@ LwayveSDK.sharedSDK.add(audioControlDelegate: self)
 
 ```
 
-To handle/receive playback events, the ```AudioControlDelegate``` protocol should be adopted. 
+To handle/receive playback events, the ```AudioControlDelegate``` protocol should be adopted.
 
 #### Playing
 
-This method is called when the the audio track has started playing. 
+This method is called when the the audio track has started playing.
 
 **Parameters**
 
@@ -393,12 +389,12 @@ This method is called when the the audio track has started playing.
 ```
 
 func lwayveSDK(didStartPlayingTrack track: AudioTrack)
- 
+
 ```
 
 #### Paused
 
-This method is called when the audio track has been paused. 
+This method is called when the audio track has been paused.
 
 **Parameters**
 
@@ -412,7 +408,7 @@ func lwayveSDK(didPauseTrack track: AudioTrack)
 
 #### Ended
 
-This method is called when the audio track has ended. 
+This method is called when the audio track has ended.
 
 **Parameters**
 
@@ -425,7 +421,7 @@ func lwayveSDK(didEndPlayingTrack track: AudioTrack)
 
 #### Error
 
-This method is called when an audio track has failed to play and error has been thrown. 
+This method is called when an audio track has failed to play and error has been thrown.
 **Parameters**
 
 - Track: The audio track that failed to play.
@@ -517,7 +513,7 @@ Several methods have been made available to allow you to interact with LWAYVE. T
 
 
 ### Context Control
-The following methods are available for updating the context of a Contextual Audio Experience. 
+The following methods are available for updating the context of a Contextual Audio Experience.
 
 - Update User Likes
 - Add User Likes
@@ -542,7 +538,7 @@ func set(userLikes: [String])
 ```
 
 #### Add User Likes
-Add user likes to a Contextual Audio Experience. 
+Add user likes to a Contextual Audio Experience.
 
 **Parameters**
 
@@ -558,14 +554,14 @@ Remove user likes from a Contextual Audio Experience.
 **Parameters**
 
 - userLikes: The list of strings representing the user likes to remove from the Contextual Audio Experience.
-    
+
 ```
 func remove(userLikes: [String])
 
 ```
 
-#### Update Locations 
-Update locations in a Contextual Audio Experience. 
+#### Update Locations
+Update locations in a Contextual Audio Experience.
 
 **Parameters**
 
@@ -588,12 +584,12 @@ func add(locations: [String])
 ```
 
 #### Remove Locations
-Remove locations from a Contextual Audio Experience. 
+Remove locations from a Contextual Audio Experience.
 
 **Parameters**
 
 - locations: The list of strings representing the locations to be removed from the Contextual Audio Experience.
-    
+
 ```
 func remove(locations: [String])
 
@@ -607,7 +603,7 @@ Public varlanguage: LwayveLanguage
 ```
 
 ### Playback Control
-The following methods are available for controlling the playback. 
+The following methods are available for controlling the playback.
 
 - Ready
 - Play
@@ -632,10 +628,10 @@ var isReadyToPlay: Bool { get }
 
 ```
 
-#### Play 
+#### Play
 
 Start playing queued audio tracks.
-    
+
 ```
 func play()
 
@@ -652,7 +648,7 @@ var isPlaying: Bool { get }
 
 #### Pause
 Pause the playback of the current audio track.
-    
+
 ```
 func pause()
 
@@ -682,9 +678,9 @@ func rewind()
 
 ##### Can Skip
 
-Determine if the skip action can be performed in the audio player. 
+Determine if the skip action can be performed in the audio player.
 
-``` 
+```
 var canSkip: Bool { get }
 
 ```
@@ -723,7 +719,7 @@ public func remove(audioControlDelegate delegate: AudioControlDelegate)
 ```
 
 ### Playlist Control
-The following methods are available for controlling the Contextual Audio Experience playlist. 
+The following methods are available for controlling the Contextual Audio Experience playlist.
 
 - Refresh
 - Reload
@@ -763,7 +759,7 @@ func clearPlayedItems()
 
 #### Get Playlist
 
-Get the list of items in the playlist. 
+Get the list of items in the playlist.
 
 ```
 
@@ -789,7 +785,7 @@ var playedTracksHistory: [AudioTrack] { get }
 ```
 #### Get Unplayed Audio Tracks
 
-Get the list of unplayed audio tracks. 
+Get the list of unplayed audio tracks.
 
 ```
 var unplayedTracksQueue: [AudioTrack] property
@@ -797,7 +793,7 @@ var unplayedTracksQueue: [AudioTrack] property
 ```
 
 #### Get Played Audio Track IDs
-Get the list of identifiers for the played audio tracks. 
+Get the list of identifiers for the played audio tracks.
 
 ```
 var playedTracksIds: Set<String> { get }
@@ -829,7 +825,7 @@ func handleApplication(_ application: UIApplication, didFinishLaunchingWithOptio
 ```
 #### Handle Remote Notifications
 
-This method should be called in ```-application:didReceiveRemoteNotification:``` of ```-application:didReceiveRemoteNotification:fetchCompletionHandler``` to handle remote notifications. 
+This method should be called in ```-application:didReceiveRemoteNotification:``` of ```-application:didReceiveRemoteNotification:fetchCompletionHandler``` to handle remote notifications.
 
 **Parameters**
 
@@ -892,7 +888,7 @@ Set the logger for a specific level and component.
 - Components: the log components
 
 ```
-public func setLogLevel(_ level: LwayveSDKLogLevel, components: [LwayveSDKLogComponent]) 
+public func setLogLevel(_ level: LwayveSDKLogLevel, components: [LwayveSDKLogComponent])
 
 
 ```
@@ -900,18 +896,9 @@ public func setLogLevel(_ level: LwayveSDKLogLevel, components: [LwayveSDKLogCom
 
 #### Get/Set Default Album Artwork Image
 
-Get/set the default album artwork image that is displayed in the iOS Control Center and on the iOS Lock screen if a track-specific image is not provided.  Note that the default image should be square. 
+Get/set the default album artwork image that is displayed in the iOS Control Center and on the iOS Lock screen if a track-specific image is not provided.  Note that the default image should be square.
 
 ```
 Var defaultAlbumArtworkImage: UIImage? { get set }
 
 ```
-
-
-
-
-
-
-
-
-
