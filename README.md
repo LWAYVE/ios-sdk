@@ -3,29 +3,19 @@ The following document provides background information on the LWAYVE platform as
 
   - [Section 1: Introducing LWAYVE and Contextual Audio Experiences Audio](#section-1-introducing-lwayve-and-contextual-audio-experiences)
     * [Background](#background)
-    * [Who are the Players?](#who-are-the-players-)
-    * [What are the Components of the LWAYVE Platform?](#what-are-the-components-of-the-lwayve-platform-)
-    * [How Does LWAYVE Work?](#how-does-lwayve-work-)
-  - [Section 2: Implementing the LWAYVE and ProxSee SDKs in an iOS Project](#section-2-implementing-the-lwayve-and-Proxsee-SDKs-in-an-ios-project)
+    * [Who are the Players?](#who-are-the-players)
+    * [What are the Components of the LWAYVE Platform?](#what-are-the-components-of-the-lwayve-platform)
+    * [How Does LWAYVE Work?](#how-does-lwayve-work)
+  - [Section 2: Implementing the LWAYVE and ProxSee SDKs in an iOS Project](#section-2-implementing-the-lwayve-and-proxsee-sdks-in-an-ios-project)
     * [Prerequisites](#prerequisites)
     * [Add the LWAYVE and ProxSee SDKs as Dependencies](#add-the-lwayve-and-proxsee-sdks-as-dependencies)
     * [Configure Application Background Modes](#configure-application-background-modes)
     * [Initialize the LWAYVE and ProxSee SDKs](#initialize-the-lwayve-and-proxsee-sdks)
+    * [Enable Communication Between the LWAYVE and ProxSee SDKs](#enable-communication-between-the-lwayve-and-proxsee-sdks)
     * [Set Up Branded Playback Control](#set-up-branded-playback-control)
   - [Section 3: Testing LWAYVE](#section-3-testing-lwayve)
-    * [Using API](#using-api)
-    * [Setting Location](#setting-location)
-    * [Setting User Likes](#setting-user-likes)
-  - [Section 4: LWAYVE Event Handling Methods](#section-4-lwayve-event-handling)
-    * [Generic SDK Events](#generic-sdk-events)
-    * [Playback Events](#playback-events)
-    * [Playlist Events](#playlist-events)
-  - [Section 5: LWAYVE Control Methods](#section-5-lwayve-control-methods)
-    * [Context Control](#context-control)
-    * [Playback Control](#playback-control)
-    * [Playlist Control](#playlist-control)
-    * [Remote Notifications Control](#remote-notifications-control)
-    * [SDK Settings Control](#sdk-settings-control)
+    * [API](#api)
+    * [Classes](#classes)
 
 ## Section 1: Introducing LWAYVE and Contextual Audio Experiences
 
@@ -42,7 +32,7 @@ Contextual Audio Experiences deliver optimal audio to a Listener based on their 
 Contextual Audio Experiences are:
 
 - **Contextual**. The audio in a Contextual Audio Experience will be different for each user at the event based on their time, location, user likes, and situation.
-- **Choreographed.** Contextual Audio Experiences are carefully choreographed and curated to ensure the highest quality audio experience for the event.
+- **Choreographed**. Contextual Audio Experiences are carefully choreographed and curated to ensure the highest quality audio experience for the event.
 - **Integrated**. The LWAYVE platform can be integrated into any mobile application on the most popular mobile devices and requires minimal interaction on the part of the Listener.
 - **Measured**. The usage data collected with LWAYVE allows Customers to measure the impact of the audio advertising on a Listener's actions and then optimize the Contextual Audio Experience accordingly.
 
@@ -87,13 +77,14 @@ The following image depicts the high-level LWAYVE Contextual Audio Experience wo
 ## Section 2: Implementing the LWAYVE and ProxSee SDKs in an iOS Project
 Incorporating the LWAYVE and ProxSee SDKs in your iOS project is a simple four-step process:
 
-1. Add the LWAYVE and ProxSee SDKs as Dependencies
-2. Configure Application Background Modes
-3. Initialize the LWAYVE and ProxSee SDKs
-4. Set Up an Event Logger
+1. [Add the LWAYVE and ProxSee SDKs as Dependencies](#add-the-lawayve-and-proxsee-sdks-as-dependencies)
+2. [Configure Application Background Modes](#configure-application-background-modes)
+3. [Initialize the LWAYVE and ProxSee SDKs](#initialize-the-lwayve-and-proxsee-sdks)
+4. [Set Up an Event Logger](#set-up-an-event-logger)
 
 ### Prerequisites
 The instructions have been provided below with the following assumptions:
+
 - A Customer-specific environment has been provisioned
 - An Authorization token has been provided
 - A ProxSee API key has been provided
@@ -105,12 +96,13 @@ The instructions have been provided below with the following assumptions:
 The first step in setting up LWAYVE is to add both the LWAYVE SDK and the ProxSee SDK as dependencies in your iOS project. The LWAYVE SDK handles the time, location, and audio of the Contextual Audio Experience. The ProxSee SDK passes the location tags to the LWAYVE SDK so that the LWAYVE SDK can complete the location aspect of the Contextual Audio Experience.
 
 #### Add the LWAYVE and ProxSee SDKs as Dependencies
+##### Using CocoaPods (recomended)
 You can get the LWAYVE and ProxSee SDKs for iOS on Cocoapods:
 
 - LWAYVE - [https://cocoapods.org/pods/LwayveSDK](https://cocoapods.org/pods/LwayveSDK)
 - ProxSee - [https://cocoapods.org/pods/ProxSeeSDK](https://cocoapods.org/pods/ProxSeeSDK)
 
-In order to add and manage the LWAYVE and ProxSee SDKs as dependencies in your iOS project, you must first install Cocoapods.
+In order to add and manage the LWAYVE and ProxSee SDKs as dependencies in your iOS project, you must first install CocoaPods.
 
 ```
 $ gem install cocoapods
@@ -128,6 +120,33 @@ Run the install command.
 ```
 $ pod install
 ```
+##### Manually
+
+Please use this approach only if you have strict requirements not to use CocoaPods, as this method is more difficult and error prone. 
+
+1. Add LwayveSDK.framework to the Embedded Binaries section of your application. The latest version of the framework is available at [https://github.com/LWAYVE/ios-sdk/releases](#https://github.com/LWAYVE/ios-sdk/releases).
+2. Integrate the ProxSeeSDK. Full instructions are available at [https://github.com/proxsee/sdk-ios#add-the-proxsee-sdk-to-your-ios-project](#https://github.com/proxsee/sdk-ios#add-the-proxsee-sdk-to-your-ios-project).
+3. Integrate Firebase Cloud Messaging by following the instructions in the "Integrate without CocoaPods" section at [https://firebase.google.com/docs/ios/setup#frameworks](#https://firebase.google.com/docs/ios/setup#frameworks). 
+4. Integrate other third-party dependencies using Carthage (recommended) or manually:
+
+	- Using Carthage (recommended):
+		1. Install Carthage. Full details are available at [https://github.com/Carthage/Carthage](#https://github.com/Carthage/Carthage) 
+		2. Place files ```Cartfile``` and ```Cartfile.resolved``` in a directory on your Mac.
+		3. Perform the following commands in Terminal:
+
+			```
+			$ cd <your_directory>
+			$ carthage bootstrap --platform iOS
+
+			```
+		4. Add the frameworks from <your_directory>/Carthage/Build/iOS to the Embedded Binaries section of your application.
+	- Manually:
+		- YapDatabase - [https://github.com/yapstudios/YapDatabase](#https://github.com/yapstudios/YapDatabase). Version 3.0 (or compatible) must be used.
+		- Alamofire - [https://github.com/Alamofire/Alamofire](#https://github.com/Alamofire/Alamofire). Version 4.5.0 (or compatible) must be used.
+		- SwiftyJSON - [https://github.com/SwiftyJSON/SwiftyJSON](#https://github.com/SwiftyJSON/SwiftyJSON). Version 3.1.4 (or compatible) must be used.
+		- keychain-swift - [https://github.com/evgenyneu/keychain-swift](#https://github.com/evgenyneu/keychain-swift). Version 8.0.2 (or compatible) must be used.
+		- CocoaLumberjack - [https://github.com/CocoaLumberjack/CocoaLumberjack](#https://github.com/CocoaLumberjack/CocoaLumberjack). Version 3.2.0 (or compatible) must be used.
+
 ### Configure Application Background Modes
 
 The following application background modes for the LWAYVE SDK must be configured:
@@ -161,23 +180,26 @@ When initializing the LWAYVE SDK, you need to pass the Authentication token prov
 ```
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-// Create the configuration used for the LWAYVE SDK.
-let configuration = LwayveSDKConfiguration(baseURL: URL(string: settings.value(forSetting: .BaseURL)),
-authenticationToken: settings.value(forSetting: .AuthenticationKey))
+  // Create the configuration used for the LWAYVE SDK.
+  let configuration = LwayveSDKConfiguration(baseURL: URL(string: settings.value(forSetting: .BaseURL)),
+  authenticationToken: settings.value(forSetting: .AuthenticationKey))
 
-// Attempt to initialize the LWAYVE SDK using the configuration values.
-// This may fail if the SDK is already initialized, the persistent storage cannot be created, or if an empty authenticationToken is provided.
-do {
-try LwayveSDK.sharedSDK.initialize(configuration: configuration)
-} catch {
-NSLog("LwayveSDK initialization error: \(error)")
-}
+  // Set the delegate before calling LwayveSDK.sharedSDK.initialize to be able to receive lwayveSDK(didInit:) callback
+  LwayveSDK.sharedSDK.delegate = self
 
-// Pass the launch options to the LWAYVE SDK.
-// The launch options are used by the SDK to retrieve any relevant notification information.
-LwayveSDK.sharedSDK.handleApplication(application, didFinishLaunchingWithOptions: launchOptions)
+  // Attempt to initialize the LWAYVE SDK using the configuration values.
+  // This may fail if the SDK is already initialized, the persistent storage cannot be created, or if an empty authenticationToken is provided.
+  do {
+    try LwayveSDK.sharedSDK.initialize(configuration: configuration)
+  } catch {
+    NSLog("LwayveSDK initialization error: \(error)")
+  }
 
-return true
+  // Pass the launch options to the LWAYVE SDK.
+  // The launch options are used by the SDK to retrieve any relevant notification information.
+  LwayveSDK.sharedSDK.handleApplication(application, didFinishLaunchingWithOptions: launchOptions)
+
+  return true
 }
 ```
 
@@ -185,14 +207,64 @@ return true
 When initializing and launching the ProxSee SDK you need to pass the ProxSee API key which passes the location information from the ProxSee backend. The ProxSee API Key has been provided to you by Lixar.
 ```
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-// Launch the ProxSee SDK and set the AppDelegate as the tags observer.
-// ProxSee will be used to pass location tags to the LWAYVE SDK.
-LXProxSeeSDKManager.launchProxSee(withApiKey: proxSeeAPIKey))
-addProxSeeNotifcationObserver()
+  // Launch the ProxSee SDK and set the AppDelegate as the tags observer.
+  // ProxSee will be used to pass location tags to the LWAYVE SDK.
+  LXProxSeeSDKManager.launchProxSee(withApiKey: proxSeeAPIKey))
+  addProxSeeNotifcationObserver()
 
-return true
+  return true
 }
 ```
+### Enable Communication Between the LWAYVE and ProxSee SDKs
+Now that the LWAYVE SDK and ProxSee SDK have been added to your project and initialized, you need to ensure that they can communicate with each other. This is done by sending the LWAYVE Device ID to the ProxSee SDK as well as sending ProxSee locations to the LWAYVE SDK. Sending the LWAYVE Device ID to the ProxSee SDK is required to link the data captured by LWAYVE to the location tag data captured by the Proxsee SDK.
+
+#### Send the LWAYVE Device ID to ProxSee SDK
+Add the following code to your mobile application.
+
+
+```
+
+...
+LwayveSDK.sharedSDK.getAnalyticsDeviceId { (deviceId) in
+            LXProxSeeSDKManager.sharedInstance().updateMetadata(["lwayve_deviceid" : deviceId], completionHandler: { (success, error) in
+                if !success {
+                    NSLog("Error sending lwayve deviceid to proxsee: \(String (describing: error))")
+                }
+            })
+        }
+...
+
+```
+
+Note: You can see an example of the implementation of the full initialization sequence in the application delegate of PlaybackControlSampleApp (https://github.com/LWAYVE/ios-sdk/blob/master/Examples/PlaybackControlSampleApplication/PlaybackControlSampleApp/Source/AppDelegate.swift)
+
+#### Send ProxSee Locations to the LWAYVE SDK
+Add the following code to your mobile application.
+
+```
+
+...
+    // Set the AppDelegate as the tags observer. See LXProxSeeNotificationsHandler below.
+    // ProxSee will be used to pass location tags to the LWAYVE SDK.
+    self.addProxSeeNotifcationObserver()
+...
+
+// MARK: - LXProxSeeNotificationsHandler
+extension AppDelegate {
+    override func didChangeTagsSet(_ proximityNotificationObject: LXProxSeeNotificationObject!) {
+        // Retrieve the newly updated tags and pass them to LWAYVE as locations.
+        guard let tags = proximityNotificationObject.currentTagsChangeSet.tags as? Set<String> else {
+            return
+        }
+
+        NSLog("ProxSee tag set updated: \(tags)")
+
+        LwayveSDK.sharedSDK.set(locations: Array(tags))
+    }
+}
+
+```
+
 
 ### Set Up Branded Playback Control
 
@@ -218,687 +290,14 @@ To add  ```LwayvePlaybackControlView``` from code:
 2. Assign an SDK instance to the **LwayvePlaybackControlView.lwayveSDK** property (e.g., playbackControl.lwayveSDK = LwayveSDK.sharedSDK).
 3. Add the view to your super view.
 
-## Step 3: Testing LWAYVE
+## Section 3: Testing LWAYVE
 
-### Using API
+### API
 
-You can test LWAYVE by using the API documented on Swagger. You can access Swagger through the following URL: [https://gateway.lwayve.com/swagger-ui/index.html](https://gateway.lwayve.com/swagger-ui/index.html)
+You can test LWAYVE by using the API documented on Swagger. You can access Swagger through the following URL:
 
-The following API is available:
+[https://gateway.lwayve.com/swagger-ui/index.html](https://gateway.lwayve.com/swagger-ui/index.html)
 
-- account-resource (Account Resource)
-  - Get account
-  - Change password
-  - Finish password reset
-  - Request password reset
-  - Authorize
-- application-resource (Application Resource)
-  - Get applications
-  - Create application
-  - Get application by name
-- customer-resource (Customer Resource)
-  - Get all customers
-  - Create customer
-  - Update customer
-- gateway-resource (Gateway Resource)
-  - Active routes
-- main-controller (Main Controller)
-  - Redirect to Swagger with Stash
-- profile-info-resource (Profile Info Resource)
-  - Get active profiles
-  - user-resource (User Resource)
-  - Get all users
-  - Create user
-  - Delete user
-  - Get user
-  - Update user
+### LWAYVE SDK Reference
 
-### Setting Location
-You can set location tags in LWAYVE using the following code:
-```
-LwayveSDK.sharedSDK.add(locations: ["#bar1", "#bar2"])
-
-```
-
-### Setting User Likes
-You can set user likes in LWAYVE using the following code:
-
-```
-LwayveSDK.sharedSDK.add(userLikes: ["#Drinks", "#Danica", "#Johnson-Jimmie", "#Car43", "#Car45", "#Car50"])
-
-```
-## Section 4: LWAYVE Event Handling
-
-The following section outlines the code to add to your application in order to handle the following events:
-
-- Generic SDK Events
-    - Initialize
-    - De-Initialize
-- Playlist Events
-    - Update
-- Playback Events
-    - Playing
-    - Paused
-    - Ended
-    - Error
-    - Ready
-    - Can Play
-    - Can Skip
-    - Can Rewind
-
-### Generic SDK Events
-
-The following methods are available for handling generic LWAYVE SDK events:
-
-- Initialize
-- De-Initialize
-
-Add the following line of code to subscribe:
-
-```
-LwayveSDK.sharedSDK.delegate = self
-
-```
-
-To handle generic SDK events, the ```LwayveSDKDelegate``` protocol should be adopted.
-
-#### Initialize
-
-This method is called when  the LWAYVE SDK has successfully initialized.
-
-**Parameters**
-
-- sdk: The LWAYVE SDK object.
-
-```
-
-func lwayveSDK(didInit sdk: LwayveSDK)
-
-```
-
-#### De-Initialize
-
-This method is called when the LWAYVE SDK was de-initialized.
-
-**Parameters**
-
-- sdk: The LWAYVE SDK object.
-
-```
-func lwayveSDK(didDeinit sdk: LwayveSDK)
-
-```
-
-### Playlist Events
-
-The following method is available for handling playlist events:
-
-- Update
-
-Add the following line of code to subscribe:
-
-```
-LwayveSDK.sharedSDK.playlistEventsListener = self
-
-```
-To handle playlist events, the ```PlayListEventsListener``` protocol should be adopted.
-
-#### Update
-
-This method is called each time the playlist has been updated.
-
-**Parameters**
-
-- playlist: The object that contains the additional information about the updated playlist.
-
-```
-func playlistDidUpdate(_ playlist: Playlist)
-
-```
-
-### Playback Events
-
-The following methods are available for handling playback events:
-
-- Playing
-- Paused
-- Ended
-- Error
-- Can Play
-- Can Skip
-- Can Rewind
-
-
-Add the following line of code to subscribe:
-
-```
-LwayveSDK.sharedSDK.add(audioControlDelegate: self)
-
-```
-
-To handle/receive playback events, the ```AudioControlDelegate``` protocol should be adopted.
-
-#### Playing
-
-This method is called when the the audio track has started playing.
-
-**Parameters**
-
-- track: The audio track that has started playing.
-
-```
-
-func lwayveSDK(didStartPlayingTrack track: AudioTrack)
-
-```
-
-#### Paused
-
-This method is called when the audio track has been paused.
-
-**Parameters**
-
-- track: The audio track that has been paused.
-
-
-```
-func lwayveSDK(didPauseTrack track: AudioTrack)
-
-```
-
-#### Ended
-
-This method is called when the audio track has ended.
-
-**Parameters**
-
-- track: The audio track that has ended.
-
-```
-func lwayveSDK(didEndPlayingTrack track: AudioTrack)
-
-```
-
-#### Error
-
-This method is called when an audio track has failed to play and error has been thrown.
-**Parameters**
-
-- Track: The audio track that failed to play.
-- Error: The error object.
-
-```
-func lwayveSDK(didFailPlayingTracktrack: AudioTrack, withError error: NSError)
-
-```
-#### Can Play
-
-This method is called when the audio player status has changed.
-
-**Parameters**
-
-- isReadyToPlay:  When ```true```, the audio player has audio tracks to play. When ```false```, the delegate should disable play controls.
-
-```
-
-func lwayveSDK(playerIsReadyToPlayStatusDidChange isReadyToPlay: Bool)
-
-```
-
-#### Can Skip
-
-This method is called when the audio player status has changed.
-
-**Parameters**
-
-- canSkip: When ```true```, there is at least one audio track that has not finished playing. When ```false```, the delegate should disable the Skip button.
-
-```
-
- func lwayveSDK(playerCanSkipStatusDidChange canSkip: Bool)
-
-```
-
-#### Can Rewind
-
-This method is called when the audio player status has changed.
-
-**Parameters**
-
-- canRewind: When ```true```, the rewind action can be performed. When ```false```, the delegate should disable the Rewind button.
-
-```
-func lwayveSDK(playerCanRewindStatusDidChange canRewind: Bool)
-
-```
-## Section 5: LWAYVE Control Methods
-Several methods have been made available to allow you to interact with LWAYVE. The methods available are divided into the following categories:
-
-- Context Control
-    - Update User Likes
-    - Add User Likes
-    - Remove User Likes
-    - Update Locations
-    - Add Locations
-    - Remove Locations
-    - Set Preferred Language
-- Playback Control
-    - Ready
-    - Play
-    - Is Playing
-    - Pause
-    - Stop
-    - Skip
-    - Rewind
-    - Can Skip
-    - Can Rewind
-    - Add Listener
-    - Remove Listener
-- Playlist Control
-    - Refresh
-    - Reload
-    - Get Playlist
-    - Get Audio Tracks in Queue
-    - Get Played Audio Tracks
-    - Get Played Audio Track IDs
-    - Clear Played Audio Tracks
-- Remote Notifications Control
-    - Initialize Remote Notifications
-    - Handle Remote Notifications
-    - State of Remote Notification Listening
-- SDK Settings Control
-    - Configure
-    - Set Log Level
-    - Get/Set Default Album Artwork Image
-
-
-### Context Control
-The following methods are available for updating the context of a Contextual Audio Experience.
-
-- Update User Likes
-- Add User Likes
-- Remove User Likes
-- Update Locations
-- Add Locations
-- Remove Locations
-- Set Preferred Language
-
-To handle context, the ```ContextControlProtocol``` protocol should be adopted.
-
-#### Update User Likes
-Update user likes in a Contextual Audio Experience.
-
-**Parameters**
-
-- userLikes: The list of strings representing the updated user likes in the Contextual Audio Experience.
-
-```
-func set(userLikes: [String])
-
-```
-
-#### Add User Likes
-Add user likes to a Contextual Audio Experience.
-
-**Parameters**
-
-- userLikes: The list of strings representing the user likes to add to the Contextual Audio Experience.
-
-```
-func add(userLikes: [String])
-```
-
-#### Remove User Likes
-Remove user likes from a Contextual Audio Experience.
-
-**Parameters**
-
-- userLikes: The list of strings representing the user likes to remove from the Contextual Audio Experience.
-
-```
-func remove(userLikes: [String])
-
-```
-
-#### Update Locations
-Update locations in a Contextual Audio Experience.
-
-**Parameters**
-
-- locations: The list of strings representing the updated locations in the Contextual Audio Experience.
-
-```
-func set(locations: [String])
-
-```
-#### Add Locations
-Add locations to a Contextual Audio Experience.
-
-**Parameters**
-
-- locations: The list of strings representing the locations to be added to the Contextual Audio Experience.
-
-```
-func add(locations: [String])
-
-```
-
-#### Remove Locations
-Remove locations from a Contextual Audio Experience.
-
-**Parameters**
-
-- locations: The list of strings representing the locations to be removed from the Contextual Audio Experience.
-
-```
-func remove(locations: [String])
-
-```
-#### Set Preferred Language
-
-Get or update the SDK preferred language. Note that update action is an asynchronous operation. The default preferred language is the current device language (if supported by the LWAYVE SDK).
-
-```
-public var language: LwayveLanguage { get set }
-```
-
-### Playback Control
-The following methods are available for controlling the playback.
-
-- Ready
-- Play
-- Is Playing
-- Pause
-- Stop
-- Skip
-- Rewind
-- Can Skip
-- Can Rewind
-- Add Listener
-- Remove Listener
-
-To handle playback, the ```AudioPlaybackControlProtocol``` should be adopted.
-
-#### Ready
-
-Determine if the audio player is ready to play an audio track. If ```true``` is returned, the audio player is ready.
-
-```
-var isReadyToPlay: Bool { get }
-
-```
-
-#### Play
-
-Start playing queued audio tracks.
-
-```
-func play()
-
-```
-
-#### Is Playing
-
-Indicates if the audio player is currently playing.
-
-```
-var isPlaying: Bool { get }
-
-```
-
-#### Pause
-Pause the playback of the current audio track.
-
-```
-func pause()
-
-```
-
-#### Stop
-End the playback of the current audio track and remove all audio tracks from the queue.
-
-```
-func stop()
-```
-
-#### Skip
-End the playback of the current audio track and start the playback of the next audio track in the queue (if there is one).
-
-```
-func skip()
-
-```
-#### Rewind
-Restart the current audio track from the beginning if it has played for greater than or equal to AudioPlaybackControlRestartThreshold seconds; otherwise, start playing the previous audio track (if any). If there is no previous audio track, start the current audio track from the beginning.
-
-```
-func rewind()
-
-````
-
-##### Can Skip
-
-Determine if the skip action can be performed in the audio player.
-
-```
-var canSkip: Bool { get }
-
-```
-
-##### Can Rewind
-
-Determine it the rewind action can be performed in the audio player.
-
-```
-var canRewind: Bool { get }
-
-```
-#### Add Listener
-
-Add a listener for audio playback events.
-
-**Parameters**
-
-- Delegate: An object conforming to the ```AudioControlDelegate``` protocol.
-
-```
-public func add(audioControlDelegate delegate: AudioControlDelegate)
-
-```
-#### Remove Listener
-
-Remove a listener for audio playback events.
-
-**Parameters**
-
-- Delegate: An object conforming to the ```AudioControlDelegate``` protocol.
-
-```
-public func remove(audioControlDelegate delegate: AudioControlDelegate)
-
-```
-
-### Playlist Control
-The following methods are available for controlling the Contextual Audio Experience playlist.
-
-- Refresh
-- Reload
-- Clear Played Audio Tracks
-- Get Playlist
-- Get Audio Tracks in Queue
-- Get Played Audio Tracks
-- Get Unplayed Audio Tracks
-- Get Played Track IDs
-
-To handle the playlist, the ```PlaylistControlProtocol``` should be adopted.
-
-#### Refresh
-Refresh the playlist based on the current context of playlist builder.
-
-```
-func refreshPlaylist()
-
-```
-
-#### Reload
-Re-request the Contextual Audio Experience from the server.
-
-```
-func forceReloadExperience()
-
-```
-
-#### Clear Played Tracks
-
-Clear the history of played audio tracks.
-
-```
-func clearPlayedItems()
-
-```
-
-#### Get Playlist
-
-Get the list of items in the playlist.
-
-```
-
-var generatedPlaylist: Playlist? { get }
-```
-
-#### Get Audio Tracks in Queue
-
-Get the list of audio tracks in the queue, including the currently playing audio track (if any).
-
-```
-var audioQueue: [AudioTrack] { get }
-
-```
-
-#### Get Played Audio Tracks
-
-Get the list of played audio tracks. The last audio track in the list is the most recently played one.
-
-```
-var playedTracksHistory: [AudioTrack] { get }
-
-```
-#### Get Unplayed Audio Tracks
-
-Get the list of unplayed audio tracks.
-
-```
-var unplayedTracksQueue: [AudioTrack] property
-
-```
-
-#### Get Played Audio Track IDs
-Get the list of identifiers for the played audio tracks.
-
-```
-var playedTracksIds: Set<String> { get }
-
-```
-
-### Remote Notifications Control
-
-The following methods are available for handling application remote notifications.
-
-- Initialize SDK for Handling Remote Notifications.
-- Handle Remote Notifications
-- State of Remote Notifications Listening
-
-To support remote notifications, the ```ApplicationRemoteNotificationHandler``` protocol should be adopted.
-
-#### Initialize SDK for Handling Remote Notifications
-
-This method should be called in  ```-application:didFinishLaunchingWithOptions:``` of the delegate after the SDK has been initialized.
-
-**Parameters**
-
-- Application: The singleton application object passed through ```-application:didFinishLaunchingWithOptions```.
-- launchOptions: A dictionary indicating the reason the app was launched (if any)_ passed through ```-application:didFinishLaunchingWithOptions```.
-
-```
-func handleApplication(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?)
-
-```
-#### Handle Remote Notifications
-
-This method should be called in ```-application:didReceiveRemoteNotification:``` of ```-application:didReceiveRemoteNotification:fetchCompletionHandler``` to handle remote notifications.
-
-**Parameters**
-
-- Application: The singleton app object.
-- userInfo: A dictionary that contains information related to the remote notification.
-
-```
-func handleApplication(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any])
-
-```
-#### State of Remote Notifications Listening
-
-Indicates the state of remote notifications listening. Set to ```false``` to stop receiving remote notifications.
-
-```
-var notificationsActive: Bool { get set }
-
-```
-
-### SDK Settings Control
-
-The following methods are available for controlling SDK settings.
-
-- Configure
-- Set Log Level
-- Get/Set Default Album Artwork Image
-
-#### Configure
-
-Call this method before using the LWAYVE SDK.
-
-**Parameters**
-
-- configuration: The configuration object.
-
-```
-public func initialize(configuration: LwayveSDKConfiguration) throws
-
-public func deinitialize()
-
-static public let sharedSDK: LwayveSDK.LwayveSDK
-
-public func add(audioControlDelegate delegate: AudioControlDelegate
-
-public func remove(audioControlDelegate delegate: AudioControlDelegate
-
-public weak var playlistEventsListener: PlayListEventsListener?
-
-public weak var delegate: LwayveSDKDelegate?
-
-```
-
-#### Set Log Level
-
-Set the logger for a specific level and component.
-
-**Parameters**
-
-- Level: The log level
-- Components: the log components
-
-```
-public func setLogLevel(_ level: LwayveSDKLogLevel, components: [LwayveSDKLogComponent])
-
-
-```
-
-
-#### Get/Set Default Album Artwork Image
-
-Get/set the default album artwork image that is displayed in the iOS Control Center and on the iOS Lock screen if a track-specific image is not provided.  Note that the default image should be square.
-
-```
-Var defaultAlbumArtworkImage: UIImage? { get set }
-
-```
+For LWAYVE SDK reference information (e.g., classes, global variables, enums, protocols, and structs) refer to [https://lwayve.github.io/ios/docs/api_docs/Classes.html](https://lwayve.github.io/ios/docs/api_docs/Classes.html).

@@ -39,6 +39,10 @@ __IOS_AVAILABLE(10.0);
 
 @end
 
+typedef void(^LwayveMessagingFCMTokenFetchCompletion)(NSString * _Nullable FCMToken,
+                                                      NSError * _Nullable error)
+NS_SWIFT_NAME(MessagingFCMTokenFetchCompletion);
+
 @protocol LwayveWeakLinkingWrapperMessagingProtocol <NSObject>
 
 /**
@@ -84,6 +88,21 @@ __IOS_AVAILABLE(10.0);
  * running iOS 10 or above.
  */
 @property(nonatomic, weak, nullable) id<LwayveWeakLinkingWrapperMessagingDelegate> delegate;
+
+/**
+ *  Retrieves an FCM registration token for a particular Sender ID. This registration token is
+ *  not cached by FIRMessaging. FIRMessaging should have an APNS token set before calling this
+ *  to ensure that notifications can be delivered via APNS using this FCM token. You may
+ *  re-retrieve the FCM token once you have the APNS token set, to associate it with the FCM
+ *  token. The default FCM token is automatically associated with the APNS token, if the APNS
+ *  token data is available.
+ *
+ *  @param senderID The Sender ID for a particular Firebase project.
+ *  @param completion The completion handler to handle the token request.
+ */
+- (void)retrieveFCMTokenForSenderID:(nonnull NSString *)senderID
+                         completion:(nonnull LwayveMessagingFCMTokenFetchCompletion)completion
+NS_SWIFT_NAME(retrieveFCMToken(forSenderID:completion:));
 
 @end
 
