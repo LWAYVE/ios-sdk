@@ -426,6 +426,29 @@ SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
 - (UIView * _Nullable)hitTest:(CGPoint)point withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
 @end
 
+@class LwayvePlaylist;
+
+/// This protocol contains methods for handling playlist updates.
+SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
+@protocol PlayListEventsListener
+@optional
+/// This method is called each time the playlist has been updated.
+/// \param playlist The object that contains additional information about the updated playlist.
+///
+/// \param userContext UserContext of updated playlist
+///
+- (void)playlistDidUpdate:(LwayvePlaylist * _Nullable)playlist forUserContext:(LwayveUserContext * _Nonnull)userContext;
+/// The method is called when new content availability changes.
+/// \param available <code>true</code> if new content is available.
+///
+- (void)newContentAvailableDidChange:(BOOL)available;
+@end
+
+
+@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <PlayListEventsListener>
+- (void)newContentAvailableDidChange:(BOOL)available;
+@end
+
 
 @interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK))
 @end
@@ -469,7 +492,6 @@ SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
 @end
 
 @class LwayveSDKConfiguration;
-@protocol PlayListEventsListener;
 @protocol LwayveSDKDelegate;
 
 /// Use singleton instance of <code>LwayveSDK</code> available by <code>LwayveSDK.sharedSDK</code> to communicate with the SDK.
@@ -491,8 +513,10 @@ SWIFT_CLASS("_TtC9LwayveSDK9LwayveSDK")
 /// The singleton object of <code>LwayveSDK</code>
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * _Nonnull sharedSDK;)
 + (LwayveSDK * _Nonnull)sharedSDK SWIFT_WARN_UNUSED_RESULT;
-///
-@property (nonatomic, weak) id <PlayListEventsListener> _Nullable playlistEventsListener;
+/// Adds the listener for the playlist events
+- (void)addWithPlaylistEventsListener:(id <PlayListEventsListener> _Nonnull)playlistEventsListener;
+/// Removes the listener for the playlist events
+- (void)removeWithPlaylistEventsListener:(id <PlayListEventsListener> _Nonnull)playlistEventsListener;
 ///
 @property (nonatomic, weak) id <LwayveSDKDelegate> _Nullable delegate;
 /// Using this property you can get or update the SDK preferred language.
@@ -507,27 +531,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 /// \param delegate An object conforming to the <code>AudioControlDelegate</code> protocol.
 ///
 - (void)removeWithAudioControlDelegate:(id <LwayveAudioControlDelegate> _Nonnull)delegate;
-@end
-
-@class LwayvePlaylist;
-
-/// This protocol contains methods for handling playlist updates.
-SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
-@protocol PlayListEventsListener
-/// This method is called each time the playlist has been updated.
-/// \param playlist The object that contains additional information about the updated playlist.
-///
-/// \param userContext UserContext of updated playlist
-///
-- (void)playlistDidUpdate:(LwayvePlaylist * _Nullable)playlist forUserContext:(LwayveUserContext * _Nonnull)userContext;
-@end
-
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <PlayListEventsListener>
-/// See <code>PlayListEventsListener.playlistDidUpdate(_: forUserContext:)</code>
-- (void)playlistDidUpdate:(LwayvePlaylist * _Nullable)playlist forUserContext:(LwayveUserContext * _Nonnull)userContext;
-/// See <code>PlayListEventsListener.playlist</code>
-@property (nonatomic, readonly, strong) LwayvePlaylist * _Nullable playlist;
 @end
 
 
@@ -571,48 +574,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 @end
 
 
-/// This protocol provides an interface for controlling the Contextual Audio Experience playlist.
-SWIFT_PROTOCOL_NAMED("PlaylistControlProtocol")
-@protocol LwayvePlaylistControlProtocol
-/// Refresh the playlist based on the current context of playlist builder.
-- (void)refreshPlaylist;
-/// Re-request the Contextual Audio Experience from the server.
-- (void)forceReloadExperience;
-/// The list of items in the playlist.
-@property (nonatomic, readonly, strong) LwayvePlaylist * _Nullable generatedPlaylist;
-/// The list of audio tracks in the queue, including the currently playing audio track (if any).
-@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull audioQueue;
-/// The list of unplayed audio tracks.
-@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull unplayedTracksQueue;
-/// The list of played audio tracks. The last audio track in the list is the most recently played one.
-@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull playedTracksHistory;
-/// The list of identifiers for the played audio tracks.
-@property (nonatomic, readonly, copy) NSSet<NSString *> * _Nonnull playedTracksIds;
-/// Clear the history of played audio tracks.
-- (void)clearPlayedItems;
-@end
-
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayvePlaylistControlProtocol>
-/// See <code>PlaylistControlProtocol.refreshPlaylist()</code>
-- (void)refreshPlaylist;
-/// See <code>PlaylistControlProtocol.forceReloadExperience()</code>
-- (void)forceReloadExperience;
-/// See <code>PlaylistControlProtocol.generatedPlaylist</code>
-@property (nonatomic, readonly, strong) LwayvePlaylist * _Nullable generatedPlaylist;
-/// See <code>PlaylistControlProtocol.audioQueue</code>
-@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull audioQueue;
-/// See <code>PlaylistControlProtocol.unplayedTracksQueue</code>
-@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull unplayedTracksQueue;
-/// See <code>PlaylistControlProtocol.playedTracksHistory</code>
-@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull playedTracksHistory;
-/// See <code>PlaylistControlProtocol.playedTracksIds</code>
-@property (nonatomic, readonly, copy) NSSet<NSString *> * _Nonnull playedTracksIds;
-/// See <code>PlaylistControlProtocol.clearPlayedItems()</code>
-- (void)clearPlayedItems;
-@end
-
-
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveContextControlProtocol>
 /// See <code>ContextControlProtocol.set(locations:)</code>
 - (void)setWithLocations:(NSArray<NSString *> * _Nonnull)locations;
@@ -652,6 +613,54 @@ SWIFT_PROTOCOL_NAMED("PlaylistControlProtocol")
 - (void)skip;
 /// See <code>AudioPlaybackControlProtocol.rewind()</code>
 - (void)rewind;
+@end
+
+
+/// This protocol provides an interface for controlling the Contextual Audio Experience playlist.
+SWIFT_PROTOCOL_NAMED("PlaylistControlProtocol")
+@protocol LwayvePlaylistControlProtocol
+/// Refresh the playlist based on the current context of playlist builder.
+- (void)refreshPlaylist;
+/// Re-request the Contextual Audio Experience from the server.
+- (void)forceReloadExperience;
+/// The list of items in the playlist.
+@property (nonatomic, readonly, strong) LwayvePlaylist * _Nullable generatedPlaylist;
+/// The list of audio tracks in the queue, including the currently playing audio track (if any).
+@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull audioQueue;
+/// The list of unplayed audio tracks.
+@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull unplayedTracksQueue;
+/// The list of played audio tracks. The last audio track in the list is the most recently played one.
+@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull playedTracksHistory;
+/// The list of identifiers for the played audio tracks.
+@property (nonatomic, readonly, copy) NSSet<NSString *> * _Nonnull playedTracksIds;
+/// Clear the history of played audio tracks.
+- (void)clearPlayedItems;
+/// Indicates if current playlist contains new content.
+@property (nonatomic, readonly) BOOL newContentAvailable;
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayvePlaylistControlProtocol>
+/// See <code>PlayListEventsListener.playlist</code>
+@property (nonatomic, readonly, strong) LwayvePlaylist * _Nullable playlist;
+/// See <code>PlaylistControlProtocol.refreshPlaylist()</code>
+- (void)refreshPlaylist;
+/// See <code>PlaylistControlProtocol.forceReloadExperience()</code>
+- (void)forceReloadExperience;
+/// See <code>PlaylistControlProtocol.generatedPlaylist</code>
+@property (nonatomic, readonly, strong) LwayvePlaylist * _Nullable generatedPlaylist;
+/// See <code>PlaylistControlProtocol.audioQueue</code>
+@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull audioQueue;
+/// See <code>PlaylistControlProtocol.unplayedTracksQueue</code>
+@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull unplayedTracksQueue;
+/// See <code>PlaylistControlProtocol.playedTracksHistory</code>
+@property (nonatomic, readonly, copy) NSArray<id <LwayveAudioTrack>> * _Nonnull playedTracksHistory;
+/// See <code>PlaylistControlProtocol.playedTracksIds</code>
+@property (nonatomic, readonly, copy) NSSet<NSString *> * _Nonnull playedTracksIds;
+/// See <code>PlaylistControlProtocol.clearPlayedItems()</code>
+- (void)clearPlayedItems;
+/// See <code>PlaylistControlProtocol.newContentAvailable</code>
+@property (nonatomic, readonly) BOOL newContentAvailable;
 @end
 
 enum LwayveSDKConfigurationType : NSInteger;
