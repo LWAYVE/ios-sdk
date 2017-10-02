@@ -134,6 +134,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #if defined(__has_feature) && __has_feature(modules)
 @import UIKit;
 @import Foundation;
+@import QuartzCore;
 @import ObjectiveC;
 @import CoreGraphics;
 @import MediaPlayer;
@@ -295,6 +296,10 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 
 
 @interface NSBundle (SWIFT_EXTENSION(LwayveSDK))
+@end
+
+
+@interface CALayer (SWIFT_EXTENSION(LwayveSDK))
 @end
 
 @class LwayveUserContext;
