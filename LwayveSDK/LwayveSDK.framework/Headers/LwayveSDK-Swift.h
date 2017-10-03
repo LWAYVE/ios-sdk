@@ -425,7 +425,7 @@ SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
 ///
 - (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder OBJC_DESIGNATED_INITIALIZER;
-@property (nonatomic, copy) NSString * _Nullable defaultTrackName;
+@property (nonatomic, copy) NSString * _Nonnull defaultTrackName;
 @property (nonatomic, strong) UIColor * _Nonnull buttonsColor;
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
 - (UIView * _Nullable)hitTest:(CGPoint)point withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
