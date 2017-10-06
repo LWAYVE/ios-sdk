@@ -302,6 +302,15 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 @interface CALayer (SWIFT_EXTENSION(LwayveSDK))
 @end
 
+typedef SWIFT_ENUM_NAMED(NSInteger, LwayveContentUpdateType, "ContentUpdateType") {
+/// New contant available
+  LwayveContentUpdateTypeNew = 0,
+/// Situational content available
+  LwayveContentUpdateTypeSituational = 1,
+/// No new content available
+  LwayveContentUpdateTypePlayed = 2,
+};
+
 @class LwayveUserContext;
 
 /// The protocol provides an additional interface for updating Contextual Audio Experience context
@@ -446,12 +455,12 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 /// The method is called when new content availability changes.
 /// \param available <code>true</code> if new content is available.
 ///
-- (void)newContentAvailableDidChange:(BOOL)available;
+- (void)newContentAvailabilityTypeDidChange:(enum LwayveContentUpdateType)type newItemIdentifier:(NSString * _Nullable)newItemIdentifier;
 @end
 
 
 @interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <PlayListEventsListener>
-- (void)newContentAvailableDidChange:(BOOL)available;
+- (void)newContentAvailabilityTypeDidChange:(enum LwayveContentUpdateType)type newItemIdentifier:(NSString * _Nullable)newItemIdentifier;
 @end
 
 
@@ -641,7 +650,7 @@ SWIFT_PROTOCOL_NAMED("PlaylistControlProtocol")
 /// Clear the history of played audio tracks.
 - (void)clearPlayedItems;
 /// Indicates if current playlist contains new content.
-@property (nonatomic, readonly) BOOL newContentAvailable;
+@property (nonatomic, readonly) enum LwayveContentUpdateType newContentAvailabilityType;
 @end
 
 
@@ -664,8 +673,8 @@ SWIFT_PROTOCOL_NAMED("PlaylistControlProtocol")
 @property (nonatomic, readonly, copy) NSSet<NSString *> * _Nonnull playedTracksIds;
 /// See <code>PlaylistControlProtocol.clearPlayedItems()</code>
 - (void)clearPlayedItems;
-/// See <code>PlaylistControlProtocol.newContentAvailable</code>
-@property (nonatomic, readonly) BOOL newContentAvailable;
+/// See <code>PlaylistControlProtocol.var newContentAvailabilityType: ContentUpdateType</code>
+@property (nonatomic, readonly) enum LwayveContentUpdateType newContentAvailabilityType;
 @end
 
 enum LwayveSDKConfigurationType : NSInteger;
@@ -751,6 +760,8 @@ SWIFT_PROTOCOL_NAMED("PlaylistItem")
 @property (nonatomic, readonly, copy) NSString * _Nullable url;
 /// The language of the audio track.
 @property (nonatomic, readonly) enum LwayveLanguage language;
+/// Indicates if the item represents situational content.
+@property (nonatomic, readonly) BOOL isSituational;
 @property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull itemMetadata;
 @end
 
