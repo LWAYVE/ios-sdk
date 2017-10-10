@@ -440,6 +440,10 @@ SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
 - (UIView * _Nullable)hitTest:(CGPoint)point withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
 @end
 
+
+@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK))
+@end
+
 @class LwayvePlaylist;
 
 /// This protocol contains methods for handling playlist updates.
@@ -464,7 +468,23 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 @end
 
 
-@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK))
+/// The following methods are available for handling generic LWAYVE SDK events.
+SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
+@protocol LwayveSDKDelegate
+@optional
+/// This method is called when the LWAYVE SDK has successfully initialized.
+/// \param sdk The LWAYVE SDK object.
+///
+- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
+/// This method is called when the LWAYVE SDK has been de-initialized.
+/// \param sdk The LWAYVE SDK object.
+///
+- (void)lwayveSDKWithDidDeinit:(LwayveSDK * _Nonnull)sdk;
+@end
+
+
+@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <LwayveSDKDelegate>
+- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
 @end
 
 
@@ -506,7 +526,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 @end
 
 @class LwayveSDKConfiguration;
-@protocol LwayveSDKDelegate;
 
 /// Use singleton instance of <code>LwayveSDK</code> available by <code>LwayveSDK.sharedSDK</code> to communicate with the SDK.
 SWIFT_CLASS("_TtC9LwayveSDK9LwayveSDK")
@@ -531,8 +550,14 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 - (void)addWithPlaylistEventsListener:(id <PlayListEventsListener> _Nonnull)playlistEventsListener;
 /// Removes the listener for the playlist events
 - (void)removeWithPlaylistEventsListener:(id <PlayListEventsListener> _Nonnull)playlistEventsListener;
+/// Add delegate
+/// \param delegate Receiver of lwayve states notifications
 ///
-@property (nonatomic, weak) id <LwayveSDKDelegate> _Nullable delegate;
+- (void)addWithDelegate:(id <LwayveSDKDelegate> _Nonnull)delegate;
+/// Remove delegate
+/// \param delegate Receiver of lwayve states notifications
+///
+- (void)removeWithDelegate:(id <LwayveSDKDelegate> _Nonnull)delegate;
 /// Using this property you can get or update the SDK preferred language.
 /// Update is an asynchronous operation. The default value is the current device language, if the LWAYVE SDK supports it.
 /// If a language is not set on the current device, the default is LwayveLanguage.english.
@@ -704,20 +729,6 @@ typedef SWIFT_ENUM(NSInteger, LwayveSDKConfigurationType) {
   LwayveSDKConfigurationTypeProd = 1,
 };
 
-
-/// The following methods are available for handling generic LWAYVE SDK events.
-SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
-@protocol LwayveSDKDelegate
-@optional
-/// This method is called when the LWAYVE SDK has successfully initialized.
-/// \param sdk The LWAYVE SDK object.
-///
-- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
-/// This method is called when the LWAYVE SDK has been de-initialized.
-/// \param sdk The LWAYVE SDK object.
-///
-- (void)lwayveSDKWithDidDeinit:(LwayveSDK * _Nonnull)sdk;
-@end
 
 /// The error can be thrown by the <code>LwayveSDK.initialize(configuration:)</code> method.
 typedef SWIFT_ENUM(NSInteger, LwayveSDKInitializationError) {
