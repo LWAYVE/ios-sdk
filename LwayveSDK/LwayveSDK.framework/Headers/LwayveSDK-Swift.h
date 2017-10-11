@@ -171,6 +171,7 @@ SWIFT_PROTOCOL_NAMED("ApplicationRemoteNotificationsHandler")
 /// \param userInfo A dictionary that contains information related to the remote notification.
 ///
 - (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo;
+- (void)handleApplication:(UIApplication * _Nonnull)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData * _Nonnull)deviceToken;
 /// Indicates the state of remote notifications listening. Set to <code>false</code> to stop receiving remote notifications.
 @property (nonatomic) BOOL notificationsActive;
 @end
@@ -441,6 +442,26 @@ SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
 @end
 
 
+/// The following methods are available for handling generic LWAYVE SDK events.
+SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
+@protocol LwayveSDKDelegate
+@optional
+/// This method is called when the LWAYVE SDK has successfully initialized.
+/// \param sdk The LWAYVE SDK object.
+///
+- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
+/// This method is called when the LWAYVE SDK has been de-initialized.
+/// \param sdk The LWAYVE SDK object.
+///
+- (void)lwayveSDKWithDidDeinit:(LwayveSDK * _Nonnull)sdk;
+@end
+
+
+@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <LwayveSDKDelegate>
+- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
+@end
+
+
 @interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK))
 @end
 
@@ -465,26 +486,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 
 @interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <PlayListEventsListener>
 - (void)newContentAvailabilityTypeDidChange:(enum LwayveContentUpdateType)type newItemIdentifier:(NSString * _Nullable)newItemIdentifier;
-@end
-
-
-/// The following methods are available for handling generic LWAYVE SDK events.
-SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
-@protocol LwayveSDKDelegate
-@optional
-/// This method is called when the LWAYVE SDK has successfully initialized.
-/// \param sdk The LWAYVE SDK object.
-///
-- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
-/// This method is called when the LWAYVE SDK has been de-initialized.
-/// \param sdk The LWAYVE SDK object.
-///
-- (void)lwayveSDKWithDidDeinit:(LwayveSDK * _Nonnull)sdk;
-@end
-
-
-@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <LwayveSDKDelegate>
-- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
 @end
 
 
@@ -579,6 +580,13 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 @end
 
 
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
+@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
+- (void)sendAnalyticEvents;
+- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
+@end
+
+
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveApplicationRemoteNotificationsHandler>
 /// See <code>ApplicationRemoteNotificationsHandler.notificationsActive</code>
 @property (nonatomic) BOOL notificationsActive;
@@ -586,13 +594,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 - (void)handleApplication:(UIApplication * _Nonnull)application didFinishLaunchingWithOptions:(NSDictionary<UIApplicationLaunchOptionsKey, id> * _Nullable)launchOptions;
 /// See <code>ApplicationRemoteNotificationsHandler.handleApplication(_:didReceiveRemoteNotification:)</code>
 - (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo;
-@end
-
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
-@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
-- (void)sendAnalyticEvents;
-- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
+- (void)handleApplication:(UIApplication * _Nonnull)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData * _Nonnull)deviceToken;
 @end
 
 

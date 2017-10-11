@@ -67,6 +67,8 @@ NS_SWIFT_NAME(MessagingFCMTokenFetchCompletion);
  */
 @property(nonatomic, readonly, nullable) NSString *FCMToken NS_SWIFT_NAME(fcmToken);
 
+@property(nonatomic, copy, nullable) NSData *APNSToken NS_SWIFT_NAME(apnsToken);
+
 #pragma mark - Topics
 
 /**
