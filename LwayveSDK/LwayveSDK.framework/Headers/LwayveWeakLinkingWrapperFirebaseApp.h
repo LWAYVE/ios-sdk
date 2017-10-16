@@ -11,6 +11,9 @@
 NS_SWIFT_NAME(FirebaseAppWrapper)
 @interface LwayveWeakLinkingWrapperFirebaseApp : NSProxy
 
-+ (void)configureWithOptions:(id)options NS_SWIFT_NAME(configure(options:));
++ (void)configureWithOptions:(nullable id)options NS_SWIFT_NAME(configure(options:));
++ (nullable LwayveWeakLinkingWrapperFirebaseApp *)defaultApp NS_SWIFT_NAME(app());
+
+- (void)deleteApp:(nonnull void (^)(BOOL))completion NS_SWIFT_NAME(delete(_:));
 
 @end

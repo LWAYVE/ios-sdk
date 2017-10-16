@@ -7,5 +7,6 @@ target 'PlaybackControlSampleApp' do
 use_frameworks!
 
 pod 'LwayveSDK'
+pod 'ProxSeeSDK'
 
 end

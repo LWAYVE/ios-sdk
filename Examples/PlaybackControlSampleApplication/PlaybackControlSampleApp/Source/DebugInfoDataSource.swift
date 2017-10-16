@@ -29,7 +29,7 @@ class DebugInfoDataSource {
 
         // Set data source as listener for playback and playlist events delegate
         self.lwayveSDK.add(audioControlDelegate: self)
-        self.lwayveSDK.playlistEventsListener = self
+        self.lwayveSDK.add(playlistEventsListener: self)
     }
 
     fileprivate func notifyOnUpdate() {
@@ -42,7 +42,7 @@ class DebugInfoDataSource {
 // MARK: - PlayListEventsListener
 
 extension DebugInfoDataSource: PlayListEventsListener {
-    func playlistDidUpdate(_ playlist: Playlist) {
+    func playlistDidUpdate(_ playlist: Playlist?, forUserContext userContext: UserContext) {
         self.notifyOnUpdate()
     }
 }
@@ -63,7 +63,7 @@ extension DebugInfoDataSource: AudioControlDelegate {
         self.notifyOnUpdate()
     }
 
-    func lwayveSDK(didFailPlayingTrack track: AudioTrack, withError error: NSError) {
+    func lwayveSDK(didFailPlayingTrack track: AudioTrack, withError error: Error) {
         self.notifyOnUpdate()
     }
 }

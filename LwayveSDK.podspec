@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name         = "LwayveSDK"
-  s.version      = "1.2.0"
+  s.version      = "1.3.6"
   s.summary      = "iOS library"
   s.homepage     = "https://github.com/LWAYVE/ios-sdk"
   s.author       = { "Lixar, Inc" => "infra@lwayve.com" }
   s.platform     = :ios
-  s.source       = { :git => "https://github.com/LWAYVE/ios-sdk.git", :tag => "1.2.0" }
+  s.source       = { :git => "git@github.com:LWAYVE/ios-sdk.git", :tag => "1.3.6" }
   s.vendored_frameworks = 'LwayveSDK/LwayveSDK.framework'
   s.ios.deployment_target = '9.0'
   s.frameworks   = 'Foundation'
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.dependency 'KeychainSwift', '~> 8.0.2'
   s.dependency 'CocoaLumberjack', '~> 3.2.0'
 
-  s.dependency 'FirebaseMessaging', '2.0.0'
+  s.dependency 'FirebaseMessaging', '2.0.3'
 
   s.requires_arc = true
   s.license      = 'MIT'

@@ -34,6 +34,12 @@ class MainViewController: UIViewController {
         // Set using LwayveSDK instance for controlling playback
         self.playbackControl.lwayveSDK = self.lwayveSDK
 
+        // Configure visual parameters of the ticker above playback control
+        self.playbackControl.trackNameBackgroundColor = UIColor.orange
+        self.playbackControl.trackNameTextColor = UIColor.white
+        self.playbackControl.trackNameFont = UIFont.boldSystemFont(ofSize: 18)
+        self.playbackControl.defaultTrackName = "LWAYVE"
+
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(MainViewController.tapGestureTapped(_:)))
         self.view.addGestureRecognizer(tapGesture)
 
