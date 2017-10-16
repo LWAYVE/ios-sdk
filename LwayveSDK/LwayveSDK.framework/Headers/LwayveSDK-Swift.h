@@ -170,7 +170,7 @@ SWIFT_PROTOCOL_NAMED("ApplicationRemoteNotificationsHandler")
 ///
 /// \param userInfo A dictionary that contains information related to the remote notification.
 ///
-- (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo;
+- (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo fetchCompletionHandler:(void (^ _Nonnull)(UIBackgroundFetchResult))fetchCompletionHandler;
 - (void)handleApplication:(UIApplication * _Nonnull)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData * _Nonnull)deviceToken;
 /// Indicates the state of remote notifications listening. Set to <code>false</code> to stop receiving remote notifications.
 @property (nonatomic) BOOL notificationsActive;
@@ -592,8 +592,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 @property (nonatomic) BOOL notificationsActive;
 /// See <code>ApplicationRemoteNotificationsHandler.handleApplication(_:didFinishLaunchingWithOptions:)</code>
 - (void)handleApplication:(UIApplication * _Nonnull)application didFinishLaunchingWithOptions:(NSDictionary<UIApplicationLaunchOptionsKey, id> * _Nullable)launchOptions;
-/// See <code>ApplicationRemoteNotificationsHandler.handleApplication(_:didReceiveRemoteNotification:)</code>
-- (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo;
+/// See <code>ApplicationRemoteNotificationsHandler.handleApplication(_:didReceiveRemoteNotification:fetchCompletionHandler:)</code>
+- (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo fetchCompletionHandler:(void (^ _Nonnull)(UIBackgroundFetchResult))fetchCompletionHandler;
 - (void)handleApplication:(UIApplication * _Nonnull)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData * _Nonnull)deviceToken;
 @end
 
