@@ -122,15 +122,15 @@ $ pod install
 ```
 ##### Manually
 
-Please use this approach only if you have strict requirements not to use CocoaPods, as this method is more difficult and error prone. 
+Please use this approach only if you have strict requirements not to use CocoaPods, as this method is more difficult and error prone.
 
 1. Add LwayveSDK.framework to the Embedded Binaries section of your application. The latest version of the framework is available at [https://github.com/LWAYVE/ios-sdk/releases](#https://github.com/LWAYVE/ios-sdk/releases).
 2. Integrate the ProxSeeSDK. Full instructions are available at [https://github.com/proxsee/sdk-ios#add-the-proxsee-sdk-to-your-ios-project](#https://github.com/proxsee/sdk-ios#add-the-proxsee-sdk-to-your-ios-project).
-3. Integrate Firebase Cloud Messaging by following the instructions in the "Integrate without CocoaPods" section at [https://firebase.google.com/docs/ios/setup#frameworks](#https://firebase.google.com/docs/ios/setup#frameworks). 
+3. Integrate Firebase Cloud Messaging by following the instructions in the "Integrate without CocoaPods" section at [https://firebase.google.com/docs/ios/setup#frameworks](#https://firebase.google.com/docs/ios/setup#frameworks).
 4. Integrate other third-party dependencies using Carthage (recommended) or manually:
 
 	- Using Carthage (recommended):
-		1. Install Carthage. Full details are available at [https://github.com/Carthage/Carthage](#https://github.com/Carthage/Carthage) 
+		1. Install Carthage. Full details are available at [https://github.com/Carthage/Carthage](#https://github.com/Carthage/Carthage)
 		2. Place files ```Cartfile``` and ```Cartfile.resolved``` in a directory on your Mac.
 		3. Perform the following commands in Terminal:
 
@@ -153,23 +153,17 @@ The following application background modes for the LWAYVE SDK must be configured
 
 - audio: Allows your application to play audio or stream audio/video using AirPlay.
 
-The following application background modes for the ProxSee SDK must be configured:
-
-- location: Allows your application to register for location updates.
-- privacy: A Location Always Usage Description should be specified.
-
 To configure the above application modes in your application, add the following to your application plist:
 
 ```
-<key>NSLocationAlwaysUsageDescription</key>
-	<string>Location information is used to determine ProxSee tags.</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>location</string>
-		<string>audio</string>
-	</array>
+<key>UIBackgroundModes</key>
+<array>
+	<string>audio</string>
+</array>
 
 ```
+
+Refer to https://github.com/proxsee/sdk-ios#add-the-proxsee-sdk-to-your-ios-project to configure ProxSee SDK.
 
 ### Initialize the LWAYVE and ProxSee SDKs
 The next step is to initialize (launch) both the LWAYVE SDK and the ProxSee SDK.
@@ -185,7 +179,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
   authenticationToken: settings.value(forSetting: .AuthenticationKey))
 
   // Set the delegate before calling LwayveSDK.sharedSDK.initialize to be able to receive lwayveSDK(didInit:) callback
-  LwayveSDK.sharedSDK.delegate = self
+  LwayveSDK.sharedSDK.add(delegate: self)
 
   // Attempt to initialize the LWAYVE SDK using the configuration values.
   // This may fail if the SDK is already initialized, the persistent storage cannot be created, or if an empty authenticationToken is provided.
@@ -210,7 +204,6 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
   // Launch the ProxSee SDK and set the AppDelegate as the tags observer.
   // ProxSee will be used to pass location tags to the LWAYVE SDK.
   LXProxSeeSDKManager.launchProxSee(withApiKey: proxSeeAPIKey))
-  addProxSeeNotifcationObserver()
 
   return true
 }
@@ -225,13 +218,22 @@ Add the following code to your mobile application.
 ```
 
 ...
-LwayveSDK.sharedSDK.getAnalyticsDeviceId { (deviceId) in
-            LXProxSeeSDKManager.sharedInstance().updateMetadata(["lwayve_deviceid" : deviceId], completionHandler: { (success, error) in
-                if !success {
-                    NSLog("Error sending lwayve deviceid to proxsee: \(String (describing: error))")
-                }
-            })
-        }
+
+
+public func lwayveSDK(didInit sdk: LwayveSDK) {
+  // Set the AppDelegate as the tags observer. See LXProxSeeNotificationsHandler below.
+  // ProxSee will be used to pass location tags to the LWAYVE SDK.
+  self.addProxSeeNotifcationObserver()
+
+  // Pass LWAYVE device id to ProxSee SDK to link the data captured by LWAYVE to the location tag data captured by the Proxsee SDK.
+  LwayveSDK.sharedSDK.getAnalyticsDeviceId { (deviceId) in
+      LXProxSeeSDKManager.sharedInstance().updateMetadata(["lwayve_deviceid": deviceId], completionHandler: { (success, error) in
+          if !success {
+              NSLog("Error sending lwayve deviceid to proxsee: \(String (describing: error))")
+          }
+      })
+  }
+}
 ...
 
 ```

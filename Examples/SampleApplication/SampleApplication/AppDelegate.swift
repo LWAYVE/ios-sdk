@@ -21,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
+        // Register for remote notifications so application can receive notifications in background for further processing
+        application.registerForRemoteNotifications()
+
         // Log all messages from the LWAYVE SDK.
         LwayveSDK.sharedSDK.setLogLevel(.error, components: [.all])
 
@@ -45,5 +48,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         LwayveSDK.sharedSDK.handleApplication(application, didFinishLaunchingWithOptions: launchOptions)
 
         return true
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // Pass the notification data to the LWAYVE SDK so that it can process any information relevant to it.
+        LwayveSDK.sharedSDK.handleApplication(application, didReceiveRemoteNotification: userInfo)
+
+        completionHandler(UIBackgroundFetchResult.newData)
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        // Pass the notification data to the LWAYVE SDK so that it can process any information relevant to it.
+        LwayveSDK.sharedSDK.handleApplication(application, didReceiveRemoteNotification: userInfo)
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // Pass the device token data to the LWAYVE SDK so that it can subscribe to receive remote notifications.
+        LwayveSDK.sharedSDK.handleApplication(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
     }
 }
