@@ -1,5 +1,5 @@
 //
-//  NSString+LwayveHashing.h
+//  NSString_LwayveHashing.h
 //  LwayveSDK
 //
 //  Created by Maksym Malyhin on 2017-08-11.
