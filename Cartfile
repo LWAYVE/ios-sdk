@@ -1,0 +1,5 @@
+github "yapstudios/YapDatabase" == 3.0.1
+github "Alamofire/Alamofire" ~> 4.5.0
+github "SwiftyJSON/SwiftyJSON" ~> 3.1.4
+github "https://github.com/evgenyneu/keychain-swift" ~> 8.0.2
+github "CocoaLumberjack/CocoaLumberjack" ~> 3.2.0
