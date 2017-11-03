@@ -484,26 +484,6 @@ SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
 @end
 
 
-/// The following methods are available for handling generic LWAYVE SDK events.
-SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
-@protocol LwayveSDKDelegate
-@optional
-/// This method is called when the LWAYVE SDK has successfully initialized.
-/// \param sdk The LWAYVE SDK object.
-///
-- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
-/// This method is called when the LWAYVE SDK has been de-initialized.
-/// \param sdk The LWAYVE SDK object.
-///
-- (void)lwayveSDKWithDidDeinit:(LwayveSDK * _Nonnull)sdk;
-@end
-
-
-@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <LwayveSDKDelegate>
-- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
-@end
-
-
 
 @class LwayvePlaylist;
 
@@ -526,6 +506,26 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 
 @interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <PlayListEventsListener>
 - (void)newContentAvailabilityTypeDidChange:(enum LwayveContentUpdateType)type newItemIdentifier:(NSString * _Nullable)newItemIdentifier;
+@end
+
+
+/// The following methods are available for handling generic LWAYVE SDK events.
+SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
+@protocol LwayveSDKDelegate
+@optional
+/// This method is called when the LWAYVE SDK has successfully initialized.
+/// \param sdk The LWAYVE SDK object.
+///
+- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
+/// This method is called when the LWAYVE SDK has been de-initialized.
+/// \param sdk The LWAYVE SDK object.
+///
+- (void)lwayveSDKWithDidDeinit:(LwayveSDK * _Nonnull)sdk;
+@end
+
+
+@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <LwayveSDKDelegate>
+- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
 @end
 
 
@@ -608,16 +608,14 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 @end
 
 
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveNowPlayingInfoProtocol>
-/// See <code>LwayveNowPlayingInfoProtocol.defaultAlbumArtworkImage</code>
-@property (nonatomic, strong) UIImage * _Nullable defaultAlbumArtworkImage;
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
+- (void)getProxSeeConfigurationKey:(void (^ _Nonnull)(NSString * _Nullable))completion;
 @end
 
 
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
-@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
-- (void)sendAnalyticEvents;
-- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveNowPlayingInfoProtocol>
+/// See <code>LwayveNowPlayingInfoProtocol.defaultAlbumArtworkImage</code>
+@property (nonatomic, strong) UIImage * _Nullable defaultAlbumArtworkImage;
 @end
 
 
@@ -629,6 +627,13 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 /// See <code>ApplicationRemoteNotificationsHandler.handleApplication(_:didReceiveRemoteNotification:fetchCompletionHandler:)</code>
 - (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo fetchCompletionHandler:(void (^ _Nonnull)(UIBackgroundFetchResult))fetchCompletionHandler;
 - (void)handleApplication:(UIApplication * _Nonnull)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData * _Nonnull)deviceToken;
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
+@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
+- (void)sendAnalyticEvents;
+- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
 @end
 
 
