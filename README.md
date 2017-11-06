@@ -1,17 +1,16 @@
 # LWAYVE SDK for iOS
 The following document provides background information on the LWAYVE platform as well as provides setup and usage instructions for the LWAYVE SDK for iOS. The content in this document is divided into the following sections:
 
-  - [Section 1: Introducing LWAYVE and Contextual Audio Experiences Audio](#section-1-introducing-lwayve-and-contextual-audio-experiences)
+  - [Section 1: Introducing LWAYVE and Contextual Audio Experiences](#section-1-introducing-lwayve-and-contextual-audio-experiences)
     * [Background](#background)
     * [Who are the Players?](#who-are-the-players)
     * [What are the Components of the LWAYVE Platform?](#what-are-the-components-of-the-lwayve-platform)
     * [How Does LWAYVE Work?](#how-does-lwayve-work)
   - [Section 2: Implementing the LWAYVE and ProxSee SDKs in an iOS Project](#section-2-implementing-the-lwayve-and-proxsee-sdks-in-an-ios-project)
     * [Prerequisites](#prerequisites)
-    * [Add the LWAYVE and ProxSee SDKs as Dependencies](#add-the-lwayve-and-proxsee-sdks-as-dependencies)
+    * [Add the LWAYVE SDK (and optionally the ProxSee SDK) as Dependencies](#add-the-lwayve-sdk-and-optionally-the-proxsee-sdk-as-dependencies)
     * [Configure Application Background Modes](#configure-application-background-modes)
-    * [Initialize the LWAYVE and ProxSee SDKs](#initialize-the-lwayve-and-proxsee-sdks)
-    * [Enable Communication Between the LWAYVE and ProxSee SDKs](#enable-communication-between-the-lwayve-and-proxsee-sdks)
+    * [Initialize the LWAYVE (and optionally ProxSee SDKs)](#initialize-the-lwayve-and-optionally-proxsee-sdks)
     * [Set Up Branded Playback Control](#set-up-branded-playback-control)
   - [Section 3: Testing LWAYVE](#section-3-testing-lwayve)
     * [API](#api)
@@ -92,10 +91,9 @@ The instructions have been provided below with the following assumptions:
 - The corresponding audio files for the Contextual Audio Experience have been uploaded to your environment
 - If ProxSee services are being used, Location tags needed for the LWAYVE Contextual Audio Experience have been defined within the ProxSee environment
 
-### Add the LWAYVE and ProxSee SDKs as Dependencies
+### Add the LWAYVE SDK (and optionally the ProxSee SDK) as Dependencies
 The first step in setting up LWAYVE is to add both the LWAYVE SDK and the ProxSee SDK as dependencies in your iOS project. The LWAYVE SDK handles the time, location, and audio of the Contextual Audio Experience. The ProxSee SDK passes the location tags to the LWAYVE SDK so that the LWAYVE SDK can complete the location aspect of the Contextual Audio Experience.
 
-#### Add the LWAYVE and ProxSee SDKs as Dependencies
 ##### Using CocoaPods (recomended)
 You can get the LWAYVE and ProxSee SDKs for iOS on Cocoapods:
 
@@ -106,28 +104,32 @@ In order to add and manage the LWAYVE and ProxSee SDKs as dependencies in your i
 
 ```
 $ gem install cocoapods
-
 ```
 In your iOS project, create a file named ```Podfile```.
 
-In your ```Podfile```, add the LWAYVE and ProxSee SDKs as dependencies.
+In your ```Podfile```, add the LWAYVE dependency.
 
 ```
 pod 'LwayveSDK'
-pod 'ProxSeeSDK'
 ```
+
+(Optional) Add the ProxSee depedency.
+```
+pod 'LwayveSDK/ProxSee'
+```
+
 Run the install command.
 ```
 $ pod install
 ```
+
 ##### Manually
 
 Please use this approach only if you have strict requirements not to use CocoaPods, as this method is more difficult and error prone.
 
-1. Add LwayveSDK.framework to the Embedded Binaries section of your application. The latest version of the framework is available at [https://github.com/LWAYVE/ios-sdk/releases](#https://github.com/LWAYVE/ios-sdk/releases).
-2. Integrate the ProxSeeSDK. Full instructions are available at [https://github.com/proxsee/sdk-ios#add-the-proxsee-sdk-to-your-ios-project](#https://github.com/proxsee/sdk-ios#add-the-proxsee-sdk-to-your-ios-project).
-3. Integrate Firebase Cloud Messaging by following the instructions in the "Integrate without CocoaPods" section at [https://firebase.google.com/docs/ios/setup#frameworks](#https://firebase.google.com/docs/ios/setup#frameworks).
-4. Integrate other third-party dependencies using Carthage (recommended) or manually:
+1. Add LwayveSDK.framework (and optionally LwayveSDK_ProxSee.framework) to the Embedded Binaries section of your application. The latest version of the framework is available at [https://github.com/LWAYVE/ios-sdk/releases](#https://github.com/LWAYVE/ios-sdk/releases).
+2. Integrate Firebase Cloud Messaging by following the instructions in the "Integrate without CocoaPods" section at [https://firebase.google.com/docs/ios/setup#frameworks](#https://firebase.google.com/docs/ios/setup#frameworks).
+3. Integrate other third-party dependencies using Carthage (recommended) or manually:
 
 	- Using Carthage (recommended):
 		1. Install Carthage. Full details are available at [https://github.com/Carthage/Carthage](#https://github.com/Carthage/Carthage)
@@ -160,13 +162,12 @@ To configure the above application modes in your application, add the following 
 <array>
 	<string>audio</string>
 </array>
-
 ```
 
-Refer to https://github.com/proxsee/sdk-ios#add-the-proxsee-sdk-to-your-ios-project to configure ProxSee SDK.
+(Optional) Refer to https://github.com/proxsee/sdk-ios#add-the-proxsee-sdk-to-your-ios-project for plist values needed for ProxSee.
 
-### Initialize the LWAYVE and ProxSee SDKs
-The next step is to initialize (launch) both the LWAYVE SDK and the ProxSee SDK.
+### Initialize the LWAYVE (and optionally ProxSee SDKs)
+The next step is to initialize (launch) the LWAYVE SDK.
 
 #### Initialize the LWAYVE SDK
 When initializing the LWAYVE SDK, you need to pass the Authentication token provided to you by Lixar.  
@@ -197,76 +198,18 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 }
 ```
 
-#### Initialize the ProxSee SDK
-When initializing and launching the ProxSee SDK you need to pass the ProxSee API key which passes the location information from the ProxSee backend. The ProxSee API Key has been provided to you by Lixar.
+(Optional) To initialize Lwayve with ProxSee, import Lwayve with ProxSee and replace the initialize method.
 ```
-func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-  // Launch the ProxSee SDK and set the AppDelegate as the tags observer.
-  // ProxSee will be used to pass location tags to the LWAYVE SDK.
-  LXProxSeeSDKManager.launchProxSee(withApiKey: proxSeeAPIKey))
+import LwayveSDK_ProxSee
 
-  return true
+...
+
+do {
+  try LwayveSDK.sharedSDK.initializeWithProxSee(configuration: configuration)
+} catch {
+  NSLog("LwayveSDK initialization error: \(error)")
 }
 ```
-### Enable Communication Between the LWAYVE and ProxSee SDKs
-Now that the LWAYVE SDK and ProxSee SDK have been added to your project and initialized, you need to ensure that they can communicate with each other. This is done by sending the LWAYVE Device ID to the ProxSee SDK as well as sending ProxSee locations to the LWAYVE SDK. Sending the LWAYVE Device ID to the ProxSee SDK is required to link the data captured by LWAYVE to the location tag data captured by the Proxsee SDK.
-
-#### Send the LWAYVE Device ID to ProxSee SDK
-Add the following code to your mobile application.
-
-
-```
-
-...
-
-
-public func lwayveSDK(didInit sdk: LwayveSDK) {
-  // Set the AppDelegate as the tags observer. See LXProxSeeNotificationsHandler below.
-  // ProxSee will be used to pass location tags to the LWAYVE SDK.
-  self.addProxSeeNotifcationObserver()
-
-  // Pass LWAYVE device id to ProxSee SDK to link the data captured by LWAYVE to the location tag data captured by the Proxsee SDK.
-  LwayveSDK.sharedSDK.getAnalyticsDeviceId { (deviceId) in
-      LXProxSeeSDKManager.sharedInstance().updateMetadata(["lwayve_deviceid": deviceId], completionHandler: { (success, error) in
-          if !success {
-              NSLog("Error sending lwayve deviceid to proxsee: \(String (describing: error))")
-          }
-      })
-  }
-}
-...
-
-```
-
-Note: You can see an example of the implementation of the full initialization sequence in the application delegate of PlaybackControlSampleApp (https://github.com/LWAYVE/ios-sdk/blob/master/Examples/PlaybackControlSampleApplication/PlaybackControlSampleApp/Source/AppDelegate.swift)
-
-#### Send ProxSee Locations to the LWAYVE SDK
-Add the following code to your mobile application.
-
-```
-
-...
-    // Set the AppDelegate as the tags observer. See LXProxSeeNotificationsHandler below.
-    // ProxSee will be used to pass location tags to the LWAYVE SDK.
-    self.addProxSeeNotifcationObserver()
-...
-
-// MARK: - LXProxSeeNotificationsHandler
-extension AppDelegate {
-    override func didChangeTagsSet(_ proximityNotificationObject: LXProxSeeNotificationObject!) {
-        // Retrieve the newly updated tags and pass them to LWAYVE as locations.
-        guard let tags = proximityNotificationObject.currentTagsChangeSet.tags as? Set<String> else {
-            return
-        }
-
-        NSLog("ProxSee tag set updated: \(tags)")
-
-        LwayveSDK.sharedSDK.set(locations: Array(tags))
-    }
-}
-
-```
-
 
 ### Set Up Branded Playback Control
 
