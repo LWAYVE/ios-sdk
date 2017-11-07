@@ -221,6 +221,7 @@ SWIFT_PROTOCOL_NAMED("ApplicationRemoteNotificationsHandler")
 /// \param userInfo A dictionary that contains information related to the remote notification.
 ///
 - (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo fetchCompletionHandler:(void (^ _Nonnull)(UIBackgroundFetchResult))fetchCompletionHandler;
+/// This method should be called in <code>application(_ application:, didRegisterForRemoteNotificationsWithDeviceToken:)</code> to initialize remote notifications for the experience updates.
 - (void)handleApplication:(UIApplication * _Nonnull)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData * _Nonnull)deviceToken;
 /// Indicates the state of remote notifications listening. Set to <code>false</code> to stop receiving remote notifications.
 @property (nonatomic) BOOL notificationsActive;
@@ -483,8 +484,6 @@ SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
 - (UIView * _Nullable)hitTest:(CGPoint)point withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
 @end
 
-
-
 @class LwayvePlaylist;
 
 /// This protocol contains methods for handling playlist updates.
@@ -527,6 +526,8 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
 @interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <LwayveSDKDelegate>
 - (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
 @end
+
+
 
 
 
@@ -619,6 +620,13 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 @end
 
 
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
+@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
+- (void)sendAnalyticEvents;
+- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
+@end
+
+
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveApplicationRemoteNotificationsHandler>
 /// See <code>ApplicationRemoteNotificationsHandler.notificationsActive</code>
 @property (nonatomic) BOOL notificationsActive;
@@ -627,13 +635,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 /// See <code>ApplicationRemoteNotificationsHandler.handleApplication(_:didReceiveRemoteNotification:fetchCompletionHandler:)</code>
 - (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo fetchCompletionHandler:(void (^ _Nonnull)(UIBackgroundFetchResult))fetchCompletionHandler;
 - (void)handleApplication:(UIApplication * _Nonnull)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData * _Nonnull)deviceToken;
-@end
-
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
-@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
-- (void)sendAnalyticEvents;
-- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
 @end
 
 
@@ -837,6 +838,8 @@ SWIFT_CLASS_NAMED("Tag")
 ///
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder;
 @end
+
+
 
 
 
