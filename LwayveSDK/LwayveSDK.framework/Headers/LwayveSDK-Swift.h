@@ -344,6 +344,12 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 /// Set your handler to receive updates about the loading of the audio track duration.
 @property (nonatomic, copy) void (^ _Nullable durationLoadHandler)(NSTimeInterval);
 @property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull metadata;
+/// Segment ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable segmentId;
+/// Program ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable programId;
+/// Experience ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable experienceId;
 @end
 
 
