@@ -10,6 +10,7 @@ The following document provides background information on the LWAYVE platform as
     * [Prerequisites](#prerequisites)
     * [Add the LWAYVE SDK (and optionally the ProxSee SDK) as Dependencies](#add-the-lwayve-sdk-and-optionally-the-proxsee-sdk-as-dependencies)
     * [Configure Application Background Modes](#configure-application-background-modes)
+    * [Set Up Push Notifications](#set-up-push-notifications)
     * [Initialize the LWAYVE (and optionally ProxSee SDKs)](#initialize-the-lwayve-and-optionally-proxsee-sdks)
     * [Set Up Branded Playback Control](#set-up-branded-playback-control)
   - [Section 3: Testing LWAYVE](#section-3-testing-lwayve)
@@ -74,12 +75,13 @@ The following image depicts the high-level LWAYVE Contextual Audio Experience wo
 ![Communication Diagram](https://drive.google.com/uc?export=download&id=0B6FLg-DILCSrUm1ocFVGVnlMc0k)
 
 ## Section 2: Implementing the LWAYVE and ProxSee SDKs in an iOS Project
-Incorporating the LWAYVE and ProxSee SDKs in your iOS project is a simple four-step process:
+Incorporating the LWAYVE and ProxSee SDKs in your iOS project is a simple process:
 
-1. [Add the LWAYVE and ProxSee SDKs as Dependencies](#add-the-lawayve-and-proxsee-sdks-as-dependencies)
+1. [Add the LWAYVE SDK (and optionally the ProxSee SDK) as Dependencies](#add-the-lwayve-sdk-and-optionally-the-proxsee-sdk-as-dependencies)
 2. [Configure Application Background Modes](#configure-application-background-modes)
-3. [Initialize the LWAYVE and ProxSee SDKs](#initialize-the-lwayve-and-proxsee-sdks)
-4. [Set Up an Event Logger](#set-up-an-event-logger)
+3. [Set Up Push Notifications](#set-up-push-notifications)
+4. [Initialize the LWAYVE (and optionally ProxSee SDKs)](#initialize-the-lwayve-and-optionally-proxsee-sdks)
+5. [Set Up Branded Playback Control](#set-up-branded-playback-control)
 
 ### Prerequisites
 The instructions have been provided below with the following assumptions:
@@ -154,6 +156,7 @@ Please use this approach only if you have strict requirements not to use CocoaPo
 The following application background modes for the LWAYVE SDK must be configured:
 
 - audio: Allows your application to play audio or stream audio/video using AirPlay.
+- remote-notification: Allows your application to receive and handle push notifications in the background.
 
 To configure the above application modes in your application, add the following to your application plist:
 
@@ -161,10 +164,33 @@ To configure the above application modes in your application, add the following 
 <key>UIBackgroundModes</key>
 <array>
 	<string>audio</string>
+  <string>remote-notification</string>
 </array>
 ```
 
 (Optional) Refer to https://github.com/proxsee/sdk-ios#add-the-proxsee-sdk-to-your-ios-project for plist values needed for ProxSee.
+
+### Set Up Push Notifications
+Push notifications are used to notify the SDK of experience updates and situational audio.
+
+The push notifications will be handled by the SDK. Here is an example push notification payload.
+
+```
+{
+  "event": "experience.updated", 
+  "aps": {
+    "content-available": 1
+  }, 
+  "experience_id": 194950
+}
+```
+
+#### Enable Push Notifications
+To enable push notifications for your application, please refer to [Enable push notifications](http://help.apple.com/xcode/mac/current/#/devdfd3d04a1) from the Apple Documentation.
+
+#### Generate Authentication Token
+To allow push notifications, an APNs key (.p8) must be provided to Lixar. Please refer to the [Communicate with APNs using authentication tokens](http://help.apple.com/xcode/mac/current/#/dev54d690a66) from the Apple Documentation. 
+> **NOTE:** It is recommended that only APNs is enabled for this key. 
 
 ### Initialize the LWAYVE (and optionally ProxSee SDKs)
 The next step is to initialize (launch) the LWAYVE SDK.
@@ -195,6 +221,18 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
   LwayveSDK.sharedSDK.handleApplication(application, didFinishLaunchingWithOptions: launchOptions)
 
   return true
+}
+
+...
+
+func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+  // Pass the notification data to the LWAYVE SDK so that it can process any information relevant to it.
+  LwayveSDK.sharedSDK.handleApplication(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+}
+
+func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+  // Pass the device token to the Lwayve SDK
+  LwayveSDK.sharedSDK.handleApplication(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
 }
 ```
 
