@@ -14,6 +14,7 @@ FOUNDATION_EXPORT double LwayveSDK_ProxSeeVersionNumber;
 //! Project version string for LwayveSDK_ProxSee.
 FOUNDATION_EXPORT const unsigned char LwayveSDK_ProxSeeVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <LwayveSDK_ProxSee/PublicHeader.h>
-
-
+#import <LwayveSDK_ProxSee/LXProxSeeSDKManagerProxy.h>
+#import <LwayveSDK_ProxSee/LXProxSeeNotificationObjectProxy.h>
+#import <LwayveSDK_ProxSee/LXProxSeeNotificationObserverProxy.h>
+#import <LwayveSDK_ProxSee/NSObject_LXProxSeeNotificationObserverProxy.h>

@@ -184,10 +184,10 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #pragma clang diagnostic ignored "-Wnullability"
 
 SWIFT_MODULE_NAMESPACE_PUSH("LwayveSDK_ProxSee")
-@class LXProxSeeNotificationObject;
+@protocol LXProxSeeNotificationObjectProxy;
 
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK_ProxSee))
-- (void)didChangeTagsSet:(LXProxSeeNotificationObject * _Null_unspecified)proximityNotificationObject;
+- (void)didChangeTagsSet:(id <LXProxSeeNotificationObjectProxy> _Null_unspecified)proximityNotificationObject;
 @end
 
 

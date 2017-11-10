@@ -503,7 +503,11 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 ///
 - (void)playlistDidUpdate:(LwayvePlaylist * _Nullable)playlist forUserContext:(LwayveUserContext * _Nonnull)userContext;
 /// The method is called when new content availability changes.
-/// \param available <code>true</code> if new content is available.
+/// seealso:
+/// <code>ContentUpdateType</code>
+/// \param type indicates the type of update.
+///
+/// \param newItemIdentifier identifier of a new item (if exists).
 ///
 - (void)newContentAvailabilityTypeDidChange:(enum LwayveContentUpdateType)type newItemIdentifier:(NSString * _Nullable)newItemIdentifier;
 @end
