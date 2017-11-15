@@ -576,6 +576,7 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
 /// Use singleton instance of <code>LwayveSDK</code> available by <code>LwayveSDK.sharedSDK</code> to communicate with the SDK.
 SWIFT_CLASS("_TtC9LwayveSDK9LwayveSDK")
 @interface LwayveSDK : NSObject
+@property (nonatomic, readonly, strong) LwayveSDKConfiguration * _Nullable configuration;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 /// This method must be called before the SDK can be used.
 /// seealso:
@@ -620,7 +621,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 
 
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
-- (void)getProxSeeConfigurationKey:(void (^ _Nonnull)(NSString * _Nullable))completion;
+- (void (^ _Nonnull)(void))getProxSeeConfigurationKey:(void (^ _Nonnull)(NSString * _Nullable))completion SWIFT_WARN_UNUSED_RESULT;
 @end
 
 
