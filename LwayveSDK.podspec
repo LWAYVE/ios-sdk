@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
 
   s.subspec "ProxSee" do |ss|
     ss.dependency 'LwayveSDK/Core'
-    ss.dependency 'ProxSeeSDK', '~> 2.5.0'
+    ss.dependency 'ProxSeeSDK', '2.5.0'
 
     ss.vendored_frameworks = 'LwayveSDK/LwayveSDK_ProxSee.framework'
   end
