@@ -176,6 +176,7 @@ SWIFT_PROTOCOL_NAMED("ApplicationRemoteNotificationsHandler")
 /// \param userInfo A dictionary that contains information related to the remote notification.
 ///
 - (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo fetchCompletionHandler:(void (^ _Nonnull)(UIBackgroundFetchResult))fetchCompletionHandler;
+/// This method should be called in <code>application(_ application:, didRegisterForRemoteNotificationsWithDeviceToken:)</code> to initialize remote notifications for the experience updates.
 - (void)handleApplication:(UIApplication * _Nonnull)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData * _Nonnull)deviceToken;
 /// Indicates the state of remote notifications listening. Set to <code>false</code> to stop receiving remote notifications.
 @property (nonatomic) BOOL notificationsActive;
@@ -298,6 +299,12 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 /// Set your handler to receive updates about the loading of the audio track duration.
 @property (nonatomic, copy) void (^ _Nullable durationLoadHandler)(NSTimeInterval);
 @property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull metadata;
+/// Segment ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable segmentId;
+/// Program ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable programId;
+/// Experience ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable experienceId;
 @end
 
 
@@ -446,6 +453,33 @@ SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
 - (UIView * _Nullable)hitTest:(CGPoint)point withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
 @end
 
+@class LwayvePlaylist;
+
+/// This protocol contains methods for handling playlist updates.
+SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
+@protocol PlayListEventsListener
+@optional
+/// This method is called each time the playlist has been updated.
+/// \param playlist The object that contains additional information about the updated playlist.
+///
+/// \param userContext UserContext of updated playlist
+///
+- (void)playlistDidUpdate:(LwayvePlaylist * _Nullable)playlist forUserContext:(LwayveUserContext * _Nonnull)userContext;
+/// The method is called when new content availability changes.
+/// seealso:
+/// <code>ContentUpdateType</code>
+/// \param type indicates the type of update.
+///
+/// \param newItemIdentifier identifier of a new item (if exists).
+///
+- (void)newContentAvailabilityTypeDidChange:(enum LwayveContentUpdateType)type newItemIdentifier:(NSString * _Nullable)newItemIdentifier;
+@end
+
+
+@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <PlayListEventsListener>
+- (void)newContentAvailabilityTypeDidChange:(enum LwayveContentUpdateType)type newItemIdentifier:(NSString * _Nullable)newItemIdentifier;
+@end
+
 
 /// The following methods are available for handling generic LWAYVE SDK events.
 SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
@@ -468,29 +502,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
 
 
 @interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK))
-@end
-
-@class LwayvePlaylist;
-
-/// This protocol contains methods for handling playlist updates.
-SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
-@protocol PlayListEventsListener
-@optional
-/// This method is called each time the playlist has been updated.
-/// \param playlist The object that contains additional information about the updated playlist.
-///
-/// \param userContext UserContext of updated playlist
-///
-- (void)playlistDidUpdate:(LwayvePlaylist * _Nullable)playlist forUserContext:(LwayveUserContext * _Nonnull)userContext;
-/// The method is called when new content availability changes.
-/// \param available <code>true</code> if new content is available.
-///
-- (void)newContentAvailabilityTypeDidChange:(enum LwayveContentUpdateType)type newItemIdentifier:(NSString * _Nullable)newItemIdentifier;
-@end
-
-
-@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <PlayListEventsListener>
-- (void)newContentAvailabilityTypeDidChange:(enum LwayveContentUpdateType)type newItemIdentifier:(NSString * _Nullable)newItemIdentifier;
 @end
 
 
@@ -536,6 +547,7 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 /// Use singleton instance of <code>LwayveSDK</code> available by <code>LwayveSDK.sharedSDK</code> to communicate with the SDK.
 SWIFT_CLASS("_TtC9LwayveSDK9LwayveSDK")
 @interface LwayveSDK : NSObject
+@property (nonatomic, readonly, strong) LwayveSDKConfiguration * _Nullable configuration;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 /// This method must be called before the SDK can be used.
 /// seealso:
@@ -576,6 +588,11 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 /// \param delegate An object conforming to the <code>AudioControlDelegate</code> protocol.
 ///
 - (void)removeWithAudioControlDelegate:(id <LwayveAudioControlDelegate> _Nonnull)delegate;
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
+- (void (^ _Nonnull)(void))getProxSeeConfigurationKey:(void (^ _Nonnull)(NSString * _Nullable))completion SWIFT_WARN_UNUSED_RESULT;
 @end
 
 
@@ -804,6 +821,10 @@ SWIFT_CLASS_NAMED("Tag")
 - (void)encodeWithCoder:(NSCoder * _Nonnull)aCoder;
 ///
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder;
+@end
+
+
+@interface UIApplication (SWIFT_EXTENSION(LwayveSDK))
 @end
 
 
