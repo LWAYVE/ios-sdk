@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
     ss.dependency 'SwiftyJSON', '~> 3.1.4'
     ss.dependency 'KeychainSwift', '~> 8.0.2'
     ss.dependency 'CocoaLumberjack', '~> 3.2.0'
-    ss.dependency 'FirebaseMessaging', '2.0.3'
+    ss.dependency 'GoogleToolboxForMac/NSData+zlib', '~> 2.1.1'
 
     ss.vendored_frameworks = 'LwayveSDK/LwayveSDK.framework'
 

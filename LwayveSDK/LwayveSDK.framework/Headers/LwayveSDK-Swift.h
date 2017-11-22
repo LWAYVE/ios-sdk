@@ -344,6 +344,12 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 /// Set your handler to receive updates about the loading of the audio track duration.
 @property (nonatomic, copy) void (^ _Nullable durationLoadHandler)(NSTimeInterval);
 @property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull metadata;
+/// Segment ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable segmentId;
+/// Program ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable programId;
+/// Experience ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable experienceId;
 @end
 
 
@@ -496,6 +502,10 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 /// \param userContext UserContext of updated playlist
 ///
 - (void)playlistDidUpdate:(LwayvePlaylist * _Nullable)playlist forUserContext:(LwayveUserContext * _Nonnull)userContext;
+/// This method it called when last track of the playlist has finished playing
+/// \param playlist The playlist that has been finished playing
+///
+- (void)playlistDidPlayToEnd:(LwayvePlaylist * _Nullable)playlist;
 /// The method is called when new content availability changes.
 /// seealso:
 /// <code>ContentUpdateType</code>
