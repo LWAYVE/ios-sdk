@@ -453,6 +453,10 @@ SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
 - (UIView * _Nullable)hitTest:(CGPoint)point withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
 @end
 
+
+@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK))
+@end
+
 @class LwayvePlaylist;
 
 /// This protocol contains methods for handling playlist updates.
@@ -502,10 +506,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
 
 @interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <LwayveSDKDelegate>
 - (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
-@end
-
-
-@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK))
 @end
 
 
@@ -601,16 +601,22 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 @end
 
 
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveNowPlayingInfoProtocol>
-/// See <code>LwayveNowPlayingInfoProtocol.defaultAlbumArtworkImage</code>
-@property (nonatomic, strong) UIImage * _Nullable defaultAlbumArtworkImage;
+SWIFT_PROTOCOL("_TtP9LwayveSDK27OuterBandAppearanceProtocol_")
+@protocol OuterBandAppearanceProtocol
+- (void)overrideImage:(UIImage * _Nullable)image forActionType:(NSString * _Nonnull)actionType;
+- (void)overrideTitle:(NSString * _Nullable)title forActionType:(NSString * _Nonnull)actionType;
 @end
 
 
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
-@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
-- (void)sendAnalyticEvents;
-- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <OuterBandAppearanceProtocol>
+- (void)overrideImage:(UIImage * _Nullable)image forActionType:(NSString * _Nonnull)actionType;
+- (void)overrideTitle:(NSString * _Nullable)title forActionType:(NSString * _Nonnull)actionType;
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveNowPlayingInfoProtocol>
+/// See <code>LwayveNowPlayingInfoProtocol.defaultAlbumArtworkImage</code>
+@property (nonatomic, strong) UIImage * _Nullable defaultAlbumArtworkImage;
 @end
 
 
@@ -622,6 +628,13 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 /// See <code>ApplicationRemoteNotificationsHandler.handleApplication(_:didReceiveRemoteNotification:fetchCompletionHandler:)</code>
 - (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo fetchCompletionHandler:(void (^ _Nonnull)(UIBackgroundFetchResult))fetchCompletionHandler;
 - (void)handleApplication:(UIApplication * _Nonnull)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData * _Nonnull)deviceToken;
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
+@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
+- (void)sendAnalyticEvents;
+- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
 @end
 
 
@@ -769,6 +782,7 @@ static NSString * _Nonnull const LwayveSDKInitializationErrorDomain = @"LwayveSD
 
 @interface MPMediaItemArtwork (SWIFT_EXTENSION(LwayveSDK))
 @end
+
 
 
 @protocol LwayvePlaylistItem;
