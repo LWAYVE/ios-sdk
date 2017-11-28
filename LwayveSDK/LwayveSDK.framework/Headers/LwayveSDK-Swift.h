@@ -620,6 +620,13 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK27OuterBandAppearanceProtocol_")
 @end
 
 
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
+@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
+- (void)sendAnalyticEvents;
+- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
+@end
+
+
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveApplicationRemoteNotificationsHandler>
 /// See <code>ApplicationRemoteNotificationsHandler.notificationsActive</code>
 @property (nonatomic) BOOL notificationsActive;
@@ -628,13 +635,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK27OuterBandAppearanceProtocol_")
 /// See <code>ApplicationRemoteNotificationsHandler.handleApplication(_:didReceiveRemoteNotification:fetchCompletionHandler:)</code>
 - (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo fetchCompletionHandler:(void (^ _Nonnull)(UIBackgroundFetchResult))fetchCompletionHandler;
 - (void)handleApplication:(UIApplication * _Nonnull)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData * _Nonnull)deviceToken;
-@end
-
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
-@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
-- (void)sendAnalyticEvents;
-- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
 @end
 
 
@@ -840,10 +840,6 @@ SWIFT_CLASS_NAMED("Tag")
 - (void)encodeWithCoder:(NSCoder * _Nonnull)aCoder;
 ///
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder;
-@end
-
-
-@interface UIApplication (SWIFT_EXTENSION(LwayveSDK))
 @end
 
 
