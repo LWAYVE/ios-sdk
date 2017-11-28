@@ -130,8 +130,7 @@ $ pod install
 Please use this approach only if you have strict requirements not to use CocoaPods, as this method is more difficult and error prone.
 
 1. Add LwayveSDK.framework (and optionally LwayveSDK_ProxSee.framework) to the Embedded Binaries section of your application. The latest version of the framework is available at [https://github.com/LWAYVE/ios-sdk/releases](#https://github.com/LWAYVE/ios-sdk/releases).
-2. Integrate Firebase Cloud Messaging by following the instructions in the "Integrate without CocoaPods" section at [https://firebase.google.com/docs/ios/setup#frameworks](#https://firebase.google.com/docs/ios/setup#frameworks).
-3. Integrate other third-party dependencies using Carthage (recommended) or manually:
+2. Integrate other third-party dependencies using Carthage (recommended) or manually:
 
 	- Using Carthage (recommended):
 		1. Install Carthage. Full details are available at [https://github.com/Carthage/Carthage](#https://github.com/Carthage/Carthage)
@@ -141,7 +140,6 @@ Please use this approach only if you have strict requirements not to use CocoaPo
 			```
 			$ cd <your_directory>
 			$ carthage bootstrap --platform iOS
-
 			```
 		4. Add the frameworks from <your_directory>/Carthage/Build/iOS to the Embedded Binaries section of your application.
 	- Manually:
@@ -150,6 +148,7 @@ Please use this approach only if you have strict requirements not to use CocoaPo
 		- SwiftyJSON - [https://github.com/SwiftyJSON/SwiftyJSON](#https://github.com/SwiftyJSON/SwiftyJSON). Version 3.1.4 (or compatible) must be used.
 		- keychain-swift - [https://github.com/evgenyneu/keychain-swift](#https://github.com/evgenyneu/keychain-swift). Version 8.0.2 (or compatible) must be used.
 		- CocoaLumberjack - [https://github.com/CocoaLumberjack/CocoaLumberjack](#https://github.com/CocoaLumberjack/CocoaLumberjack). Version 3.2.0 (or compatible) must be used.
+		- GoogleToolboxForMac/NSData+zlib - [https://github.com/google/google-toolbox-for-mac](#https://github.com/google/google-toolbox-for-mac). Version 2.1.1 (or compatible) must be used.
 
 ### Configure Application Background Modes
 
