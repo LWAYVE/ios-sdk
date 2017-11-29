@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 
     ss.vendored_frameworks = 'LwayveSDK/LwayveSDK.framework'
 
-    ss.frameworks   = 'Foundation'
+    ss.frameworks = 'AVFoundation', 'Foundation'
   end
 
   s.subspec "ProxSee" do |ss|
