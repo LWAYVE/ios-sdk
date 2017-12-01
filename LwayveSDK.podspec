@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name         = "LwayveSDK"
-  s.version      = "2.0.0"
+  s.version      = "2.1.0"
   s.summary      = "iOS library"
   s.homepage     = "https://github.com/LWAYVE/ios-sdk"
   s.author       = { "Lixar, Inc" => "infra@lwayve.com" }
   s.platform     = :ios
-  s.source       = { :git => "https://github.com/LWAYVE/ios-sdk.git", :tag => "2.0.0" }
+  s.source       = { :git => "https://github.com/LWAYVE/ios-sdk.git", :tag => "2.1.0" }
   s.ios.deployment_target = '9.0'
 
   s.default_subspec = "Core"
@@ -18,11 +18,11 @@ Pod::Spec.new do |s|
     ss.dependency 'SwiftyJSON', '~> 3.1.4'
     ss.dependency 'KeychainSwift', '~> 8.0.2'
     ss.dependency 'CocoaLumberjack', '~> 3.2.0'
-    ss.dependency 'FirebaseMessaging', '2.0.3'
+    ss.dependency 'GoogleToolboxForMac/NSData+zlib', '~> 2.1.1'
 
     ss.vendored_frameworks = 'LwayveSDK/LwayveSDK.framework'
 
-    ss.frameworks   = 'Foundation'
+    ss.frameworks = 'AVFoundation', 'Foundation'
   end
 
   s.subspec "ProxSee" do |ss|

@@ -299,6 +299,12 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 /// Set your handler to receive updates about the loading of the audio track duration.
 @property (nonatomic, copy) void (^ _Nullable durationLoadHandler)(NSTimeInterval);
 @property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull metadata;
+/// Segment ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable segmentId;
+/// Program ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable programId;
+/// Experience ID from the experience containing the audio track
+@property (nonatomic, readonly, copy) NSString * _Nullable experienceId;
 @end
 
 
@@ -447,6 +453,10 @@ SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
 - (UIView * _Nullable)hitTest:(CGPoint)point withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
 @end
 
+
+@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK))
+@end
+
 @class LwayvePlaylist;
 
 /// This protocol contains methods for handling playlist updates.
@@ -459,6 +469,10 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 /// \param userContext UserContext of updated playlist
 ///
 - (void)playlistDidUpdate:(LwayvePlaylist * _Nullable)playlist forUserContext:(LwayveUserContext * _Nonnull)userContext;
+/// This method it called when last track of the playlist has finished playing
+/// \param playlist The playlist that has been finished playing
+///
+- (void)playlistDidPlayToEnd:(LwayvePlaylist * _Nullable)playlist;
 /// The method is called when new content availability changes.
 /// seealso:
 /// <code>ContentUpdateType</code>
@@ -504,10 +518,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
 
 
 @interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK))
-@end
-
-
-@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK))
 @property (nonatomic, readonly) CGSize intrinsicContentSize;
 @end
 
@@ -534,6 +544,7 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
 @property (nonatomic, strong) UIFont * _Nonnull trackNameFont;
 @property (nonatomic, strong) UIColor * _Nonnull trackNameTextColor;
 @property (nonatomic, strong) UIColor * _Nullable trackNameBackgroundColor;
+@property (nonatomic, strong) UIColor * _Nullable outerBandColor;
 @end
 
 @class LwayveSDKConfiguration;
@@ -587,6 +598,19 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
 - (void (^ _Nonnull)(void))getProxSeeConfigurationKey:(void (^ _Nonnull)(NSString * _Nullable))completion SWIFT_WARN_UNUSED_RESULT;
+@end
+
+
+SWIFT_PROTOCOL("_TtP9LwayveSDK27OuterBandAppearanceProtocol_")
+@protocol OuterBandAppearanceProtocol
+- (void)overrideImage:(UIImage * _Nullable)image forActionType:(NSString * _Nonnull)actionType;
+- (void)overrideTitle:(NSString * _Nullable)title forActionType:(NSString * _Nonnull)actionType;
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <OuterBandAppearanceProtocol>
+- (void)overrideImage:(UIImage * _Nullable)image forActionType:(NSString * _Nonnull)actionType;
+- (void)overrideTitle:(NSString * _Nullable)title forActionType:(NSString * _Nonnull)actionType;
 @end
 
 
@@ -760,6 +784,7 @@ static NSString * _Nonnull const LwayveSDKInitializationErrorDomain = @"LwayveSD
 @end
 
 
+
 @protocol LwayvePlaylistItem;
 
 /// Contains information about the generated playlist.
@@ -815,10 +840,6 @@ SWIFT_CLASS_NAMED("Tag")
 - (void)encodeWithCoder:(NSCoder * _Nonnull)aCoder;
 ///
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder;
-@end
-
-
-@interface UIApplication (SWIFT_EXTENSION(LwayveSDK))
 @end
 
 
