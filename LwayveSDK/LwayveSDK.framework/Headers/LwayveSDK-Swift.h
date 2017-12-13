@@ -298,7 +298,7 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 @property (nonatomic, readonly) NSTimeInterval duration;
 /// Set your handler to receive updates about the loading of the audio track duration.
 @property (nonatomic, copy) void (^ _Nullable durationLoadHandler)(NSTimeInterval);
-@property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull metadata;
+@property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull actions;
 /// Segment ID from the experience containing the audio track
 @property (nonatomic, readonly, copy) NSString * _Nullable segmentId;
 /// Program ID from the experience containing the audio track
@@ -796,6 +796,9 @@ SWIFT_CLASS_NAMED("Playlist")
 @property (nonatomic, readonly, copy) NSDate * _Nullable nextEventTime;
 /// The playlist items.
 @property (nonatomic, readonly, copy) NSArray<id <LwayvePlaylistItem>> * _Nonnull items;
+/// If <code>shouldAutoRestart == false</code>, then the user should press play button to play a new playlist. This is the default behaviour.
+/// If <code>shouldAutoRestart == true</code>, then a new playlist should start playing automaticaly.
+@property (nonatomic, readonly) BOOL shouldAutoRestart;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
@@ -816,7 +819,7 @@ SWIFT_PROTOCOL_NAMED("PlaylistItem")
 @property (nonatomic, readonly) enum LwayveLanguage language;
 /// Indicates if the item represents situational content.
 @property (nonatomic, readonly) BOOL isSituational;
-@property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull itemMetadata;
+@property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull itemActions;
 @end
 
 
