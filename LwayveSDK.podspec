@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.license      = 'MIT'
 
   s.subspec "Core" do |ss|
-    ss.dependency 'YapDatabase', '3.0'
+    ss.dependency 'YapDatabase/Standard/Core', '3.0'
     ss.dependency 'Alamofire', '~> 4.5.0'
     ss.dependency 'SwiftyJSON', '~> 3.1.4'
     ss.dependency 'KeychainSwift', '~> 8.0.2'
