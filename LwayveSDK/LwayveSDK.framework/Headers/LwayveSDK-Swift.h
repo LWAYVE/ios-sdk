@@ -545,6 +545,7 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
 @property (nonatomic, strong) UIColor * _Nonnull trackNameTextColor;
 @property (nonatomic, strong) UIColor * _Nullable trackNameBackgroundColor;
 @property (nonatomic, strong) UIColor * _Nullable outerBandColor;
+@property (nonatomic, strong) UIImage * _Nullable backgroundImage;
 @end
 
 @class LwayveSDKConfiguration;
