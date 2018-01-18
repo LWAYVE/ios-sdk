@@ -129,7 +129,7 @@ $ pod install
 
 Please use this approach only if you have strict requirements not to use CocoaPods, as this method is more difficult and error prone.
 
-1. Add LwayveSDK.framework (and optionally LwayveSDK_ProxSee.framework) to the Embedded Binaries section of your application. The latest version of the framework is available at [https://github.com/LWAYVE/ios-sdk/releases](#https://github.com/LWAYVE/ios-sdk/releases).
+1. Add LwayveSDK.framework to the Embedded Binaries section of your application. The latest version of the framework is available at [https://github.com/LWAYVE/ios-sdk/releases](#https://github.com/LWAYVE/ios-sdk/releases).
 2. Integrate other third-party dependencies using Carthage (recommended) or manually:
 
 	- Using Carthage (recommended):
@@ -166,6 +166,12 @@ To configure the above application modes in your application, add the following 
   <string>remote-notification</string>
 </array>
 ```
+
+### Add Plist Values
+
+The following plist values are required by the Lwayve SDK.
+
+- NSMicrophoneUsageDescription: Required for user generated audio
 
 (Optional) Refer to https://github.com/proxsee/sdk-ios#add-the-proxsee-sdk-to-your-ios-project for plist values needed for ProxSee.
 
@@ -237,7 +243,7 @@ func application(_ application: UIApplication, didRegisterForRemoteNotifications
 
 (Optional) To initialize Lwayve with ProxSee, import Lwayve with ProxSee and replace the initialize method.
 ```
-import LwayveSDK_ProxSee
+import LwayveSDK
 
 ...
 
