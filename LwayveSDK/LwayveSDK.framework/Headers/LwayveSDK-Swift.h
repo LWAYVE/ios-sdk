@@ -328,7 +328,7 @@ SWIFT_PROTOCOL_NAMED("AudioPlaybackControlProtocol")
 
 SWIFT_CLASS_NAMED("AudioRecordingScreenAppearance")
 @interface LwayveAudioRecordingScreenAppearance : NSObject
-- (nonnull instancetype)initWithBackgroundColor:(UIColor * _Nonnull)backgroundColor statusTextColor:(UIColor * _Nonnull)statusTextColor tryAgainButtonColor:(UIColor * _Nonnull)tryAgainButtonColor sendButtonColor:(UIColor * _Nonnull)sendButtonColor playButtonColor:(UIColor * _Nonnull)playButtonColor OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithBackgroundColor:(UIColor * _Nonnull)backgroundColor statusTextColor:(UIColor * _Nonnull)statusTextColor tryAgainButtonColor:(UIColor * _Nonnull)tryAgainButtonColor sendButtonColor:(UIColor * _Nonnull)sendButtonColor playButtonColor:(UIColor * _Nonnull)playButtonColor closeButtonColor:(UIColor * _Nonnull)closeButtonColor OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
