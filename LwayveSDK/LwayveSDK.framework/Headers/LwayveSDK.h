@@ -19,3 +19,4 @@ FOUNDATION_EXPORT const unsigned char LwayveSDKVersionString[];
 #import <LwayveSDK/LwayveWeakLinkingWrapper.h>
 #import <LwayveSDK/LwayveLumberjackLogger.h>
 #import <LwayveSDK/NSString_LwayveHashing.h>
+#import <LwayveSDK/LXProxSeeSDKManagerProxy.h>

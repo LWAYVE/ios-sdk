@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name         = "LwayveSDK"
-  s.version      = "2.2.0"
+  s.version      = "2.3.0"
   s.summary      = "iOS library"
   s.homepage     = "https://github.com/LWAYVE/ios-sdk"
   s.author       = { "Lixar, Inc" => "infra@lwayve.com" }
   s.platform     = :ios
-  s.source       = { :git => "https://github.com/LWAYVE/ios-sdk.git", :tag => "2.2.0" }
+  s.source       = { :git => "https://github.com/LWAYVE/ios-sdk.git", :tag => "2.3.0" }
   s.ios.deployment_target = '9.0'
 
   s.default_subspec = "Core"
@@ -16,7 +16,6 @@ Pod::Spec.new do |s|
     ss.dependency 'YapDatabase/Standard/Core', '3.0'
     ss.dependency 'Alamofire', '~> 4.5.0'
     ss.dependency 'SwiftyJSON', '~> 3.1.4'
-    ss.dependency 'KeychainSwift', '~> 8.0.2'
     ss.dependency 'CocoaLumberjack', '~> 3.2.0'
     ss.dependency 'GoogleToolboxForMac/NSData+zlib', '~> 2.1.1'
 
@@ -27,8 +26,6 @@ Pod::Spec.new do |s|
 
   s.subspec "ProxSee" do |ss|
     ss.dependency 'LwayveSDK/Core'
-    ss.dependency 'ProxSeeSDK', '2.5.0'
-
-    ss.vendored_frameworks = 'LwayveSDK/LwayveSDK_ProxSee.framework'
+    ss.dependency 'ProxSeeSDK', '3.0.0'
   end
 end

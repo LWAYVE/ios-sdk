@@ -8,7 +8,6 @@
 
 import UIKit
 import LwayveSDK
-import LwayveSDK_ProxSee
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
