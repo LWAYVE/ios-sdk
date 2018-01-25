@@ -1,49 +1,25 @@
 PODS:
-  - Alamofire (4.5.0)
-  - AlamofireImage (3.2.0):
-    - Alamofire (~> 4.1)
+  - Alamofire (4.5.1)
   - CocoaLumberjack (3.2.1):
     - CocoaLumberjack/Default (= 3.2.1)
     - CocoaLumberjack/Extensions (= 3.2.1)
   - CocoaLumberjack/Default (3.2.1)
   - CocoaLumberjack/Extensions (3.2.1):
     - CocoaLumberjack/Default
-  - FirebaseAnalytics (4.0.3):
-    - FirebaseCore (~> 4.0)
-    - FirebaseInstanceID (~> 2.0)
-    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
-    - nanopb (~> 0.3)
-  - FirebaseCore (4.0.5):
-    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
-    - nanopb (~> 0.3)
-  - FirebaseInstanceID (2.0.1):
-    - FirebaseCore (~> 4.0)
-  - FirebaseMessaging (2.0.0):
-    - FirebaseAnalytics (~> 4.0)
-    - FirebaseCore (~> 4.0)
-    - FirebaseInstanceID (~> 2.0)
-    - GoogleToolboxForMac/Logger (~> 2.1)
-    - Protobuf (~> 3.1)
-  - GoogleToolboxForMac/Defines (2.1.1)
-  - GoogleToolboxForMac/Logger (2.1.1):
-    - GoogleToolboxForMac/Defines (= 2.1.1)
-  - GoogleToolboxForMac/NSData+zlib (2.1.1):
-    - GoogleToolboxForMac/Defines (= 2.1.1)
-  - KeychainSwift (8.0.2)
-  - LwayveSDK (1.2.4):
+  - GoogleToolboxForMac/Defines (2.1.3)
+  - GoogleToolboxForMac/NSData+zlib (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
+  - KeychainSwift (8.0.3)
+  - LwayveSDK/Core (2.1.1):
     - Alamofire (~> 4.5.0)
-    - AlamofireImage (~> 3.2.0)
     - CocoaLumberjack (~> 3.2.0)
-    - FirebaseMessaging (= 2.0.0)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1.1)
     - KeychainSwift (~> 8.0.2)
     - SwiftyJSON (~> 3.1.4)
     - YapDatabase (= 3.0)
-  - nanopb (0.3.8):
-    - nanopb/decode (= 0.3.8)
-    - nanopb/encode (= 0.3.8)
-  - nanopb/decode (0.3.8)
-  - nanopb/encode (0.3.8)
-  - Protobuf (3.4.0)
+  - LwayveSDK/ProxSee (2.1.1):
+    - LwayveSDK/Core
+    - ProxSeeSDK (= 2.5.0)
   - ProxSeeSDK (2.5.0)
   - SwiftyJSON (3.1.4)
   - YapDatabase (3.0):
@@ -108,30 +84,18 @@ PODS:
     - YapDatabase/Standard/Core
 
 DEPENDENCIES:
-  - LwayveSDK (from `../Cocoapods`)
-  - ProxSeeSDK
-
-EXTERNAL SOURCES:
-  LwayveSDK:
-    :path: ../Cocoapods
+  - LwayveSDK/ProxSee
 
 SPEC CHECKSUMS:
-  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
-  AlamofireImage: 157ed682cc81d3b9db4fb90c1f12180ac552d93b
+  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   CocoaLumberjack: 2800c03334042fe80589423c8d80e582dcaec482
-  FirebaseAnalytics: 76f754d37ca5b04f36856729b6af3ca0152d1069
-  FirebaseCore: 7d876ea97a830cbe62ba7fbbe7670c833a324ba0
-  FirebaseInstanceID: 0500e3cb54a1a4e01a8cffcc09323b8bb8fc7e1e
-  FirebaseMessaging: 227406c05b0dc9290702d2e9f18ab5528f0c2cf2
-  GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
-  KeychainSwift: 213db04dfe7244988e61f77c72a2afb2f775954a
-  LwayveSDK: f063b7a380760a0f93bbbd7b7a15e9d41fbbc4c4
-  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
+  GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
+  KeychainSwift: be9554c0e5f4b1686c775930dc5c6bd9396992ed
+  LwayveSDK: d6bb6b7068a1a1f3ce7df091b4fb11c4dadcc8d5
   ProxSeeSDK: fa58eb262011c2bb7ab000ba2ac52561a02d0202
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   YapDatabase: 0cef6c79948169c924ae325d430ffcfa8a5231c2
 
-PODFILE CHECKSUM: 01f61325a10db6d6c356934fb7bb6d911d6a4905
+PODFILE CHECKSUM: d50b6aa80e3c898ec2973481041f59be97bc151b
 
 COCOAPODS: 1.3.1
