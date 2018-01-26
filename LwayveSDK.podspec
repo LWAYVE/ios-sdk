@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name         = "LwayveSDK"
-  s.version      = "2.3.1"
+  s.version      = "2.3.2"
   s.summary      = "iOS library"
   s.homepage     = "https://github.com/LWAYVE/ios-sdk"
   s.author       = { "Lixar, Inc" => "infra@lwayve.com" }
   s.platform     = :ios
-  s.source       = { :git => "https://github.com/LWAYVE/ios-sdk.git", :tag => "2.3.1" }
+  s.source       = { :git => "https://github.com/LWAYVE/ios-sdk.git", :tag => "2.3.2" }
   s.ios.deployment_target = '9.0'
 
   s.default_subspec = "Core"
@@ -21,11 +21,12 @@ Pod::Spec.new do |s|
 
     ss.vendored_frameworks = 'LwayveSDK/LwayveSDK.framework'
 
-    ss.frameworks = 'AVFoundation', 'Foundation'
+    ss.frameworks = 'AVFoundation', 'Foundation', 'MediaPlayer'
   end
 
   s.subspec "ProxSee" do |ss|
     ss.dependency 'LwayveSDK/Core'
     ss.dependency 'ProxSeeSDK', '3.0.0'
+    ss.frameworks = 'CoreLocation'
   end
 end
