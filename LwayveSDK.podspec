@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
     ss.dependency 'YapDatabase/Standard/Core', '3.0'
     ss.dependency 'Alamofire', '~> 4.5.0'
     ss.dependency 'SwiftyJSON', '~> 3.1.4'
-    ss.dependency 'CocoaLumberjack', '~> 3.2.0'
+    ss.dependency 'CocoaLumberjack', '~> 3'
     ss.dependency 'GoogleToolboxForMac/NSData+zlib', '~> 2.1.1'
 
     ss.vendored_frameworks = 'LwayveSDK/LwayveSDK.framework'
