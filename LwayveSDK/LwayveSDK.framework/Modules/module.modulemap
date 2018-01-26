@@ -7,5 +7,4 @@ framework module LwayveSDK {
 
 module LwayveSDK.Swift {
     header "LwayveSDK-Swift.h"
-    requires objc
 }
