@@ -195,6 +195,8 @@ SWIFT_MODULE_NAMESPACE_PUSH("LwayveSDK")
 
 
 
+
+
 ///
 SWIFT_PROTOCOL_NAMED("AnalyticsControlProtocol")
 @protocol LwayveAnalyticsControlProtocol
@@ -328,11 +330,12 @@ SWIFT_PROTOCOL_NAMED("AudioPlaybackControlProtocol")
 
 SWIFT_CLASS_NAMED("AudioRecordingScreenAppearance")
 @interface LwayveAudioRecordingScreenAppearance : NSObject
-- (nonnull instancetype)initWithBackgroundColor:(UIColor * _Nonnull)backgroundColor statusTextColor:(UIColor * _Nonnull)statusTextColor tryAgainButtonColor:(UIColor * _Nonnull)tryAgainButtonColor sendButtonColor:(UIColor * _Nonnull)sendButtonColor playButtonColor:(UIColor * _Nonnull)playButtonColor closeButtonColor:(UIColor * _Nonnull)closeButtonColor OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithBackgroundColor:(UIColor * _Nonnull)backgroundColor statusTextColor:(UIColor * _Nonnull)statusTextColor tryAgainButtonColor:(UIColor * _Nonnull)tryAgainButtonColor sendButtonColor:(UIColor * _Nonnull)sendButtonColor playButtonColor:(UIColor * _Nonnull)playButtonColor closeButtonColor:(UIColor * _Nonnull)closeButtonColor topTextColor:(UIColor * _Nonnull)topTextColor OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
 enum LwayveLanguage : NSInteger;
+@class LwayveClipActions;
 
 /// The protocol representing the interface for the object that can be played in the audio player.
 SWIFT_PROTOCOL_NAMED("AudioTrack")
@@ -353,7 +356,7 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 @property (nonatomic, readonly) NSTimeInterval duration;
 /// Set your handler to receive updates about the loading of the audio track duration.
 @property (nonatomic, copy) void (^ _Nullable durationLoadHandler)(NSTimeInterval);
-@property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull actions;
+@property (nonatomic, readonly, strong) LwayveClipActions * _Nonnull actions;
 /// Segment ID from the experience containing the audio track
 @property (nonatomic, readonly, copy) NSString * _Nullable segmentId;
 /// Program ID from the experience containing the audio track
@@ -365,6 +368,50 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 
 
 
+
+@class UIImage;
+
+/// <code>ClipAction</code> represents data required to display a clip related action.
+SWIFT_CLASS_NAMED("ClipAction")
+@interface LwayveClipAction : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nullable title;
+@property (nonatomic, readonly, strong) UIImage * _Nullable image;
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
+@end
+
+
+SWIFT_CLASS_NAMED("ClipActions")
+@interface LwayveClipActions : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
+@end
+
+
+
+@class NSCoder;
+
+@interface LwayveClipActions (SWIFT_EXTENSION(LwayveSDK)) <NSCoding>
+- (void)encodeWithCoder:(NSCoder * _Nonnull)aCoder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder;
+@end
+
+
+/// The following methods provide access to clip contextual actions
+SWIFT_PROTOCOL_NAMED("ClipActionsProtocol")
+@protocol LwayveClipActionsProtocol
+/// Loads data required to display the requested clip related actions
+/// \param actions actions object taken from <code>PlaylistItem.itemActions</code> or <code>AudioTrack.actions</code>
+///
+/// \param completion completion with actions data.
+///
+- (void)loadActionsWithActions:(LwayveClipActions * _Nonnull)actions completion:(void (^ _Nonnull)(NSArray<LwayveClipAction *> * _Nonnull))completion;
+/// Performs the clip related action
+/// \param action action info object - result of method <code>loadActions(actions:completion:)</code>
+///
+/// \param completion the completion is called once the action finishes performing
+///
+- (void)performClipAction:(LwayveClipAction * _Nonnull)action completion:(void (^ _Nonnull)(void))completion;
+@end
 
 enum LwayveContentUpdateType : NSInteger;
 
@@ -469,7 +516,6 @@ SWIFT_CLASS_NAMED("Location")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
-@class NSCoder;
 
 @interface LwayveLocation (SWIFT_EXTENSION(LwayveSDK)) <NSCoding>
 ///
@@ -482,9 +528,9 @@ SWIFT_CLASS_NAMED("Location")
 typedef SWIFT_ENUM(NSInteger, LwayveLanguage) {
   LwayveLanguageEnglish = 0,
   LwayveLanguageFrench = 1,
+  LwayveLanguageSpanish = 2,
 };
 
-@class UIImage;
 
 /// The following methods are available for controlling the information displayed in the iOS Control Center and on the iOS Lock screen for currently playing audio tracks.
 SWIFT_PROTOCOL("_TtP9LwayveSDK28LwayveNowPlayingInfoProtocol_")
@@ -655,19 +701,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 @end
 
 
-SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
-@protocol UserRecordedAudioUploadProtocol
-/// The file at <code>fileURL</code> will be validated and uploaded to Lwayve server to be reviewed and added to the experience.
-/// \param fileURL The <code>fileURL</code> must be a URL to the local file system accessible to the application.
-///
-/// \param completion <code>error == nil</code> indicates a successful finish of the upload.
-///
-- (void)uploadUserRecordedAudioWithFileURL:(NSURL * _Nonnull)fileURL completion:(void (^ _Nonnull)(NSError * _Nullable))completion;
-@end
-
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <UserRecordedAudioUploadProtocol>
-- (void)uploadUserRecordedAudioWithFileURL:(NSURL * _Nonnull)fileURL completion:(void (^ _Nonnull)(NSError * _Nullable))completion;
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
+- (void (^ _Nonnull)(void))getProxSeeConfigurationKey:(void (^ _Nonnull)(NSString * _Nullable))completion SWIFT_WARN_UNUSED_RESULT;
 @end
 
 @protocol LXTagsProxyProtocol;
@@ -677,8 +712,24 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
 @end
 
 
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
-- (void (^ _Nonnull)(void))getProxSeeConfigurationKey:(void (^ _Nonnull)(NSString * _Nullable))completion SWIFT_WARN_UNUSED_RESULT;
+SWIFT_PROTOCOL("_TtP9LwayveSDK27OuterBandAppearanceProtocol_")
+@protocol OuterBandAppearanceProtocol
+/// \param actionType Use value from <code>PredefinedClipActionTypes</code>
+///
+- (void)overrideImage:(UIImage * _Nullable)image forActionType:(NSString * _Nonnull)actionType;
+/// \param title The title should be localized
+///
+/// \param actionType Use value from <code>PredefinedClipActionTypes</code>
+///
+- (void)overrideTitle:(NSString * _Nullable)title forActionType:(NSString * _Nonnull)actionType;
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <OuterBandAppearanceProtocol>
+/// See <code>OuterBandAppearanceProtocol.overrideImage(_:forActionType:)</code>
+- (void)overrideImage:(UIImage * _Nullable)image forActionType:(NSString * _Nonnull)actionType;
+/// See <code>OuterBandAppearanceProtocol.overrideTitle(_:forActionType:)</code>
+- (void)overrideTitle:(NSString * _Nullable)title forActionType:(NSString * _Nonnull)actionType;
 @end
 
 
@@ -688,22 +739,53 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
 @end
 
 
-SWIFT_PROTOCOL("_TtP9LwayveSDK27OuterBandAppearanceProtocol_")
-@protocol OuterBandAppearanceProtocol
-- (void)overrideImage:(UIImage * _Nullable)image forActionType:(NSString * _Nonnull)actionType;
-- (void)overrideTitle:(NSString * _Nullable)title forActionType:(NSString * _Nonnull)actionType;
-@end
-
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <OuterBandAppearanceProtocol>
-- (void)overrideImage:(UIImage * _Nullable)image forActionType:(NSString * _Nonnull)actionType;
-- (void)overrideTitle:(NSString * _Nullable)title forActionType:(NSString * _Nonnull)actionType;
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveClipActionsProtocol>
+/// See <code>ClipActionsProtocol.loadActions(actions:completion:)</code>
+- (void)loadActionsWithActions:(LwayveClipActions * _Nonnull)actions completion:(void (^ _Nonnull)(NSArray<LwayveClipAction *> * _Nonnull))completion;
+/// See <code>ClipActionsProtocol.performClipAction(_:completion:)</code>
+- (void)performClipAction:(LwayveClipAction * _Nonnull)actionInfo completion:(void (^ _Nonnull)(void))completion;
 @end
 
 
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveNowPlayingInfoProtocol>
 /// See <code>LwayveNowPlayingInfoProtocol.defaultAlbumArtworkImage</code>
 @property (nonatomic, strong) UIImage * _Nullable defaultAlbumArtworkImage;
+@end
+
+enum LwayveUserRecordedAudioDuration : NSInteger;
+
+SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
+@protocol UserRecordedAudioUploadProtocol
+/// The file at <code>fileURL</code> will be validated and uploaded to Lwayve server to be reviewed and added to the experience.
+/// \param fileURL The <code>fileURL</code> must be a URL to the local file system accessible to the application. The audio file requirements:
+/// <ul>
+///   <li>
+///     Supported formats: .mp3, .m4a;
+///   </li>
+///   <li>
+///     The file must contain non-empty audio;
+///   </li>
+///   <li>
+///     The audio file size must be not more than 2MB;
+///   </li>
+///   <li>
+///     the length of the audio in the file must be not more than 1 minute.
+///   </li>
+/// </ul>
+///
+/// \param completion <code>error == nil</code> indicates a successful finish of the upload. <code>error</code> can be of following types: <code>UserRecordedAudioUploaderError</code>, <code>UserRecordedAudioValidatorError</code>
+///
+- (void)uploadUserRecordedAudioWithFileURL:(NSURL * _Nonnull)fileURL completion:(void (^ _Nonnull)(NSError * _Nullable))completion;
+/// Maximum audio duration that can be recored using record action from the outer band.
+@property (nonatomic) enum LwayveUserRecordedAudioDuration maximumUserRecordedAudioDuration;
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <UserRecordedAudioUploadProtocol>
+/// See <code>UserRecordedAudioUploadProtocol.uploadUserRecordedAudio(fileURL:completion:)</code>
+- (void)uploadUserRecordedAudioWithFileURL:(NSURL * _Nonnull)fileURL completion:(void (^ _Nonnull)(NSError * _Nullable))completion;
+/// See <code>UserRecordedAudioUploadProtocol.maximumUserRecordedAudioDuration</code>
+@property (nonatomic) enum LwayveUserRecordedAudioDuration maximumUserRecordedAudioDuration;
 @end
 
 
@@ -778,26 +860,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK27OuterBandAppearanceProtocol_")
 @end
 
 
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveContextControlProtocol>
-/// See <code>ContextControlProtocol.set(locations:)</code>
-- (void)setWithLocations:(NSArray<NSString *> * _Nonnull)locations;
-/// See <code>ContextControlProtocol.set(userLikes:)</code>
-- (void)setWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
-/// See <code>ContextControlProtocol.currentUserContext</code>
-@property (nonatomic, readonly, strong) LwayveUserContext * _Nullable currentUserContext;
-/// See <code>ContextControlProtocol.add(userLikes:)</code>
-- (void)addWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
-/// See <code>ContextControlProtocol.add(locations:)</code>
-- (void)addWithLocations:(NSArray<NSString *> * _Nonnull)locations;
-/// See <code>ContextControlProtocol.remove(userLikes:)</code>
-- (void)removeWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
-/// See <code>ContextControlProtocol.remove(locations:)</code>
-- (void)removeWithLocations:(NSArray<NSString *> * _Nonnull)locations;
-@property (nonatomic) NSTimeInterval timeOffset;
-@property (nonatomic, copy) NSString * _Nullable exclusiveTag;
-@end
-
-
 /// This protocol provides an interface for controlling the Contextual Audio Experience playlist.
 SWIFT_PROTOCOL_NAMED("PlaylistControlProtocol")
 @protocol LwayvePlaylistControlProtocol
@@ -845,6 +907,26 @@ SWIFT_PROTOCOL_NAMED("PlaylistControlProtocol")
 @property (nonatomic, readonly, strong) ContentUpdateInfo * _Nonnull contentUpdateInfo;
 @end
 
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveContextControlProtocol>
+/// See <code>ContextControlProtocol.set(locations:)</code>
+- (void)setWithLocations:(NSArray<NSString *> * _Nonnull)locations;
+/// See <code>ContextControlProtocol.set(userLikes:)</code>
+- (void)setWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+/// See <code>ContextControlProtocol.currentUserContext</code>
+@property (nonatomic, readonly, strong) LwayveUserContext * _Nullable currentUserContext;
+/// See <code>ContextControlProtocol.add(userLikes:)</code>
+- (void)addWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+/// See <code>ContextControlProtocol.add(locations:)</code>
+- (void)addWithLocations:(NSArray<NSString *> * _Nonnull)locations;
+/// See <code>ContextControlProtocol.remove(userLikes:)</code>
+- (void)removeWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+/// See <code>ContextControlProtocol.remove(locations:)</code>
+- (void)removeWithLocations:(NSArray<NSString *> * _Nonnull)locations;
+@property (nonatomic) NSTimeInterval timeOffset;
+@property (nonatomic, copy) NSString * _Nullable exclusiveTag;
+@end
+
 enum LwayveSDKConfigurationType : NSInteger;
 
 /// A <code>LwayveSDKConfiguration</code> object defines parameters required for LWAYVE SDK.
@@ -860,18 +942,22 @@ SWIFT_CLASS("_TtC9LwayveSDK22LwayveSDKConfiguration")
 @property (nonatomic, readonly) BOOL userAudioRecordingEnabled;
 /// Audio recording screen appearance.
 @property (nonatomic, readonly, strong) LwayveAudioRecordingScreenAppearance * _Nonnull audioRecordingScreenAppearance;
+/// The event name is used for user messages presented by SDK where the app or event name is important (e.g. microphone permissions request, etc)
+@property (nonatomic, readonly, copy) NSString * _Nonnull localizedEventName;
 /// Default initializer
-/// \param configurationType - see <code>configurationType</code>
+/// \param configurationType - see <code>LwayveSDKConfiguration.configurationType</code>
 ///
 /// \param baseURL - see <code>baseURL</code>. Use <code>baseURL = nil</code> to use default URL for configurationType.
 ///
-/// \param authenticationToken - see <code>authenticationToken</code>
+/// \param authenticationToken - see <code>LwayveSDKConfiguration.authenticationToken</code>
 ///
-/// \param userAudioRecordingEnabled - see <code>userAudioRecordingEnabled</code>
+/// \param userAudioRecordingEnabled - see <code>LwayveSDKConfiguration.userAudioRecordingEnabled</code>. Default value <code>false</code>.
 ///
-/// \param audioRecordingScreenAppearance - see <code>audioRecordingScreenAppearance</code>
+/// \param audioRecordingScreenAppearance - see <code>LwayveSDKConfiguration.audioRecordingScreenAppearance</code>
 ///
-- (nonnull instancetype)initWithConfigurationType:(enum LwayveSDKConfigurationType)configurationType baseURL:(NSURL * _Nullable)baseURL authenticationToken:(NSString * _Nonnull)authenticationToken userAudioRecordingEnabled:(BOOL)userAudioRecordingEnabled audioRecordingScreenAppearance:(LwayveAudioRecordingScreenAppearance * _Nonnull)audioRecordingScreenAppearance OBJC_DESIGNATED_INITIALIZER;
+/// \param localizedEventName see <code>LwayveSDKConfiguration.localizedEventName</code>. Default value <code>LWAYVE</code>
+///
+- (nonnull instancetype)initWithConfigurationType:(enum LwayveSDKConfigurationType)configurationType baseURL:(NSURL * _Nullable)baseURL authenticationToken:(NSString * _Nonnull)authenticationToken userAudioRecordingEnabled:(BOOL)userAudioRecordingEnabled audioRecordingScreenAppearance:(LwayveAudioRecordingScreenAppearance * _Nonnull)audioRecordingScreenAppearance localizedEventName:(NSString * _Nonnull)localizedEventName OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
@@ -928,7 +1014,7 @@ SWIFT_PROTOCOL_NAMED("PlaylistItem")
 /// Indicates if the item represents situational content.
 @property (nonatomic, readonly) BOOL isSituational;
 @property (nonatomic, readonly, strong) id <LwayvePlaylistItemMetadata> _Nonnull itemMetadata;
-@property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull itemActions;
+@property (nonatomic, readonly, strong) LwayveClipActions * _Nonnull itemActions;
 @end
 
 
@@ -937,6 +1023,25 @@ SWIFT_PROTOCOL_NAMED("PlaylistItemMetadata")
 @protocol LwayvePlaylistItemMetadata
 /// The text to display before playing situational audio.
 @property (nonatomic, readonly, copy) NSString * _Nullable situationalText;
+@end
+
+
+/// The class contains constants that can be used in methods of <code>OuterBandAppearanceProtocol</code> protocol
+SWIFT_CLASS("_TtC9LwayveSDK25PredefinedClipActionTypes")
+@interface PredefinedClipActionTypes : NSObject
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull url;)
++ (NSString * _Nonnull)url SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull map;)
++ (NSString * _Nonnull)map SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull ticket;)
++ (NSString * _Nonnull)ticket SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull hotel;)
++ (NSString * _Nonnull)hotel SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull share;)
++ (NSString * _Nonnull)share SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull record;)
++ (NSString * _Nonnull)record SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
 
@@ -999,6 +1104,11 @@ SWIFT_CLASS_NAMED("UserContext")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder;
 @end
 
+typedef SWIFT_ENUM_NAMED(NSInteger, LwayveUserRecordedAudioDuration, "UserRecordedAudioDuration") {
+  LwayveUserRecordedAudioDurationShort = 0,
+  LwayveUserRecordedAudioDurationLong = 1,
+};
+
 
 typedef SWIFT_ENUM_NAMED(NSInteger, LwayveUserRecordedAudioUploaderError, "UserRecordedAudioUploaderError") {
   LwayveUserRecordedAudioUploaderErrorWaitUntilPreviousUploadFinishes = 0,
@@ -1011,7 +1121,8 @@ typedef SWIFT_ENUM_NAMED(NSInteger, LwayveUserRecordedAudioValidator, "UserRecor
   LwayveUserRecordedAudioValidatorFileNotFound = 1,
   LwayveUserRecordedAudioValidatorFileSizeIsTooBig = 2,
   LwayveUserRecordedAudioValidatorAudioIsTooLong = 3,
-  LwayveUserRecordedAudioValidatorFileIsNotAudio = 4,
+/// Supported formats: .mp3, .m4a. The file must contain non-empty audio.
+  LwayveUserRecordedAudioValidatorUnsupportedFormat = 4,
 };
 static NSString * _Nonnull const LwayveUserRecordedAudioValidatorDomain = @"LwayveSDK.UserRecordedAudioValidatorError";
 

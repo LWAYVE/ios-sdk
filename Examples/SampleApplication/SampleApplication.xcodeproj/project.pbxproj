@@ -13,6 +13,7 @@
 		04DBA80A1EEEA93B00044625 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04DBA8091EEEA93B00044625 /* Assets.xcassets */; };
 		04DBA80D1EEEA93B00044625 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04DBA80B1EEEA93B00044625 /* LaunchScreen.storyboard */; };
 		4B1B2281B1CE20BA8310F4AC /* Pods_SampleApplication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB763589B325F6051D192CCC /* Pods_SampleApplication.framework */; };
+		ED9F775620332A7C0036A3EA /* ClipContextualActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9F775520332A7C0036A3EA /* ClipContextualActionsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		5B1AC4DB8E1FB45C730EB8E9 /* Pods-SampleApplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleApplication.release.xcconfig"; path = "Pods/Target Support Files/Pods-SampleApplication/Pods-SampleApplication.release.xcconfig"; sourceTree = "<group>"; };
 		8BAB8753FB334CB29D645361 /* Pods-SampleApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleApplication.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SampleApplication/Pods-SampleApplication.debug.xcconfig"; sourceTree = "<group>"; };
 		AB763589B325F6051D192CCC /* Pods_SampleApplication.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SampleApplication.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED9F775520332A7C0036A3EA /* ClipContextualActionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipContextualActionsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 			children = (
 				04DBA8021EEEA93B00044625 /* AppDelegate.swift */,
 				04DBA8041EEEA93B00044625 /* ViewController.swift */,
+				ED9F775520332A7C0036A3EA /* ClipContextualActionsViewController.swift */,
 				04DBA8061EEEA93B00044625 /* Main.storyboard */,
 				04DBA8091EEEA93B00044625 /* Assets.xcassets */,
 				04DBA80B1EEEA93B00044625 /* LaunchScreen.storyboard */,
@@ -188,26 +191,20 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${PODS_ROOT}/../../Cocoapods/LwayveSDK/LwayveSDK.framework",
 				"${PODS_ROOT}/../../Cocoapods/LwayveSDK/LwayveSDK.framework.dSYM",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/YapDatabase/YapDatabase.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LwayveSDK.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/LwayveSDK.framework.dSYM",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YapDatabase.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -238,6 +235,7 @@
 			files = (
 				04DBA8051EEEA93B00044625 /* ViewController.swift in Sources */,
 				04DBA8031EEEA93B00044625 /* AppDelegate.swift in Sources */,
+				ED9F775620332A7C0036A3EA /* ClipContextualActionsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +403,7 @@
 				04DBA8131EEEA93B00044625 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

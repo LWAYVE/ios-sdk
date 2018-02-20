@@ -1,21 +1,41 @@
 # LWAYVE SDK for iOS
 The following document provides background information on the LWAYVE platform as well as provides setup and usage instructions for the LWAYVE SDK for iOS. The content in this document is divided into the following sections:
 
-  - [Section 1: Introducing LWAYVE and Contextual Audio Experiences](#section-1-introducing-lwayve-and-contextual-audio-experiences)
-    * [Background](#background)
-    * [Who are the Players?](#who-are-the-players)
-    * [What are the Components of the LWAYVE Platform?](#what-are-the-components-of-the-lwayve-platform)
-    * [How Does LWAYVE Work?](#how-does-lwayve-work)
-  - [Section 2: Implementing the LWAYVE and ProxSee SDKs in an iOS Project](#section-2-implementing-the-lwayve-and-proxsee-sdks-in-an-ios-project)
-    * [Prerequisites](#prerequisites)
-    * [Add the LWAYVE SDK (and optionally the ProxSee SDK) as Dependencies](#add-the-lwayve-sdk-and-optionally-the-proxsee-sdk-as-dependencies)
-    * [Configure Application Background Modes](#configure-application-background-modes)
-    * [Set Up Push Notifications](#set-up-push-notifications)
-    * [Initialize the LWAYVE (and optionally ProxSee SDKs)](#initialize-the-lwayve-and-optionally-proxsee-sdks)
-    * [Set Up Branded Playback Control](#set-up-branded-playback-control)
-  - [Section 3: Testing LWAYVE](#section-3-testing-lwayve)
-    * [API](#api)
-    * [Classes](#classes)
+- [Section 1: Introducing LWAYVE and Contextual Audio Experiences](#section-1--introducing-lwayve-and-contextual-audio-experiences)
+  * [Background](#background)
+  * [Who are the Players?](#who-are-the-players-)
+  * [What are the Components of the LWAYVE Platform?](#what-are-the-components-of-the-lwayve-platform-)
+    + [Mobile SDKs](#mobile-sdks)
+    + [Customer Mobile Application](#customer-mobile-application)
+    + [Experience Service and Contextual Audio Experience](#experience-service-and-contextual-audio-experience)
+  * [How Does LWAYVE Work?](#how-does-lwayve-work-)
+- [Section 2: Implementing the LWAYVE and ProxSee SDKs in an iOS Project](#section-2--implementing-the-lwayve-and-proxsee-sdks-in-an-ios-project)
+  * [Prerequisites](#prerequisites)
+  * [Add the LWAYVE SDK (and optionally the ProxSee SDK) as Dependencies](#add-the-lwayve-sdk--and-optionally-the-proxsee-sdk--as-dependencies)
+      - [Using CocoaPods (recomended)](#using-cocoapods--recomended-)
+      - [Manually](#manually)
+  * [Configure Application Background Modes](#configure-application-background-modes)
+  * [Add Plist Values](#add-plist-values)
+  * [Set Up Push Notifications](#set-up-push-notifications)
+    + [Enable Push Notifications](#enable-push-notifications)
+    + [Generate Authentication Token](#generate-authentication-token)
+  * [Initialize the LWAYVE (and optionally ProxSee SDKs)](#initialize-the-lwayve--and-optionally-proxsee-sdks-)
+    + [Initialize the LWAYVE SDK](#initialize-the-lwayve-sdk)
+  * [Set Up Branded Playback Control](#set-up-branded-playback-control)
+    + [With Storyboard or Xib](#with-storyboard-or-xib)
+    + [From Code](#from-code)
+- [Section 3: Testing LWAYVE](#section-3--testing-lwayve)
+  * [API](#api)
+  * [LWAYVE SDK Reference](#lwayve-sdk-reference)
+- [Section 4: Clip Contextual Actions](#section-4--clip-contextual-actions)
+  * [Clip Contextual Action with Branded Playback Control](#clip-contextual-action-with-branded-playback-control)
+    + [Appearance customization](#appearance-customization)
+    + [Audio Recording Action](#audio-recording-action)
+  * [Clip Contextual Action without Branded Playback Control](#clip-contextual-action-without-branded-playback-control)
+    + [Access to currently playing audio clips](#access-to-currently-playing-audio-clips)
+    + [Retreive clip actions UI info](#retreive-clip-actions-ui-info)
+    + [Perform a clip action](#perform-a-clip-action)
+    + [Audio record upload action](#audio-record-upload-action)
 
 ## Section 1: Introducing LWAYVE and Contextual Audio Experiences
 
@@ -182,10 +202,10 @@ The push notifications will be handled by the SDK. Here is an example push notif
 
 ```
 {
-  "event": "experience.updated", 
+  "event": "experience.updated",
   "aps": {
     "content-available": 1
-  }, 
+  },
   "experience_id": 194950
 }
 ```
@@ -194,8 +214,8 @@ The push notifications will be handled by the SDK. Here is an example push notif
 To enable push notifications for your application, please refer to [Enable push notifications](http://help.apple.com/xcode/mac/current/#/devdfd3d04a1) from the Apple Documentation.
 
 #### Generate Authentication Token
-To allow push notifications, an APNs key (.p8) must be provided to Lixar. Please refer to the [Communicate with APNs using authentication tokens](http://help.apple.com/xcode/mac/current/#/dev54d690a66) from the Apple Documentation. 
-> **NOTE:** It is recommended that only APNs is enabled for this key. 
+To allow push notifications, an APNs key (.p8) must be provided to Lixar. Please refer to the [Communicate with APNs using authentication tokens](http://help.apple.com/xcode/mac/current/#/dev54d690a66) from the Apple Documentation.
+> **NOTE:** It is recommended that only APNs is enabled for this key.
 
 ### Initialize the LWAYVE (and optionally ProxSee SDKs)
 The next step is to initialize (launch) the LWAYVE SDK.
@@ -289,3 +309,42 @@ You can test LWAYVE by using the API documented on Swagger. You can access Swagg
 ### LWAYVE SDK Reference
 
 For LWAYVE SDK reference information (e.g., classes, global variables, enums, protocols, and structs) refer to [https://lwayve.github.io/ios/docs/api_docs/Classes.html](https://lwayve.github.io/ios/docs/api_docs/Classes.html).
+
+## Section 4: Clip Contextual Actions
+
+Each audio clip may be accompanied by supplementary actions related to the clip, e.g. open web page, open map, share, etc. LWAYVE provides 5 default icons and text:
+
+1. Tickets - This can be a URL to a website where the listener can find tickets for the artist that is playing, or the festival event.
+2. Map - This can be used as a google maps location for the artist show, point of interest, or sponsor location
+3. Link - A relevant link for the audio that is playing
+4. Share - A string that can used for the listener sharing over social media.
+5. Hotel - A URL for a hotel near the event that the artist is playing at
+
+### Clip Contextual Action with Branded Playback Control
+
+The actions are rendered by the LWAYVE Branded Playback Control (see also [Set Up Branded Playback Control](#set-up-branded-playback-control)). They can be accessed from the Outer Band when a user does a long press or a swipe down gesture on the play button.
+
+#### Appearance customization
+The default icons and text resources used in the LWAYVE Branded Playback Control's Outer Band can be overridden if desired. The overridden values will apply for all audio clips in the experience.
+See also : [API](https://lwayve.github.io/ios/docs/api_docs/Protocols/OuterBandAppearanceProtocol.html) and [Code sample](https://github.com/LWAYVE/ios-sdk/blob/master/Examples/PlaybackControlSampleApplication/PlaybackControlSampleApp/Source/AppDelegate.swift)
+
+#### Audio Recording Action
+Audio Recording Action is the 6th optional action. It provides users a way to record their own short recording and submit this for consideration in the experience playlist.
+
+### Clip Contextual Action without Branded Playback Control
+
+If you want to use LWAYVE service without using the Branded Playback Control you still can access the clip contextual actions using following API:
+
+#### Access to currently playing audio clips
+[https://lwayve.github.io/ios/docs/api_docs/Protocols/PlaylistControlProtocol.html#/c:@M@LwayveSDK@objc(pl)LwayvePlaylistControlProtocol(py)audioQueue](https://lwayve.github.io/ios/docs/api_docs/Protocols/PlaylistControlProtocol.html#/c:@M@LwayveSDK@objc(pl)LwayvePlaylistControlProtocol(py)audioQueue)
+
+#### Retreive clip actions UI info
+[https://lwayve.github.io/ios/docs/api_docs/Protocols/ClipActionsProtocol.html#/c:@M@LwayveSDK@objc(pl)LwayveClipActionsProtocol(im)loadActionsWithActions:completion:](https://lwayve.github.io/ios/docs/api_docs/Protocols/ClipActionsProtocol.html#/c:@M@LwayveSDK@objc(pl)LwayveClipActionsProtocol(im)loadActionsWithActions:completion:)
+
+#### Perform a clip action
+[https://lwayve.github.io/ios/docs/api_docs/Protocols/ClipActionsProtocol.html#/c:@M@LwayveSDK@objc(pl)LwayveClipActionsProtocol(im)performClipAction:completion:](https://lwayve.github.io/ios/docs/api_docs/Protocols/ClipActionsProtocol.html#/c:@M@LwayveSDK@objc(pl)LwayveClipActionsProtocol(im)performClipAction:completion:)
+
+#### Audio record upload action
+[https://lwayve.github.io/ios/docs/api_docs/Protocols/UserRecordedAudioUploadProtocol.html#/c:@M@LwayveSDK@objc(pl)UserRecordedAudioUploadProtocol(py)maximumUserRecordedAudioDuration](https://lwayve.github.io/ios/docs/api_docs/Protocols/UserRecordedAudioUploadProtocol.html#/c:@M@LwayveSDK@objc(pl)UserRecordedAudioUploadProtocol(py)maximumUserRecordedAudioDuration)
+
+See also [Code Sample](https://github.com/LWAYVE/ios-sdk/blob/master/Examples/SampleApplication/SampleApplication/ClipContextualActionsViewController.swift)

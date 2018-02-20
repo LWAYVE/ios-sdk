@@ -58,8 +58,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     fileprivate func configureLwayveSDK() {
+        // Change language if needed
         let language: LwayveLanguage = NSLocale.current.languageCode == "fr" ? .french : .english
         LwayveSDK.sharedSDK.language = language
+
+        // Override a clip contextual action icon
+        LwayveSDK.sharedSDK.overrideImage(#imageLiteral(resourceName: "url_icon"), forActionType: PredefinedClipActionTypes.url)
+
+        // Override a clip contextual action title. Make sure, the title is localized.
+        let localizedTitle = NSLocalizedString("URL", comment: "")
+        LwayveSDK.sharedSDK.overrideTitle(localizedTitle, forActionType: PredefinedClipActionTypes.url)
     }
 }
 
