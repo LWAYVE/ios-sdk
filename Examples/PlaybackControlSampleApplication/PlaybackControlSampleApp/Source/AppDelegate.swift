@@ -9,6 +9,14 @@
 import UIKit
 import LwayveSDK
 
+// Following imports have to be added for Xcode 9.2. Otherwise you may have a runtime crash at the launch like:
+//
+// dyld: Library not loaded: @rpath/libswiftAVFoundation.dylib
+// Referenced from: .../PlaybackControlSampleApp.app/Frameworks/LwayveSDK.framework/LwayveSDK
+// Reason: image not found
+import MediaPlayer
+import CoreLocation
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
