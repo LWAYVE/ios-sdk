@@ -9,14 +9,6 @@
 import UIKit
 import LwayveSDK
 
-// Following imports have to be added for Xcode 9.2. Otherwise you may have a runtime crash at the launch like:
-//
-// dyld: Library not loaded: @rpath/libswiftAVFoundation.dylib
-// Referenced from: .../PlaybackControlSampleApp.app/Frameworks/LwayveSDK.framework/LwayveSDK
-// Reason: image not found
-import MediaPlayer
-import CoreLocation
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -66,8 +58,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     fileprivate func configureLwayveSDK() {
+        // Change language if needed
         let language: LwayveLanguage = NSLocale.current.languageCode == "fr" ? .french : .english
         LwayveSDK.sharedSDK.language = language
+
+        // Override a clip contextual action icon
+        LwayveSDK.sharedSDK.overrideImage(#imageLiteral(resourceName: "url_icon"), forActionType: PredefinedClipActionTypes.url)
+
+        // Override a clip contextual action title. Make sure, the title is localized.
+        let localizedTitle = NSLocalizedString("URL", comment: "")
+        LwayveSDK.sharedSDK.overrideTitle(localizedTitle, forActionType: PredefinedClipActionTypes.url)
     }
 }
 

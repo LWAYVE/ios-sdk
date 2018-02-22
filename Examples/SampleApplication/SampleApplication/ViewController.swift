@@ -11,16 +11,6 @@ import LwayveSDK
 
 class ViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 // MARK: - Action section
 
     // Sample actions for control audio playback
@@ -53,5 +43,18 @@ class ViewController: UIViewController {
 
     @IBAction func addLocationsButtonTouched(_ sender: UIButton) {
         LwayveSDK.sharedSDK.add(locations: ["#bar1", "#bar2"])
+    }
+
+    // MARK: - Segues
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ClipActionsSegue" {
+            segue.destination.popoverPresentationController?.delegate = self
+        }
+    }
+}
+
+extension ViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
     }
 }

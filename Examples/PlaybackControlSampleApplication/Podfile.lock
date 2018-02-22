@@ -24,17 +24,21 @@ PODS:
     - CocoaLumberjack
 
 DEPENDENCIES:
-  - LwayveSDK/ProxSee
+  - LwayveSDK/ProxSee (from `../Cocoapods`)
+
+EXTERNAL SOURCES:
+  LwayveSDK:
+    :path: ../Cocoapods
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   CocoaLumberjack: 2e258a064cacc8eb9a2aca318e24d02a0a7fd56d
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
-  LwayveSDK: b4ecab1c84cefa2cd8e6bcf3ffac9b89eb484d14
+  LwayveSDK: 0038e9e0e946a11966f62ad24f2acc34fdc22624
   ProxSeeSDK: 2246ebd32ba03263aceca80880b4d56bcbf5a12d
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   YapDatabase: 0cef6c79948169c924ae325d430ffcfa8a5231c2
 
-PODFILE CHECKSUM: d50b6aa80e3c898ec2973481041f59be97bc151b
+PODFILE CHECKSUM: 5720c91d9758f64b494765a9d0ca0b1554f8f909
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.3.1

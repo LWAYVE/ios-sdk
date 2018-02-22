@@ -28,17 +28,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let configuration = LwayveSDKConfiguration(baseURL: URL(string: Constants.baseURL),
                                                    authenticationToken: Constants.authKey)
 
+        // Set delegate before calling LwayveSDK.sharedSDK.initialize to be able to receive lwayveSDK(didInit:) callback
+        LwayveSDK.sharedSDK.add(delegate: self)
+
         // Attempt to initialize the LWAYVE SDK using the configuration values.
         // This may fail if the SDK is already initialized, the persistant storage cannot be created, or if an empty authenticationToken is provided.
         // Additional information about the failure can be seen in the logs at the LwayveSDKLogLevel.error level.
         do {
-            try LwayveSDK.sharedSDK.initialize(configuration: configuration)
+            try LwayveSDK.sharedSDK.initializeWithProxSee(configuration: configuration)
         } catch {
-            NSLog("LwayveSDK initialization error: \(error)")
+            NSLog("LwayveSDK initialization error: \(String (describing: error))")
         }
-
-        let language: LwayveLanguage = NSLocale.current.languageCode == "fr" ? .french : .english
-        LwayveSDK.sharedSDK.language = language
 
         // Pass the launch options to the LWAYVE SDK.
         // The launch options are used by the SDK to retrieve any relevant notificaton information.
@@ -55,5 +55,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // Pass the device token data to the LWAYVE SDK so that it can subscribe to receive remote notifications.
         LwayveSDK.sharedSDK.handleApplication(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+    }
+}
+
+extension AppDelegate: LwayveSDKDelegate {
+    public func lwayveSDK(didInit sdk: LwayveSDK) {
+    }
+
+    public func lwayveSDK(didDeinit sdk: LwayveSDK) {
     }
 }
