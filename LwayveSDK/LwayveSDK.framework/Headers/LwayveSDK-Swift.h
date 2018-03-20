@@ -200,8 +200,6 @@ SWIFT_MODULE_NAMESPACE_PUSH("LwayveSDK")
 ///
 SWIFT_PROTOCOL_NAMED("AnalyticsControlProtocol")
 @protocol LwayveAnalyticsControlProtocol
-/// Set the handler to receive callback each time the event would be tracked
-@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
 /// Sends all pending analytic events.
 - (void)sendAnalyticEvents;
 /// The device Id used in analytics events
@@ -242,45 +240,45 @@ SWIFT_PROTOCOL_NAMED("AudioControlDelegate")
 /// In this case method <code>didStartPlayingTrack</code> will be called at once.
 /// \param track The audio track that started playing.
 ///
-- (void)lwayveSDKWithDidStartLoadingTrack:(id <LwayveAudioTrack> _Nonnull)track;
+- (void)lwayveSDKDidStartLoadingTrack:(id <LwayveAudioTrack> _Nonnull)track;
 /// This method is called when the audio track has started playing.
 /// \param track The audio track that started playing.
 ///
-- (void)lwayveSDKWithDidStartPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track;
+- (void)lwayveSDKDidStartPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track;
 /// This method is called when the audio track was paused.
 /// \param track The audio track that was paused.
 ///
-- (void)lwayveSDKWithDidPauseTrack:(id <LwayveAudioTrack> _Nonnull)track;
+- (void)lwayveSDKDidPauseTrack:(id <LwayveAudioTrack> _Nonnull)track;
 /// This method is called when the audio track was almost played to the end (about 0.1 sec left to the end).
 /// \param track The audio track that was paused.
 ///
-- (void)lwayveSDKWithDidAlmostPlayTrackToEnd:(id <LwayveAudioTrack> _Nonnull)track;
+- (void)lwayveSDKDidAlmostPlayTrackToEnd:(id <LwayveAudioTrack> _Nonnull)track;
 /// This method is called when the audio track was played to the end.
 /// \param track The audio track that was paused.
 ///
-- (void)lwayveSDKWithDidPlayTrackToEnd:(id <LwayveAudioTrack> _Nonnull)track;
+- (void)lwayveSDKDidPlayTrackToEnd:(id <LwayveAudioTrack> _Nonnull)track;
 /// This method is called when the audio track has ended.
 /// \param track The audio track that ended.
 ///
-- (void)lwayveSDKWithDidEndPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track;
+- (void)lwayveSDKDidEndPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track;
 /// This method is called when the SDK has reached an error.
 /// \param track The audio track that failed to play.
 ///
 /// \param error The error object.
 ///
-- (void)lwayveSDKWithDidFailPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track withError:(NSError * _Nonnull)error;
+- (void)lwayveSDKDidFailPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track withError:(NSError * _Nonnull)error;
 /// This method is called when the audio player status has changed.
 /// \param isReadyToPlay Set to <code>true</code> when the audio player has tracks to play. A host application should disable play controls when <code>isReadyToPlay == false</code>.
 ///
-- (void)lwayveSDKWithPlayerIsReadyToPlayStatusDidChange:(BOOL)isReadyToPlay;
+- (void)lwayveSDKPlayerIsReadyToPlayStatusDidChange:(BOOL)isReadyToPlay;
 /// This method is called when the audio player status has changed.
 /// \param canSkip Set to <code>true</code> when there is at least one unfinished track. A host application should disable the Skip button when <code>canSkip == false</code>.
 ///
-- (void)lwayveSDKWithPlayerCanSkipStatusDidChange:(BOOL)canSkip;
+- (void)lwayveSDKPlayerCanSkipStatusDidChange:(BOOL)canSkip;
 /// This method is called when the audio player status has changed.
 /// \param canRewind Set to <code>true</code> when the rewind action can be performed. A host application should disable the Rewind button when <code>canRewind == false</code>.
 ///
-- (void)lwayveSDKWithPlayerCanRewindStatusDidChange:(BOOL)canRewind;
+- (void)lwayveSDKPlayerCanRewindStatusDidChange:(BOOL)canRewind;
 @end
 
 
@@ -330,7 +328,29 @@ SWIFT_PROTOCOL_NAMED("AudioPlaybackControlProtocol")
 
 SWIFT_CLASS_NAMED("AudioRecordingScreenAppearance")
 @interface LwayveAudioRecordingScreenAppearance : NSObject
-- (nonnull instancetype)initWithBackgroundColor:(UIColor * _Nonnull)backgroundColor statusTextColor:(UIColor * _Nonnull)statusTextColor tryAgainButtonColor:(UIColor * _Nonnull)tryAgainButtonColor sendButtonColor:(UIColor * _Nonnull)sendButtonColor playButtonColor:(UIColor * _Nonnull)playButtonColor closeButtonColor:(UIColor * _Nonnull)closeButtonColor topTextColor:(UIColor * _Nonnull)topTextColor OBJC_DESIGNATED_INITIALIZER;
+@property (nonatomic, readonly, strong) UIColor * _Nonnull backgroundColor;
+@property (nonatomic, readonly, strong) UIColor * _Nonnull statusTextColor;
+@property (nonatomic, readonly, strong) UIColor * _Nonnull tryAgainButtonColor;
+@property (nonatomic, readonly, strong) UIColor * _Nonnull sendButtonColor;
+@property (nonatomic, readonly, strong) UIColor * _Nonnull playButtonColor;
+@property (nonatomic, readonly, strong) UIColor * _Nonnull closeButtonColor;
+@property (nonatomic, readonly, strong) UIColor * _Nonnull topTextColor;
+/// If you pass <code>nil</code> to a parameter, then the default value will be applied.
+- (nonnull instancetype)initWithBackgroundColor:(UIColor * _Nullable)backgroundColor statusTextColor:(UIColor * _Nullable)statusTextColor tryAgainButtonColor:(UIColor * _Nullable)tryAgainButtonColor sendButtonColor:(UIColor * _Nullable)sendButtonColor playButtonColor:(UIColor * _Nullable)playButtonColor closeButtonColor:(UIColor * _Nullable)closeButtonColor topTextColor:(UIColor * _Nullable)topTextColor OBJC_DESIGNATED_INITIALIZER;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultBackgroundColor;)
++ (UIColor * _Nonnull)defaultBackgroundColor SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultStatusTextColor;)
++ (UIColor * _Nonnull)defaultStatusTextColor SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultTryAgainButtonColor;)
++ (UIColor * _Nonnull)defaultTryAgainButtonColor SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultSendButtonColor;)
++ (UIColor * _Nonnull)defaultSendButtonColor SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultPlayButtonColor;)
++ (UIColor * _Nonnull)defaultPlayButtonColor SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultCloseButtonColor;)
++ (UIColor * _Nonnull)defaultCloseButtonColor SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultTopTextColor;)
++ (UIColor * _Nonnull)defaultTopTextColor SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
@@ -364,6 +384,8 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 /// Experience ID from the experience containing the audio track
 @property (nonatomic, readonly, copy) NSString * _Nullable experienceId;
 @end
+
+
 
 
 
@@ -404,7 +426,7 @@ SWIFT_PROTOCOL_NAMED("ClipActionsProtocol")
 ///
 /// \param completion completion with actions data.
 ///
-- (void)loadActionsWithActions:(LwayveClipActions * _Nonnull)actions completion:(void (^ _Nonnull)(NSArray<LwayveClipAction *> * _Nonnull))completion;
+- (void)loadActions:(LwayveClipActions * _Nonnull)actions completion:(void (^ _Nonnull)(NSArray<LwayveClipAction *> * _Nonnull))completion;
 /// Performs the clip related action
 /// \param action action info object - result of method <code>loadActions(actions:completion:)</code>
 ///
@@ -445,27 +467,27 @@ SWIFT_PROTOCOL_NAMED("ContextControlProtocol")
 /// Update user likes in a Contextual Audio Experience.
 /// \param userLikes The list of strings representing the updated user likes in the Contextual Audio Experience.
 ///
-- (void)setWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+- (void)setUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
 /// Add user likes to a Contextual Audio Experience.
 /// \param userLikes The list of strings representing the user likes to add to the Contextual Audio Experience.
 ///
-- (void)addWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+- (void)addUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
 /// Remove user likes from a Contextual Audio Experience.
 /// \param userLikes The list of strings representing the user likes to remove from the Contextual Audio Experience.
 ///
-- (void)removeWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+- (void)removeUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
 /// Update locations in a Contextual Audio Experience.
 /// \param locations The list of strings representing the updated locations in the Contextual Audio Experience.
 ///
-- (void)setWithLocations:(NSArray<NSString *> * _Nonnull)locations;
+- (void)setLocations:(NSArray<NSString *> * _Nonnull)locations;
 /// Add locations to a Contextual Audio Experience.
 /// \param locations The list of strings representing the locations to be added to the Contextual Audio Experience.
 ///
-- (void)addWithLocations:(NSArray<NSString *> * _Nonnull)locations;
+- (void)addLocations:(NSArray<NSString *> * _Nonnull)locations;
 /// Remove locations from a Contextual Audio Experience.
 /// \param locations The list of strings representing the locations to be removed from the Contextual Audio Experience.
 ///
-- (void)removeWithLocations:(NSArray<NSString *> * _Nonnull)locations;
+- (void)removeLocations:(NSArray<NSString *> * _Nonnull)locations;
 /// Set Exclusive Tag
 /// \param exclusiveTag 
 ///
@@ -565,13 +587,11 @@ SWIFT_CLASS("_TtC9LwayveSDK25LwayvePlaybackControlView")
 
 
 
-
-
 @class LwayvePlaylist;
 
 /// This protocol contains methods for handling playlist updates.
-SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
-@protocol PlayListEventsListener
+SWIFT_PROTOCOL_NAMED("PlayListEventsListener")
+@protocol LwayvePlayListEventsListener
 @optional
 /// This method is called each time the playlist has been updated.
 /// \param playlist The object that contains additional information about the updated playlist.
@@ -592,7 +612,7 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK22PlayListEventsListener_")
 @end
 
 
-@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <PlayListEventsListener>
+@interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <LwayvePlayListEventsListener>
 - (void)contentUpdateInfoDidChange:(ContentUpdateInfo * _Nonnull)updateInfo;
 @end
 
@@ -604,17 +624,19 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
 /// This method is called when the LWAYVE SDK has successfully initialized.
 /// \param sdk The LWAYVE SDK object.
 ///
-- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
+- (void)lwayveSDKDidInit:(LwayveSDK * _Nonnull)sdk;
 /// This method is called when the LWAYVE SDK has been de-initialized.
 /// \param sdk The LWAYVE SDK object.
 ///
-- (void)lwayveSDKWithDidDeinit:(LwayveSDK * _Nonnull)sdk;
+- (void)lwayveSDKDidDeinit:(LwayveSDK * _Nonnull)sdk;
 @end
 
 
 @interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <LwayveSDKDelegate>
-- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
+- (void)lwayveSDKDidInit:(LwayveSDK * _Nonnull)sdk;
 @end
+
+
 
 
 
@@ -631,15 +653,15 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK17LwayveSDKDelegate_")
 
 
 @interface LwayvePlaybackControlView (SWIFT_EXTENSION(LwayveSDK)) <LwayveAudioControlDelegate>
-- (void)lwayveSDKWithDidStartLoadingTrack:(id <LwayveAudioTrack> _Nonnull)track;
-- (void)lwayveSDKWithDidStartPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track;
-- (void)lwayveSDKWithDidPauseTrack:(id <LwayveAudioTrack> _Nonnull)track;
-- (void)lwayveSDKWithDidAlmostPlayTrackToEnd:(id <LwayveAudioTrack> _Nonnull)track;
-- (void)lwayveSDKWithDidEndPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track;
-- (void)lwayveSDKWithDidFailPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track withError:(NSError * _Nonnull)error;
-- (void)lwayveSDKWithPlayerIsReadyToPlayStatusDidChange:(BOOL)isReadyToPlay;
-- (void)lwayveSDKWithPlayerCanSkipStatusDidChange:(BOOL)canSkip;
-- (void)lwayveSDKWithPlayerCanRewindStatusDidChange:(BOOL)canRewind;
+- (void)lwayveSDKDidStartLoadingTrack:(id <LwayveAudioTrack> _Nonnull)track;
+- (void)lwayveSDKDidStartPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track;
+- (void)lwayveSDKDidPauseTrack:(id <LwayveAudioTrack> _Nonnull)track;
+- (void)lwayveSDKDidAlmostPlayTrackToEnd:(id <LwayveAudioTrack> _Nonnull)track;
+- (void)lwayveSDKDidEndPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track;
+- (void)lwayveSDKDidFailPlayingTrack:(id <LwayveAudioTrack> _Nonnull)track withError:(NSError * _Nonnull)error;
+- (void)lwayveSDKPlayerIsReadyToPlayStatusDidChange:(BOOL)isReadyToPlay;
+- (void)lwayveSDKPlayerCanSkipStatusDidChange:(BOOL)canSkip;
+- (void)lwayveSDKPlayerCanRewindStatusDidChange:(BOOL)canRewind;
 @end
 
 @class UIFont;
@@ -675,17 +697,17 @@ SWIFT_CLASS("_TtC9LwayveSDK9LwayveSDK")
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * _Nonnull sharedSDK;)
 + (LwayveSDK * _Nonnull)sharedSDK SWIFT_WARN_UNUSED_RESULT;
 /// Adds the listener for the playlist events
-- (void)addWithPlaylistEventsListener:(id <PlayListEventsListener> _Nonnull)playlistEventsListener;
+- (void)addPlaylistEventsListener:(id <LwayvePlayListEventsListener> _Nonnull)playlistEventsListener;
 /// Removes the listener for the playlist events
-- (void)removeWithPlaylistEventsListener:(id <PlayListEventsListener> _Nonnull)playlistEventsListener;
+- (void)removePlaylistEventsListener:(id <LwayvePlayListEventsListener> _Nonnull)playlistEventsListener;
 /// Add delegate
 /// \param delegate Receiver of lwayve states notifications
 ///
-- (void)addWithDelegate:(id <LwayveSDKDelegate> _Nonnull)delegate;
+- (void)addDelegate:(id <LwayveSDKDelegate> _Nonnull)delegate;
 /// Remove delegate
 /// \param delegate Receiver of lwayve states notifications
 ///
-- (void)removeWithDelegate:(id <LwayveSDKDelegate> _Nonnull)delegate;
+- (void)removeDelegate:(id <LwayveSDKDelegate> _Nonnull)delegate;
 /// Using this property you can get or update the SDK preferred language.
 /// Update is an asynchronous operation. The default value is the current device language, if the LWAYVE SDK supports it.
 /// If a language is not set on the current device, the default is LwayveLanguage.english.
@@ -693,11 +715,11 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) LwayveSDK * 
 /// Adds a listener for audio playback events.
 /// \param delegate An object conforming to the <code>AudioControlDelegate</code> protocol.
 ///
-- (void)addWithAudioControlDelegate:(id <LwayveAudioControlDelegate> _Nonnull)delegate;
+- (void)addAudioControlDelegate:(id <LwayveAudioControlDelegate> _Nonnull)delegate;
 /// Removes a listener for audio playback events.
 /// \param delegate An object conforming to the <code>AudioControlDelegate</code> protocol.
 ///
-- (void)removeWithAudioControlDelegate:(id <LwayveAudioControlDelegate> _Nonnull)delegate;
+- (void)removeAudioControlDelegate:(id <LwayveAudioControlDelegate> _Nonnull)delegate;
 @end
 
 
@@ -733,15 +755,21 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK27OuterBandAppearanceProtocol_")
 @end
 
 
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
+- (void)sendAnalyticEvents;
+- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
+@end
+
+
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveSDKDelegate>
-- (void)lwayveSDKWithDidInit:(LwayveSDK * _Nonnull)sdk;
-- (void)lwayveSDKWithDidDeinit:(LwayveSDK * _Nonnull)sdk;
+- (void)lwayveSDKDidInit:(LwayveSDK * _Nonnull)sdk;
+- (void)lwayveSDKDidDeinit:(LwayveSDK * _Nonnull)sdk;
 @end
 
 
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveClipActionsProtocol>
 /// See <code>ClipActionsProtocol.loadActions(actions:completion:)</code>
-- (void)loadActionsWithActions:(LwayveClipActions * _Nonnull)actions completion:(void (^ _Nonnull)(NSArray<LwayveClipAction *> * _Nonnull))completion;
+- (void)loadActions:(LwayveClipActions * _Nonnull)actions completion:(void (^ _Nonnull)(NSArray<LwayveClipAction *> * _Nonnull))completion;
 /// See <code>ClipActionsProtocol.performClipAction(_:completion:)</code>
 - (void)performClipAction:(LwayveClipAction * _Nonnull)actionInfo completion:(void (^ _Nonnull)(void))completion;
 @end
@@ -790,6 +818,11 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
 
 
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
+@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
 /// Intitializes Lwayve with ProxSee integration.
 /// This method must be called before the SDK can be used.
 /// seealso:
@@ -810,13 +843,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
 /// See <code>ApplicationRemoteNotificationsHandler.handleApplication(_:didReceiveRemoteNotification:fetchCompletionHandler:)</code>
 - (void)handleApplication:(UIApplication * _Nonnull)application didReceiveRemoteNotification:(NSDictionary * _Nonnull)userInfo fetchCompletionHandler:(void (^ _Nonnull)(UIBackgroundFetchResult))fetchCompletionHandler;
 - (void)handleApplication:(UIApplication * _Nonnull)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData * _Nonnull)deviceToken;
-@end
-
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAnalyticsControlProtocol>
-@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
-- (void)sendAnalyticEvents;
-- (void)getAnalyticsDeviceId:(void (^ _Nonnull)(NSString * _Nonnull))completion;
 @end
 
 
@@ -857,6 +883,26 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
 - (void)skip;
 /// See <code>AudioPlaybackControlProtocol.rewind()</code>
 - (void)rewind;
+@end
+
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveContextControlProtocol>
+/// See <code>ContextControlProtocol.set(locations:)</code>
+- (void)setLocations:(NSArray<NSString *> * _Nonnull)locations;
+/// See <code>ContextControlProtocol.set(userLikes:)</code>
+- (void)setUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+/// See <code>ContextControlProtocol.currentUserContext</code>
+@property (nonatomic, readonly, strong) LwayveUserContext * _Nullable currentUserContext;
+/// See <code>ContextControlProtocol.add(userLikes:)</code>
+- (void)addUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+/// See <code>ContextControlProtocol.add(locations:)</code>
+- (void)addLocations:(NSArray<NSString *> * _Nonnull)locations;
+/// See <code>ContextControlProtocol.remove(userLikes:)</code>
+- (void)removeUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+/// See <code>ContextControlProtocol.remove(locations:)</code>
+- (void)removeLocations:(NSArray<NSString *> * _Nonnull)locations;
+@property (nonatomic) NSTimeInterval timeOffset;
+@property (nonatomic, copy) NSString * _Nullable exclusiveTag;
 @end
 
 
@@ -907,26 +953,6 @@ SWIFT_PROTOCOL_NAMED("PlaylistControlProtocol")
 @property (nonatomic, readonly, strong) ContentUpdateInfo * _Nonnull contentUpdateInfo;
 @end
 
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveContextControlProtocol>
-/// See <code>ContextControlProtocol.set(locations:)</code>
-- (void)setWithLocations:(NSArray<NSString *> * _Nonnull)locations;
-/// See <code>ContextControlProtocol.set(userLikes:)</code>
-- (void)setWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
-/// See <code>ContextControlProtocol.currentUserContext</code>
-@property (nonatomic, readonly, strong) LwayveUserContext * _Nullable currentUserContext;
-/// See <code>ContextControlProtocol.add(userLikes:)</code>
-- (void)addWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
-/// See <code>ContextControlProtocol.add(locations:)</code>
-- (void)addWithLocations:(NSArray<NSString *> * _Nonnull)locations;
-/// See <code>ContextControlProtocol.remove(userLikes:)</code>
-- (void)removeWithUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
-/// See <code>ContextControlProtocol.remove(locations:)</code>
-- (void)removeWithLocations:(NSArray<NSString *> * _Nonnull)locations;
-@property (nonatomic) NSTimeInterval timeOffset;
-@property (nonatomic, copy) NSString * _Nullable exclusiveTag;
-@end
-
 enum LwayveSDKConfigurationType : NSInteger;
 
 /// A <code>LwayveSDKConfiguration</code> object defines parameters required for LWAYVE SDK.
@@ -953,11 +979,13 @@ SWIFT_CLASS("_TtC9LwayveSDK22LwayveSDKConfiguration")
 ///
 /// \param userAudioRecordingEnabled - see <code>LwayveSDKConfiguration.userAudioRecordingEnabled</code>. Default value <code>false</code>.
 ///
-/// \param audioRecordingScreenAppearance - see <code>LwayveSDKConfiguration.audioRecordingScreenAppearance</code>
+/// \param audioRecordingScreenAppearance - see <code>LwayveSDKConfiguration.audioRecordingScreenAppearance</code>.
+/// You can pass <code>nil</code> to use the default value in Objective-C
 ///
-/// \param localizedEventName see <code>LwayveSDKConfiguration.localizedEventName</code>. Default value <code>LWAYVE</code>
+/// \param localizedEventName see <code>LwayveSDKConfiguration.localizedEventName</code>. Default value <code>LWAYVE</code>.
+/// You can pass <code>nil</code> to use the default value in Objective-C
 ///
-- (nonnull instancetype)initWithConfigurationType:(enum LwayveSDKConfigurationType)configurationType baseURL:(NSURL * _Nullable)baseURL authenticationToken:(NSString * _Nonnull)authenticationToken userAudioRecordingEnabled:(BOOL)userAudioRecordingEnabled audioRecordingScreenAppearance:(LwayveAudioRecordingScreenAppearance * _Nonnull)audioRecordingScreenAppearance localizedEventName:(NSString * _Nonnull)localizedEventName OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithConfigurationType:(enum LwayveSDKConfigurationType)configurationType baseURL:(NSURL * _Nullable)baseURL authenticationToken:(NSString * _Nonnull)authenticationToken userAudioRecordingEnabled:(BOOL)userAudioRecordingEnabled audioRecordingScreenAppearance:(LwayveAudioRecordingScreenAppearance * _Nullable)audioRecordingScreenAppearance localizedEventName:(NSString * _Nullable)localizedEventName OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 

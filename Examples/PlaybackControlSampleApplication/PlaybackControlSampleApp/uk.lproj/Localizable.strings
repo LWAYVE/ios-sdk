@@ -1,0 +1,38 @@
+
+// The application keys
+
+"some_app_string" = "Приклад";
+
+// LWAYVE SDK strings
+
+"lwayve_clip_action_tickets" = "Квитки";
+"lwayve_clip_action_hotel" = "Готель";
+"lwayve_clip_action_share" = "Поділитися";
+"lwayve_clip_action_url" = "Посилання";
+"lwayve_clip_action_map" = "Карта";
+"lwayve_clip_action_record" = "Записати";
+
+// Playback control
+"lwayve_situational_audio_default_ticker_text" = "Оновлення від %@ - Натисни плей";
+
+// Audio recording
+"lwayve_audio_recording_microphone_disabled_alert_title" = "Немає доступу до мікрофону";
+"lwayve_audio_recording_microphone_disabled_alert_text" = "Ця програма потребує доступу до мікрофона вашого пристрою для запису звуку.";
+
+"lwayve_audio_recording_upload_failure_alert_text" = "Помилка мережі при відправленні запису";
+
+"lwayve_audio_recording_send_button_title" = "НАДІСЛАТИ";
+"lwayve_audio_recording_try_again_button_title" = "СПРОБУВАТИ ЗНОВУ";
+
+"lwayve_audio_recording_recording_title" = "Записується...";
+
+"lwayve_audio_recording_sending_failure_alert_retry_button" = "Спробувати знову";
+
+"lwayve_audio_recording_send_confirmaion_alert_title" = "Надіслати запис";
+"lwayve_audio_recording_send_confirmaion_alert_text" = "Надіслати цей запис до %@?";
+
+"lwayve_audio_recording_onboarding_text" = "Відправ свій власний запис до %@!";
+
+// Common
+"lwayve_general_alert_button_cancel" = "Скасувати";
+"lwayve_general_alert_button_settings" = "Налаштування";
