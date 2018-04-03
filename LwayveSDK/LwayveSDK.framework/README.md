@@ -24,6 +24,7 @@ The following document provides background information on the LWAYVE platform as
   * [Set Up Branded Playback Control](#set-up-branded-playback-control)
     + [With Storyboard or Xib](#with-storyboard-or-xib)
     + [From Code](#from-code)
+    + [Provide localizable strings for additional languages (optiuonal)](#provide-localizable-strings-for-additional-languages--optiuonal-)
 - [Section 3: Testing LWAYVE](#section-3--testing-lwayve)
   * [API](#api)
   * [LWAYVE SDK Reference](#lwayve-sdk-reference)
@@ -150,25 +151,14 @@ $ pod install
 Please use this approach only if you have strict requirements not to use CocoaPods, as this method is more difficult and error prone.
 
 1. Add LwayveSDK.framework to the Embedded Binaries section of your application. The latest version of the framework is available at [https://github.com/LWAYVE/ios-sdk/releases](#https://github.com/LWAYVE/ios-sdk/releases).
-2. Integrate other third-party dependencies using Carthage (recommended) or manually:
+2. Integrate other third-party dependencies manually:
+    - YapDatabase - [https://github.com/yapstudios/YapDatabase](#https://github.com/yapstudios/YapDatabase). Version 3.0 (or compatible) must be used.
+    - Alamofire - [https://github.com/Alamofire/Alamofire](#https://github.com/Alamofire/Alamofire). Version 4.5.0 (or compatible) must be used.
+    - SwiftyJSON - [https://github.com/SwiftyJSON/SwiftyJSON](#https://github.com/SwiftyJSON/SwiftyJSON). Version 3.1.4 (or compatible) must be used.
+    - CocoaLumberjack - [https://github.com/CocoaLumberjack/CocoaLumberjack](#https://github.com/CocoaLumberjack/CocoaLumberjack). Version 3.2.0 (or compatible) must be used.
+    - GoogleToolboxForMac/NSData+zlib - [https://github.com/google/google-toolbox-for-mac](#https://github.com/google/google-toolbox-for-mac). Version 2.1.1 (or compatible) must be used.
 
-	- Using Carthage (recommended):
-		1. Install Carthage. Full details are available at [https://github.com/Carthage/Carthage](#https://github.com/Carthage/Carthage)
-		2. Place files ```Cartfile``` and ```Cartfile.resolved``` in a directory on your Mac.
-		3. Perform the following commands in Terminal:
-
-			```
-			$ cd <your_directory>
-			$ carthage bootstrap --platform iOS
-			```
-		4. Add the frameworks from <your_directory>/Carthage/Build/iOS to the Embedded Binaries section of your application.
-	- Manually:
-		- YapDatabase - [https://github.com/yapstudios/YapDatabase](#https://github.com/yapstudios/YapDatabase). Version 3.0 (or compatible) must be used.
-		- Alamofire - [https://github.com/Alamofire/Alamofire](#https://github.com/Alamofire/Alamofire). Version 4.5.0 (or compatible) must be used.
-		- SwiftyJSON - [https://github.com/SwiftyJSON/SwiftyJSON](#https://github.com/SwiftyJSON/SwiftyJSON). Version 3.1.4 (or compatible) must be used.
-		- keychain-swift - [https://github.com/evgenyneu/keychain-swift](#https://github.com/evgenyneu/keychain-swift). Version 8.0.2 (or compatible) must be used.
-		- CocoaLumberjack - [https://github.com/CocoaLumberjack/CocoaLumberjack](#https://github.com/CocoaLumberjack/CocoaLumberjack). Version 3.2.0 (or compatible) must be used.
-		- GoogleToolboxForMac/NSData+zlib - [https://github.com/google/google-toolbox-for-mac](#https://github.com/google/google-toolbox-for-mac). Version 2.1.1 (or compatible) must be used.
+    Pre-built dependencies can be found by the link: [https://github.com/LWAYVE/ios-lwayve-prebuilt-dependencies](#https://github.com/LWAYVE/ios-lwayve-prebuilt-dependencies)
 
 ### Configure Application Background Modes
 
@@ -297,6 +287,14 @@ To add  ```LwayvePlaybackControlView``` from code:
 1. Create an instance of  **LwayvePlaybackControlView**(e.g., let playbackControl = LwayvePlaybackControlView(frame: frame)).
 2. Assign an SDK instance to the **LwayvePlaybackControlView.lwayveSDK** property (e.g., playbackControl.lwayveSDK = LwayveSDK.sharedSDK).
 3. Add the view to your super view.
+
+#### Provide localizable strings for additional languages (optional)
+
+The Branded Playback Control displays some UI controls and alerts with text which may require localization. Current version already contains  translations for French and Spanish. The fallback language is English.
+
+If you want the Lwayve SKD Branded Playback Control to support additional languages, you can provide your own translations. To do this you need to add keys to your app Localizable.strings or Localizable.stringsdic file. The full list of keys is available in the file [Localizable.strings](https://github.com/LWAYVE/ios-sdk/blob/master/Localizable.strings).
+
+See also [PlaybackControlSampleApplication](https://github.com/LWAYVE/ios-sdk/tree/master/Examples/PlaybackControlSampleApplication)
 
 ## Section 3: Testing LWAYVE
 

@@ -9,6 +9,14 @@
 import UIKit
 import LwayveSDK
 
+// The following imports have to be added for Xcode 9.2. Otherwise you may have a runtime crash at the launch like:
+//
+// dyld: Library not loaded: @rpath/libswiftAVFoundation.dylib
+// Referenced from: .../PlaybackControlSampleApp.app/Frameworks/LwayveSDK.framework/LwayveSDK
+// Reason: image not found
+import MediaPlayer
+import CoreLocation
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -26,7 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Create the configuration used for the LWAYVE SDK.
         let configuration = LwayveSDKConfiguration(baseURL: URL(string: Constants.baseURL),
-                                                   authenticationToken: Constants.authKey)
+                                                   authenticationToken: Constants.authKey,
+                                                   userAudioRecordingEnabled: true)
 
         // Set delegate before calling LwayveSDK.sharedSDK.initialize to be able to receive lwayveSDK(didInit:) callback
         LwayveSDK.sharedSDK.add(delegate: self)

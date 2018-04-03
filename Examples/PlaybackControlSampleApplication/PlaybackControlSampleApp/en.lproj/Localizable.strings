@@ -1,0 +1,38 @@
+// The application keys
+
+"some_app_string" = "Example";
+
+// LWAYVE SDK strings
+
+"lwayve_clip_action_tickets" = "Tickets";
+"lwayve_clip_action_hotel" = "Hotel";
+"lwayve_clip_action_share" = "Share";
+"lwayve_clip_action_url" = "Link";
+"lwayve_clip_action_map" = "Map";
+"lwayve_clip_action_info" = "Info";
+"lwayve_clip_action_record" = "Record";
+
+// Playback control
+"lwayve_situational_audio_default_ticker_text" = "%@ Update - Press Play";
+
+// Audio recording
+"lwayve_audio_recording_microphone_disabled_alert_title" = "Microphone permission denied";
+"lwayve_audio_recording_microphone_disabled_alert_text" = "In order to record audio this app requires access to your device's microphone.";
+
+"lwayve_audio_recording_upload_failure_alert_text" = "Network Error Sending Recording";
+
+"lwayve_audio_recording_send_button_title" = "SEND";
+"lwayve_audio_recording_try_again_button_title" = "TRY AGAIN";
+
+"lwayve_audio_recording_recording_title" = "Recording...";
+
+"lwayve_audio_recording_sending_failure_alert_retry_button" = "Try again";
+
+"lwayve_audio_recording_send_confirmaion_alert_title" = "Send Recording";
+"lwayve_audio_recording_send_confirmaion_alert_text" = "Send this recording to %@?";
+
+"lwayve_audio_recording_onboarding_text" = "Submit your own recording to %@!";
+
+// Common
+"lwayve_general_alert_button_cancel" = "Cancel";
+"lwayve_general_alert_button_settings" = "Settings";
