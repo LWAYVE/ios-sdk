@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // Pass the notification data to the LWAYVE SDK so that it can process any information relevant to it.
         LwayveSDK.sharedSDK.handleApplication(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
     }

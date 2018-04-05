@@ -325,30 +325,30 @@ SWIFT_PROTOCOL_NAMED("AudioPlaybackControlProtocol")
 @end
 
 @class UIColor;
-@class UIImage;
 
 SWIFT_CLASS_NAMED("AudioRecordingScreenAppearance")
 @interface LwayveAudioRecordingScreenAppearance : NSObject
+@property (nonatomic, readonly, strong) UIColor * _Nonnull backgroundColor;
 @property (nonatomic, readonly, strong) UIColor * _Nonnull statusTextColor;
 @property (nonatomic, readonly, strong) UIColor * _Nonnull tryAgainButtonColor;
-@property (nonatomic, readonly, strong) UIColor * _Nonnull tryAgainButtonBackgroundColor;
 @property (nonatomic, readonly, strong) UIColor * _Nonnull sendButtonColor;
-@property (nonatomic, readonly, strong) UIColor * _Nonnull sendButtonBackgroundColor;
 @property (nonatomic, readonly, strong) UIColor * _Nonnull playButtonColor;
 @property (nonatomic, readonly, strong) UIColor * _Nonnull closeButtonColor;
 @property (nonatomic, readonly, strong) UIColor * _Nonnull topTextColor;
 /// If you pass <code>nil</code> to a parameter, then the default value will be applied.
-- (nonnull instancetype)initWithBackgroundColor:(UIColor * _Nullable)backgroundColor statusTextColor:(UIColor * _Nullable)statusTextColor tryAgainButtonColor:(UIColor * _Nullable)tryAgainButtonColor tryAgainButtonBackgroundColor:(UIColor * _Nullable)tryAgainButtonBackgroundColor sendButtonColor:(UIColor * _Nullable)sendButtonColor sendButtonBackgroundColor:(UIColor * _Nullable)sendButtonBackgroundColor playButtonColor:(UIColor * _Nullable)playButtonColor closeButtonColor:(UIColor * _Nullable)closeButtonColor topTextColor:(UIColor * _Nullable)topTextColor;
-/// If you pass <code>nil</code> to a parameter, then the default value will be applied.
-- (nonnull instancetype)initWithBackgroundImage:(UIImage * _Nonnull)backgroundImage backgroundImageContentMode:(UIViewContentMode)backgroundImageContentMode statusTextColor:(UIColor * _Nullable)statusTextColor tryAgainButtonColor:(UIColor * _Nullable)tryAgainButtonColor tryAgainButtonBackgroundColor:(UIColor * _Nullable)tryAgainButtonBackgroundColor sendButtonColor:(UIColor * _Nullable)sendButtonColor sendButtonBackgroundColor:(UIColor * _Nullable)sendButtonBackgroundColor playButtonColor:(UIColor * _Nullable)playButtonColor closeButtonColor:(UIColor * _Nullable)closeButtonColor topTextColor:(UIColor * _Nullable)topTextColor;
+- (nonnull instancetype)initWithBackgroundColor:(UIColor * _Nullable)backgroundColor statusTextColor:(UIColor * _Nullable)statusTextColor tryAgainButtonColor:(UIColor * _Nullable)tryAgainButtonColor sendButtonColor:(UIColor * _Nullable)sendButtonColor playButtonColor:(UIColor * _Nullable)playButtonColor closeButtonColor:(UIColor * _Nullable)closeButtonColor topTextColor:(UIColor * _Nullable)topTextColor OBJC_DESIGNATED_INITIALIZER;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultBackgroundColor;)
 + (UIColor * _Nonnull)defaultBackgroundColor SWIFT_WARN_UNUSED_RESULT;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultStatusTextColor;)
 + (UIColor * _Nonnull)defaultStatusTextColor SWIFT_WARN_UNUSED_RESULT;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultButtonsColor;)
-+ (UIColor * _Nonnull)defaultButtonsColor SWIFT_WARN_UNUSED_RESULT;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultButtonsBackgroundColor;)
-+ (UIColor * _Nonnull)defaultButtonsBackgroundColor SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultTryAgainButtonColor;)
++ (UIColor * _Nonnull)defaultTryAgainButtonColor SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultSendButtonColor;)
++ (UIColor * _Nonnull)defaultSendButtonColor SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultPlayButtonColor;)
++ (UIColor * _Nonnull)defaultPlayButtonColor SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultCloseButtonColor;)
++ (UIColor * _Nonnull)defaultCloseButtonColor SWIFT_WARN_UNUSED_RESULT;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) UIColor * _Nonnull defaultTopTextColor;)
 + (UIColor * _Nonnull)defaultTopTextColor SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -391,6 +391,7 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 
 
 
+@class UIImage;
 
 /// <code>ClipAction</code> represents data required to display a clip related action.
 SWIFT_CLASS_NAMED("ClipAction")
@@ -488,6 +489,8 @@ SWIFT_PROTOCOL_NAMED("ContextControlProtocol")
 ///
 - (void)removeLocations:(NSArray<NSString *> * _Nonnull)locations;
 /// Set Exclusive Tag
+/// \param exclusiveTag 
+///
 @property (nonatomic, copy) NSString * _Nullable exclusiveTag;
 /// The data object that contains the user context that is being used for generating the playlist.
 @property (nonatomic, readonly, strong) LwayveUserContext * _Nullable currentUserContext;

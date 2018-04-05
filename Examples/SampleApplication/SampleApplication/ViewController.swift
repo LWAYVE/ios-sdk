@@ -15,33 +15,33 @@ class ViewController: UIViewController {
 
     // Sample actions for control audio playback
 
-    @IBAction private func startButtonTouched() {
+    @IBAction func startButtonTouched() {
         LwayveSDK.sharedSDK.play()
     }
 
-    @IBAction private func pauseButtonTouched() {
+    @IBAction func pauseButtonTouched() {
         LwayveSDK.sharedSDK.pause()
     }
 
-    @IBAction private func stopButtonTouched() {
+    @IBAction func stopButtonTouched() {
         LwayveSDK.sharedSDK.stop()
     }
 
-    @IBAction private func rewindButtonTouched() {
+    @IBAction func rewindButtonTouched() {
         LwayveSDK.sharedSDK.rewind()
     }
 
-    @IBAction private func skipButtonTouched() {
+    @IBAction func skipButtonTouched() {
         LwayveSDK.sharedSDK.skip()
     }
 
     // Sample actions for control context
 
-    @IBAction private func addTagsButtonTouched(_ sender: UIButton) {
+    @IBAction func addTagsButtonTouched(_ sender: UIButton) {
         LwayveSDK.sharedSDK.add(userLikes: ["#Drinks", "#Danica", "#Johnson-Jimmie", "#Car43", "#Car45", "#Car50"])
     }
 
-    @IBAction private func addLocationsButtonTouched(_ sender: UIButton) {
+    @IBAction func addLocationsButtonTouched(_ sender: UIButton) {
         LwayveSDK.sharedSDK.add(locations: ["#bar1", "#bar2"])
     }
 

@@ -17,6 +17,7 @@
 "lwayve_audio_recording_upload_failure_alert_text" = "Network Error Sending Recording";
 
 "lwayve_audio_recording_send_button_title" = "SEND";
+"lwayve_audio_recording_try_again_button_title" = "TRY AGAIN";
 
 "lwayve_audio_recording_recording_title" = "Recording...";
 
@@ -25,8 +26,7 @@
 "lwayve_audio_recording_send_confirmaion_alert_title" = "Send Recording";
 "lwayve_audio_recording_send_confirmaion_alert_text" = "Send this recording to %@?";
 
-"lwayve_audio_recording_onboarding_default_title" = "Record a clip!";
-"lwayve_audio_recording_onboarding_default_body" = "";
+"lwayve_audio_recording_onboarding_text" = "Submit your own recording to %@!";
 
 // Common
 "lwayve_general_alert_button_cancel" = "Cancel";
