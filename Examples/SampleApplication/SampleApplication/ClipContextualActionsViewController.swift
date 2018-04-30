@@ -72,7 +72,7 @@ class ClipContextualActionsViewController: UITableViewController {
 
         let currentTrackId = currentTrack.identifier
 
-        self.lwayveSDK.loadActions(currentTrack.actions) { [weak self] (actions) in
+        self.lwayveSDK.loadActions(actions: currentTrack.actions) { [weak self] (actions) in
             guard
                 let sSelf = self,
                 let currentTrack = sSelf.currentTrack,
