@@ -829,6 +829,7 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
 /// \param configuration Configuration object with required parameters
 ///
 - (BOOL)initializeWithProxSeeWithConfiguration:(LwayveSDKConfiguration * _Nonnull)configuration error:(NSError * _Nullable * _Nullable)error;
+- (void)addProxSeeMetadataWithMetadata:(NSDictionary<NSString *, NSString *> * _Nonnull)metadata completion:(void (^ _Nullable)(BOOL, NSError * _Nullable))completion;
 @end
 
 
