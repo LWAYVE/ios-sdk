@@ -383,6 +383,10 @@ SWIFT_PROTOCOL_NAMED("AudioTrack")
 @property (nonatomic, readonly, copy) NSString * _Nullable programId;
 /// Experience ID from the experience containing the audio track
 @property (nonatomic, readonly, copy) NSString * _Nullable experienceId;
+/// Apple Music Song ID
+@property (nonatomic, readonly, copy) NSString * _Nullable appleMusicId;
+/// Apple Music Song Duration
+@property (nonatomic, readonly) NSTimeInterval appleMusicDuration;
 @end
 
 
@@ -1049,6 +1053,8 @@ SWIFT_PROTOCOL_NAMED("PlaylistItemMetadata")
 @protocol LwayvePlaylistItemMetadata
 /// The text to display before playing situational audio.
 @property (nonatomic, readonly, copy) NSString * _Nullable situationalText;
+@property (nonatomic, readonly, copy) NSString * _Nullable appleMusicId;
+@property (nonatomic, readonly) NSTimeInterval appleMusicDuration;
 @end
 
 

@@ -37,6 +37,8 @@ The following document provides background information on the LWAYVE platform as
     + [Retreive clip actions UI info](#retreive-clip-actions-ui-info)
     + [Perform a clip action](#perform-a-clip-action)
     + [Audio record upload action](#audio-record-upload-action)
+- [Section 5: Apple Music](#section-5--apple-music)
+  * [Requirements](#apple-music-requirements)
 
 ## Section 1: Introducing LWAYVE and Contextual Audio Experiences
 
@@ -292,7 +294,7 @@ To add  ```LwayvePlaybackControlView``` from code:
 
 The Branded Playback Control displays some UI controls and alerts with text which may require localization. Current version already contains  translations for French and Spanish. The fallback language is English.
 
-If you want the Lwayve SKD Branded Playback Control to support additional languages, you can provide your own translations. To do this you need to add keys to your app Localizable.strings or Localizable.stringsdic file. The full list of keys is available in the file [Localizable.strings](https://github.com/LWAYVE/ios-sdk/blob/master/Localizable.strings).
+If you want the Lwayve SDK Branded Playback Control to support additional languages, you can provide your own translations. To do this you need to add keys to your app Localizable.strings or Localizable.stringsdic file. The full list of keys is available in the file [Localizable.strings](https://github.com/LWAYVE/ios-sdk/blob/master/Localizable.strings).
 
 See also [PlaybackControlSampleApplication](https://github.com/LWAYVE/ios-sdk/tree/master/Examples/PlaybackControlSampleApplication)
 
@@ -346,3 +348,17 @@ If you want to use LWAYVE service without using the Branded Playback Control you
 [https://lwayve.github.io/ios/docs/api_docs/Protocols/UserRecordedAudioUploadProtocol.html#/c:@M@LwayveSDK@objc(pl)UserRecordedAudioUploadProtocol(py)maximumUserRecordedAudioDuration](https://lwayve.github.io/ios/docs/api_docs/Protocols/UserRecordedAudioUploadProtocol.html#/c:@M@LwayveSDK@objc(pl)UserRecordedAudioUploadProtocol(py)maximumUserRecordedAudioDuration)
 
 See also [Code Sample](https://github.com/LWAYVE/ios-sdk/blob/master/Examples/SampleApplication/SampleApplication/ClipContextualActionsViewController.swift)
+
+
+## Section 5: Apple Music
+
+Lwayve SDK now has the capability to play Apple Music with minimum configuration requirements.
+
+### Requirements
+
+The only thing needed is to add to your app's info.plist file a  new key ```NSAppleMusicUsageDescription``` with a description for the user informing him/her why the permission is required.
+
+```
+<key>NSAppleMusicUsageDescription</key>
+<string>We need permission to access your apple music in order for us to play apple music songs.</string>
+```
