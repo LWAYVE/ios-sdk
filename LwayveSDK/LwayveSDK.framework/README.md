@@ -215,7 +215,7 @@ The next step is to initialize (launch) the LWAYVE SDK.
 #### Initialize the LWAYVE SDK
 When initializing the LWAYVE SDK, you need to pass the Authentication token provided to you by Lixar.  
 
-```
+```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
   // Create the configuration used for the LWAYVE SDK.
@@ -240,7 +240,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
   return true
 }
 
-...
+// ...
 
 func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
   // Pass the notification data to the LWAYVE SDK so that it can process any information relevant to it.
@@ -254,7 +254,7 @@ func application(_ application: UIApplication, didRegisterForRemoteNotifications
 ```
 
 (Optional) To initialize Lwayve with ProxSee, import Lwayve with ProxSee and replace the initialize method.
-```
+```swift
 import LwayveSDK
 
 ...
