@@ -781,6 +781,11 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK27OuterBandAppearanceProtocol_")
 @property (nonatomic, strong) UIImage * _Nullable defaultAlbumArtworkImage;
 @end
 
+
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
+@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
+@end
+
 enum LwayveUserRecordedAudioDuration : NSInteger;
 
 SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
@@ -804,7 +809,29 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
 ///
 /// \param completion <code>error == nil</code> indicates a successful finish of the upload. <code>error</code> can be of following types: <code>UserRecordedAudioUploaderError</code>, <code>UserRecordedAudioValidatorError</code>
 ///
-- (void)uploadUserRecordedAudioWithFileURL:(NSURL * _Nonnull)fileURL completion:(void (^ _Nonnull)(NSError * _Nullable))completion;
+- (void)uploadUserRecordedAudioWithFileURL:(NSURL * _Nonnull)fileURL completion:(void (^ _Nonnull)(NSError * _Nullable))completion SWIFT_DEPRECATED_MSG("Use uploadUserRecordedAudio(fileURL:recordingId:completion:)");
+/// The file at <code>fileURL</code> will be validated and uploaded to Lwayve server to be reviewed and added to the experience.
+/// \param fileURL The <code>fileURL</code> must be a URL to the local file system accessible to the application. The audio file requirements:
+/// <ul>
+///   <li>
+///     Supported formats: .mp3, .m4a;
+///   </li>
+///   <li>
+///     The file must contain non-empty audio;
+///   </li>
+///   <li>
+///     The audio file size must be not more than 2MB;
+///   </li>
+///   <li>
+///     the length of the audio in the file must be not more than 1 minute.
+///   </li>
+/// </ul>
+///
+/// \param recordingId A unique id for the recording. If reuploading the same audio after a failure, use the same id.
+///
+/// \param completion <code>error == nil</code> indicates a successful finish of the upload. <code>error</code> can be of following types: <code>UserRecordedAudioUploaderError</code>, <code>UserRecordedAudioValidatorError</code>
+///
+- (void)uploadUserRecordedAudioWithFileURL:(NSURL * _Nonnull)fileURL recordingId:(NSString * _Nonnull)recordingId completion:(void (^ _Nonnull)(NSError * _Nullable))completion;
 /// Maximum audio duration that can be recored using record action from the outer band.
 @property (nonatomic) enum LwayveUserRecordedAudioDuration maximumUserRecordedAudioDuration;
 @end
@@ -812,14 +839,11 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
 
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <UserRecordedAudioUploadProtocol>
 /// See <code>UserRecordedAudioUploadProtocol.uploadUserRecordedAudio(fileURL:completion:)</code>
-- (void)uploadUserRecordedAudioWithFileURL:(NSURL * _Nonnull)fileURL completion:(void (^ _Nonnull)(NSError * _Nullable))completion;
+- (void)uploadUserRecordedAudioWithFileURL:(NSURL * _Nonnull)fileURL completion:(void (^ _Nonnull)(NSError * _Nullable))completion SWIFT_DEPRECATED_MSG("Use uploadUserRecordedAudio(fileURL:recordingId:completion:)");
+/// See <code>UserRecordedAudioUploadProtocol.uploadUserRecordedAudio(fileURL:recordingId:completion:)</code>
+- (void)uploadUserRecordedAudioWithFileURL:(NSURL * _Nonnull)fileURL recordingId:(NSString * _Nonnull)recordingId completion:(void (^ _Nonnull)(NSError * _Nullable))completion;
 /// See <code>UserRecordedAudioUploadProtocol.maximumUserRecordedAudioDuration</code>
 @property (nonatomic) enum LwayveUserRecordedAudioDuration maximumUserRecordedAudioDuration;
-@end
-
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK))
-@property (nonatomic, copy) void (^ _Nullable analyticsEventTrackHandler)(NSString * _Nonnull);
 @end
 
 
@@ -865,6 +889,26 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
 @end
 
 
+@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveContextControlProtocol>
+/// See <code>ContextControlProtocol.set(locations:)</code>
+- (void)setLocations:(NSArray<NSString *> * _Nonnull)locations;
+/// See <code>ContextControlProtocol.set(userLikes:)</code>
+- (void)setUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+/// See <code>ContextControlProtocol.currentUserContext</code>
+@property (nonatomic, readonly, strong) LwayveUserContext * _Nullable currentUserContext;
+/// See <code>ContextControlProtocol.add(userLikes:)</code>
+- (void)addUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+/// See <code>ContextControlProtocol.add(locations:)</code>
+- (void)addLocations:(NSArray<NSString *> * _Nonnull)locations;
+/// See <code>ContextControlProtocol.remove(userLikes:)</code>
+- (void)removeUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
+/// See <code>ContextControlProtocol.remove(locations:)</code>
+- (void)removeLocations:(NSArray<NSString *> * _Nonnull)locations;
+@property (nonatomic) NSTimeInterval timeOffset;
+@property (nonatomic, copy) NSString * _Nullable exclusiveTag;
+@end
+
+
 @interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveAudioPlaybackControlProtocol>
 /// See <code>AudioPlaybackControlProtocol.isReadyToPlay</code>
 @property (nonatomic, readonly) BOOL isReadyToPlay;
@@ -885,26 +929,6 @@ SWIFT_PROTOCOL("_TtP9LwayveSDK31UserRecordedAudioUploadProtocol_")
 - (void)skip;
 /// See <code>AudioPlaybackControlProtocol.rewind()</code>
 - (void)rewind;
-@end
-
-
-@interface LwayveSDK (SWIFT_EXTENSION(LwayveSDK)) <LwayveContextControlProtocol>
-/// See <code>ContextControlProtocol.set(locations:)</code>
-- (void)setLocations:(NSArray<NSString *> * _Nonnull)locations;
-/// See <code>ContextControlProtocol.set(userLikes:)</code>
-- (void)setUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
-/// See <code>ContextControlProtocol.currentUserContext</code>
-@property (nonatomic, readonly, strong) LwayveUserContext * _Nullable currentUserContext;
-/// See <code>ContextControlProtocol.add(userLikes:)</code>
-- (void)addUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
-/// See <code>ContextControlProtocol.add(locations:)</code>
-- (void)addLocations:(NSArray<NSString *> * _Nonnull)locations;
-/// See <code>ContextControlProtocol.remove(userLikes:)</code>
-- (void)removeUserLikes:(NSArray<NSString *> * _Nonnull)userLikes;
-/// See <code>ContextControlProtocol.remove(locations:)</code>
-- (void)removeLocations:(NSArray<NSString *> * _Nonnull)locations;
-@property (nonatomic) NSTimeInterval timeOffset;
-@property (nonatomic, copy) NSString * _Nullable exclusiveTag;
 @end
 
 
